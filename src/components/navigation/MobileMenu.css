@@ -1,0 +1,32 @@
+.mobile-menu{
+display:none;
+flex-direction:column;
+padding:20px;
+background:#ffffff;
+border-top:1px solid #e5e7eb;
+}
+
+.mobile-menu.open{
+display:flex;
+}
+
+.mobile-menu .nav-link{
+padding:15px 0;
+text-decoration:none;
+color:#222;
+font-weight:600;
+border-bottom:1px solid #eee;
+}
+
+.mobile-actions{
+display:flex;
+flex-direction:column;
+gap:15px;
+margin-top:20px;
+}
+
+@media(min-width:901px){
+.mobile-menu{
+display:none !important;
+}
+}

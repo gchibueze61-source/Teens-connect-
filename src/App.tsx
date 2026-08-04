@@ -1,11 +1,28 @@
-// Root application component
+import "./components/navigation/Navbar.css";
+import "./components/navigation/MobileMenu.css";
 
-export default function App() {
+import Navbar from "./components/navigation/Navbar";
+
+function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <header>Navigation will go here</header>
-      <main>Routes will go here</main>
-      <footer>Footer will go here</footer>
-    </div>
-  )
+    <>
+      <Navbar />
+
+      <main
+        style={{
+          height: "200vh",
+          padding: "40px",
+          background: "#f8fafc"
+        }}
+      >
+        <h1>Teens Connect Africa</h1>
+
+        <p>
+          Homepage coming soon...
+        </p>
+      </main>
+    </>
+  );
 }
+
+export default App;
