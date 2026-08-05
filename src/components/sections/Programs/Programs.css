@@ -1,0 +1,226 @@
+.programs{
+    padding:clamp(4rem,8vw,6rem) 0;
+    background:#f8fafc;
+}
+
+.programs .container{
+    width:min(92%,1400px);
+    margin:auto;
+}
+
+/* ==========================
+   SECTION HEADER
+========================== */
+
+.section-header{
+    text-align:center;
+    margin-bottom:clamp(2.5rem,5vw,4rem);
+}
+
+.section-header h2{
+    font-size:clamp(2rem,5vw,2.8rem);
+    color:#0f172a;
+    margin-bottom:1rem;
+    line-height:1.2;
+}
+
+.section-header p{
+    max-width:44rem;
+    margin:auto;
+    color:#64748b;
+    line-height:1.8;
+    font-size:clamp(.95rem,1.2vw,1.05rem);
+}
+
+/* ==========================
+   PROGRAM GRID
+========================== */
+
+.program-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:clamp(1.2rem,2vw,2rem);
+}
+
+.program-card{
+    background:#ffffff;
+    border-radius:1.125rem;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    transition:.35s;
+    display:flex;
+    flex-direction:column;
+}
+
+.program-card:hover{
+    transform:translateY(-10px);
+}
+
+/* ==========================
+   IMAGE
+========================== */
+
+.program-image{
+    width:100%;
+    aspect-ratio:16/9;
+    background:linear-gradient(135deg,#0ea5a4,#2563eb);
+}
+
+.program-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* ==========================
+   CATEGORY
+========================== */
+
+.category{
+    display:inline-block;
+    margin:1.25rem;
+    padding:.5rem 1rem;
+    background:#0ea5a4;
+    color:#ffffff;
+    border-radius:999px;
+    font-size:.85rem;
+    font-weight:600;
+}
+
+/* ==========================
+   CONTENT
+========================== */
+
+.program-card h3{
+    margin:0 1.25rem;
+    color:#0f172a;
+    font-size:clamp(1.2rem,2vw,1.45rem);
+}
+
+.program-card p{
+    margin:1rem 1.25rem;
+    color:#64748b;
+    line-height:1.8;
+    flex:1;
+}
+
+/* ==========================
+   META
+========================== */
+
+.program-meta{
+    display:flex;
+    justify-content:space-between;
+    gap:1rem;
+    margin:1.25rem;
+    color:#475569;
+    font-size:.95rem;
+    flex-wrap:wrap;
+}
+
+/* ==========================
+   STATUS
+========================== */
+
+.status-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    margin:1.25rem;
+    flex-wrap:wrap;
+}
+
+.status{
+    padding:.45rem 1rem;
+    border-radius:999px;
+    color:#ffffff;
+    font-size:.8rem;
+    font-weight:600;
+}
+
+.status.open{
+    background:#16a34a;
+}
+
+.status.ongoing{
+    background:#2563eb;
+}
+
+.status.coming-soon{
+    background:#f59e0b;
+}
+
+.status.closed{
+    background:#dc2626;
+}
+
+/* ==========================
+   BUTTON
+========================== */
+
+.status-row button{
+    background:#0ea5a4;
+    color:#ffffff;
+    border:none;
+    padding:.75rem 1.4rem;
+    border-radius:.6rem;
+    cursor:pointer;
+    transition:.3s;
+    font-weight:600;
+}
+
+.status-row button:hover{
+    background:#0f766e;
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width:768px){
+
+.programs .container{
+    width:94%;
+}
+
+.program-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:600px){
+
+.program-grid{
+    grid-template-columns:1fr;
+}
+
+.program-meta,
+.status-row{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.status-row button{
+    width:100%;
+}
+
+}
+
+/* ==========================
+   LARGE DESKTOP
+========================== */
+
+@media (min-width:1440px){
+
+.programs .container{
+    width:min(88%,1500px);
+}
+
+}

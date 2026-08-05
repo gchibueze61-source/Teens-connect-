@@ -17,7 +17,9 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="navbar-actions">
-          <button className="login-btn">Login</button>
+          <button className="login-btn">
+            Login
+          </button>
 
           <button className="join-btn">
             Join Now

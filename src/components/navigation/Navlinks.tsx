@@ -1,14 +1,13 @@
 import React from "react";
 
 const navigationLinks = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Programs", href: "/programs" },
-  { name: "Events", href: "/events" },
-  { name: "Gallery", href: "/gallery" },
-  { name: "AI Coach", href: "/ai-coach" },
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "Home", href: "#home" },
+  { name: "About", href: "#about" },
+  { name: "Programs", href: "#programs" },
+  { name: "Events", href: "#events" },
+  { name: "Testimonials", href: "#testimonials" },
+  { name: "AI Coach", href: "#ai-coach" },
+  { name: "Contact", href: "#footer" }
 ];
 
 const NavLinks: React.FC = () => {

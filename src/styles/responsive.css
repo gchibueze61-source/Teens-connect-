@@ -1,0 +1,72 @@
+/* ===============================
+   GLOBAL RESPONSIVE SYSTEM
+================================ */
+
+/* Phones */
+@media (max-width: 480px) {
+
+  .container{
+    width:92%;
+    margin:auto;
+  }
+
+  section{
+    padding:4rem 0;
+  }
+
+  h1{
+    font-size:clamp(2rem,8vw,3rem);
+  }
+
+  h2{
+    font-size:clamp(1.8rem,6vw,2.4rem);
+  }
+
+  p{
+    font-size:1rem;
+    line-height:1.7;
+  }
+
+  img{
+    max-width:100%;
+    height:auto;
+  }
+
+}
+
+/* Tablets */
+
+@media (min-width:481px) and (max-width:768px){
+
+.container{
+width:90%;
+margin:auto;
+}
+
+}
+
+/* Laptop */
+
+@media (min-width:769px) and (max-width:1024px){
+
+.container{
+
+width:88%;
+margin:auto;
+
+}
+
+}
+
+/* Desktop */
+
+@media (min-width:1025px){
+
+.container{
+
+width:min(90%,1400px);
+margin:auto;
+
+}
+
+}
