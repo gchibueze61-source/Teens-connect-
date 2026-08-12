@@ -7,14 +7,18 @@ const navigationLinks = [
   { name: "Events", href: "#events" },
   { name: "Testimonials", href: "#testimonials" },
   { name: "AI Coach", href: "#ai-coach" },
-  { name: "Contact", href: "#footer" }
+  { name: "Contact", href: "#contact" },
 ];
 
 const NavLinks: React.FC = () => {
   return (
     <>
       {navigationLinks.map((link) => (
-        <a key={link.name} href={link.href} className="nav-link">
+        <a
+          key={link.name}
+          href={link.href}
+          className="nav-link"
+        >
           {link.name}
         </a>
       ))}

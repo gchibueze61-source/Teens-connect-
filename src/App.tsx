@@ -1,6 +1,12 @@
 import "./components/navigation/Navbar.css";
 import "./components/navigation/MobileMenu.css";
 
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 import Navbar from "./components/navigation/Navbar";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About/About";
@@ -10,8 +16,13 @@ import Events from "./components/sections/Events";
 import AICoach from "./components/sections/AICoach";
 import Testimonials from "./components/sections/Testimonials";
 import Blog from "./components/sections/Blog";
+import Contact from "./components/sections/Contact";
+import Footer from "./components/sections/Footer";
 
-function App() {
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
+function Home() {
   return (
     <>
       <Navbar />
@@ -20,10 +31,36 @@ function App() {
       <Statistics />
       <Programs />
       <Events />
-      <AICoach/>
+      <AICoach />
       <Testimonials />
-      <Blog />  
+      <Blog />
+      <Contact />
+      <Footer />
     </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* Public Website */}
+        <Route path="/" element={<Home />} />
+
+        {/* Admin */}
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 

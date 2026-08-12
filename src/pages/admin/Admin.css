@@ -1,0 +1,293 @@
+* {
+    box-sizing: border-box;
+}
+
+.admin-page,
+.admin-dashboard {
+    min-height: 100vh;
+    width: 100%;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+/* LOGIN */
+
+.admin-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem 1rem;
+}
+
+.admin-login-card {
+    width: min(100%, 30rem);
+
+    background: #ffffff;
+    padding: clamp(2rem, 6vw, 3rem);
+
+    border-radius: 1.25rem;
+
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+}
+
+.admin-login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-badge {
+    display: inline-block;
+
+    padding: 0.45rem 1rem;
+
+    background: #ccfbf1;
+    color: #0f766e;
+
+    border-radius: 2rem;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.admin-login-header h1 {
+    margin: 1rem 0 0.5rem;
+
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+}
+
+.admin-login-header p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.admin-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.admin-form-group input {
+    width: 100%;
+
+    padding: 0.9rem 1rem;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 0.65rem;
+
+    font: inherit;
+
+    outline: none;
+}
+
+.admin-form-group input:focus {
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+}
+
+.admin-login-button,
+.admin-management-card button {
+    border: none;
+    border-radius: 0.65rem;
+
+    background: #14b8a6;
+    color: #ffffff;
+
+    padding: 0.9rem 1.25rem;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.admin-login-button:hover,
+.admin-management-card button:hover {
+    background: #0f766e;
+}
+
+.admin-login-note {
+    margin-top: 1.5rem;
+
+    text-align: center;
+
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+/* DASHBOARD */
+
+.admin-dashboard {
+    padding: clamp(2rem, 5vw, 4rem) 1rem;
+}
+
+.admin-dashboard-container {
+    width: min(100%, 75rem);
+    margin: 0 auto;
+}
+
+.admin-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    margin-bottom: 2.5rem;
+}
+
+.admin-dashboard-header h1 {
+    margin: 0.75rem 0 0.4rem;
+
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.admin-dashboard-header p {
+    margin: 0;
+
+    color: #64748b;
+}
+
+.admin-logout-button {
+    padding: 0.75rem 1.1rem;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 0.6rem;
+
+    background: #ffffff;
+
+    cursor: pointer;
+}
+
+/* STATS */
+
+.admin-stats-grid {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 1rem;
+
+    margin-bottom: 2rem;
+}
+
+.admin-stat-card {
+    background: #ffffff;
+
+    padding: 1.5rem;
+
+    border-radius: 1rem;
+
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+}
+
+.admin-stat-card span {
+    display: block;
+
+    color: #64748b;
+
+    margin-bottom: 0.6rem;
+}
+
+.admin-stat-card strong {
+    font-size: 2rem;
+
+    color: #0f766e;
+}
+
+/* MANAGEMENT */
+
+.admin-management-grid {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 1.25rem;
+}
+
+.admin-management-card {
+    background: #ffffff;
+
+    padding: 1.5rem;
+
+    border-radius: 1rem;
+
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+}
+
+.admin-management-card h2 {
+    margin: 0 0 0.6rem;
+}
+
+.admin-management-card p {
+    color: #64748b;
+
+    line-height: 1.6;
+
+    margin-bottom: 1.25rem;
+}
+
+/* TABLET */
+
+@media (min-width: 600px) {
+
+    .admin-page {
+        padding: 3rem 1.5rem;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-management-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* LAPTOP */
+
+@media (min-width: 1024px) {
+
+    .admin-dashboard {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* LARGE DESKTOP */
+
+@media (min-width: 1440px) {
+
+    .admin-dashboard-container {
+        width: min(90%, 85rem);
+    }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 480px) {
+
+    .admin-dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-logout-button {
+        width: 100%;
+    }
+}

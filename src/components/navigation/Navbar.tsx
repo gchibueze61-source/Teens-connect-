@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import Logo from "./Logo";
-import NavLinks from "./NavLinks";
+import NavLinks from "./Navlinks";
 import MobileMenu from "./MobileMenu";
 
 const Navbar: React.FC = () => {

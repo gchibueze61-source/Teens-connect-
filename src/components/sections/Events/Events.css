@@ -135,4 +135,110 @@
     width:min(88%,1500px);
 }
 
+}/* ==========================
+   EVENT COUNTDOWN
+========================== */
+
+.event-countdown {
+    margin: 20px;
+    padding: 18px;
+
+    background: #f0fdfa;
+
+    border-radius: 14px;
+
+    border: 1px solid #ccfbf1;
+}
+
+.countdown-title {
+    margin: 0 0 12px;
+
+    color: #0f766e;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 8px;
+}
+
+.countdown-box {
+    min-width: 0;
+
+    padding: 10px 5px;
+
+    background: #ffffff;
+
+    border-radius: 9px;
+
+    text-align: center;
+}
+
+.countdown-box strong {
+    display: block;
+
+    color: #0f766e;
+
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    line-height: 1.2;
+}
+
+.countdown-box span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 0.65rem;
+}
+
+/* ==========================
+   SMALL PHONES
+   320px - 480px
+========================== */
+
+@media (max-width: 480px) {
+
+    .event-countdown {
+        margin: 16px;
+        padding: 14px;
+    }
+
+    .countdown-grid {
+        gap: 5px;
+    }
+
+    .countdown-box {
+        padding: 9px 3px;
+    }
+
+    .countdown-box strong {
+        font-size: 1rem;
+    }
+
+    .countdown-box span {
+        font-size: 0.58rem;
+    }
+}
+
+/* ==========================
+   TABLETS
+========================== */
+
+@media (min-width: 768px) {
+
+    .event-countdown {
+        margin: 20px;
+    }
+
+    .countdown-box {
+        padding: 12px 6px;
+    }
 }
