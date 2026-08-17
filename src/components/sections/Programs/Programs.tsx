@@ -1,150 +1,185 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../../../lib/supabase";
 import "./Programs.css";
 
-const programs = [
-  {
-    id: 1,
-    title: "Youth & Leadership Summit 26.0",
-    category: "Leadership & Technology",
-    description:
-      "Join hundreds of young leaders as we eplore the future of leadership, technology and responsible citizenship.",
-    image: "/images/programs/digital-skills.jpg",
-    duration: "8 Weeks",
-    ageRange: "Teenagers & youth",
-    status: "Open",
-    featured: true,
-    homepage: true,
-    registrationDeadline: "27-29 August 2026"
-  },
-  {
-    id: 2,
-    title: "Leadership Development",
-    category: "Leadership",
-    description:
-      "Develop confidence, communication, teamwork and leadership skills through practical training.",
-    image: "/images/programs/leadership.jpg",
-    duration: "6 Weeks",
-    ageRange: "13 - 19 Years",
-    status: "Open",
-    featured: true,
-    homepage: true,
-    registrationDeadline: "15 September 2026"
-  },
-  {
-    id: 3,
-    title: "Scholarship Hub",
-    category: "Education",
-    description:
-      "Discover local and international scholarships with expert guidance throughout your application journey.",
-    image: "/images/programs/scholarship.jpg",
-    duration: "Ongoing",
-    ageRange: "15 - 19 Years",
-    status: "Open",
-    featured: false,
-    homepage: true,
-    registrationDeadline: "-"
-  },
-  {
-    id: 4,
-    title: "Career Mentorship",
-    category: "Career",
-    description:
-      "Connect with experienced professionals to explore careers and build a clear roadmap for your future.",
-    image: "/images/programs/career.jpg",
-    duration: "12 Weeks",
-    ageRange: "14 - 19 Years",
-    status: "Coming Soon",
-    featured: false,
-    homepage: true,
-    registrationDeadline: "-"
-  },
-  {
-    id: 5,
-    title: "Entrepreneurship",
-    category: "Business",
-    description:
-      "Learn business planning, financial literacy, innovation and how to build sustainable ventures.",
-    image: "/images/programs/entrepreneurship.jpg",
-    duration: "10 Weeks",
-    ageRange: "15 - 19 Years",
-    status: "Open",
-    featured: false,
-    homepage: true,
-    registrationDeadline: "25 September 2026"
-  },
-  {
-    id: 6,
-    title: "Community Outreach",
-    category: "Community",
-    description:
-      "Volunteer in impactful community projects while developing teamwork and leadership experience.",
-    image: "/images/programs/community.jpg",
-    duration: "Monthly",
-    ageRange: "All Teenagers",
-    status: "Ongoing",
-    featured: true,
-    homepage: true,
-    registrationDeadline: "-"
-  }
-];
+type Program = {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  image_url: string | null;
+  status: string;
+  duration: string | null;
+  age_range: string | null;
+  featured: boolean;
+  homepage: boolean;
+  registration_deadline: string | null;
+};
 
 export default function Programs() {
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadPrograms = async () => {
+      setLoading(true);
+      setError("");
+
+      const { data, error } = await supabase
+        .from("programs")
+        .select(
+          `
+          id,
+          title,
+          description,
+          category,
+          image_url,
+          status,
+          duration,
+          age_range,
+          featured,
+          homepage,
+          registration_deadline
+        `
+        )
+        .eq("homepage", true)
+        .eq("status", "published")
+        .order("featured", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Failed to load programs:", error.message);
+        setError("Unable to load programs right now.");
+      } else {
+        setPrograms(data || []);
+      }
+
+      setLoading(false);
+    };
+
+    loadPrograms();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="programs" id="programs">
+        <div className="container">
+          <div className="section-header">
+            <h2>Our Programs</h2>
+            <p>Loading our latest programs...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="programs" id="programs">
+        <div className="container">
+          <div className="section-header">
+            <h2>Our Programs</h2>
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="programs" id="programs">
       <div className="container">
 
         <div className="section-header">
           <h2>Our Programs</h2>
+
           <p>
             Empowering African teenagers through education,
             technology, leadership and mentorship.
           </p>
         </div>
 
-        <div className="program-grid">
+        {programs.length === 0 ? (
+          <div className="programs-empty">
+            <p>No programs are currently available.</p>
+          </div>
+        ) : (
+          <div className="program-grid">
 
-          {programs
-            .filter(program => program.homepage)
-            .map(program => (
+            {programs.map((program) => (
+              <article
+                className="program-card"
+                key={program.id}
+              >
 
-            <div className="program-card" key={program.id}>
+                {program.image_url && (
+                  <div className="program-image">
+                    <img
+                      src={program.image_url}
+                      alt={program.title}
+                    />
+                  </div>
+                )}
 
-              <div className="program-image">
-                <img src={program.image} alt={program.title} />
-              </div>
-<section className="programs" id="programs"></section>
-              <span className="category">
-                {program.category}
-              </span>
+                <div className="program-card-content">
 
-              <h3>{program.title}</h3>
+                  {program.category && (
+                    <span className="category">
+                      {program.category}
+                    </span>
+                  )}
 
-              <p>{program.description}</p>
+                  <h3>{program.title}</h3>
 
-              <div className="program-meta">
+                  <p>
+                    {program.description ||
+                      "Learn more about this TCA program."}
+                  </p>
 
-                <span> {program.duration}</span>
+                  <div className="program-meta">
 
-                <span> {program.ageRange}</span>
+                    {program.duration && (
+                      <span>
+                        {program.duration}
+                      </span>
+                    )}
 
-              </div>
+                    {program.age_range && (
+                      <span>
+                        {program.age_range}
+                      </span>
+                    )}
 
-              <div className="status-row">
+                  </div>
 
-                <span className={`status ${program.status.toLowerCase().replace(/\s/g,"-")}`}>
-                  {program.status}
-                </span>
+                  <div className="status-row">
 
-                <button>
-                  Learn More
-                </button>
+                    <span
+                      className={`status ${program.status
+                        .toLowerCase()
+                        .replace(/\s/g, "-")}`}
+                    >
+                      {program.status}
+                    </span>
 
-              </div>
+                    {program.registration_deadline &&
+                      program.registration_deadline !== "-" && (
+                        <span className="registration-deadline">
+                          Deadline:{" "}
+                          {program.registration_deadline}
+                        </span>
+                      )}
 
-            </div>
+                  </div>
 
-          ))}
+                </div>
 
-        </div>
+              </article>
+            ))}
+
+          </div>
+        )}
 
       </div>
     </section>

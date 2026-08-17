@@ -1,17 +1,40 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
 import "./Admin.css";
 
 const AdminLogin: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
-    console.log("Admin login:", {
+    setError("");
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    setLoading(false);
+
+    if (error) {
+      setError(
+        "Invalid email or password. Please check your details and try again."
+      );
+      return;
+    }
+
+    navigate("/admin/dashboard");
   };
 
   return (
@@ -19,7 +42,9 @@ const AdminLogin: React.FC = () => {
       <div className="admin-login-card">
 
         <div className="admin-login-header">
-          <span className="admin-badge">TCA ADMIN</span>
+          <span className="admin-badge">
+            TCA ADMIN
+          </span>
 
           <h1>Welcome Back</h1>
 
@@ -28,7 +53,10 @@ const AdminLogin: React.FC = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="admin-login-form">
+        <form
+          onSubmit={handleSubmit}
+          className="admin-login-form"
+        >
 
           <div className="admin-form-group">
             <label htmlFor="admin-email">
@@ -44,6 +72,7 @@ const AdminLogin: React.FC = () => {
                 setEmail(event.target.value)
               }
               required
+              autoComplete="email"
             />
           </div>
 
@@ -61,14 +90,22 @@ const AdminLogin: React.FC = () => {
                 setPassword(event.target.value)
               }
               required
+              autoComplete="current-password"
             />
           </div>
+
+          {error && (
+            <p className="admin-error">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
             className="admin-login-button"
+            disabled={loading}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
 
         </form>
