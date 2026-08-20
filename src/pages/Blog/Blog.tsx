@@ -1,25 +1,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import "./Programs.css";
+import "./Blog.css";
 
-type Program = {
+type BlogPost = {
   id: string;
   title: string;
-  description: string | null;
+  slug: string;
+  excerpt: string | null;
+  content: string;
   category: string | null;
+  author: string | null;
   image_url: string | null;
   status: string;
+  featured: boolean;
+  homepage: boolean;
   created_at: string;
   updated_at: string;
 };
 
-const STORAGE_BUCKET = "program-images";
+const STORAGE_BUCKET = "blog-images";
 
-function Programs() {
+function Blog() {
   const navigate = useNavigate();
 
-  const [programs, setPrograms] = useState<Program[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -28,10 +33,14 @@ function Programs() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [status, setStatus] = useState("draft");
+  const [featured, setFeatured] = useState(false);
+  const [homepage, setHomepage] = useState(false);
 
   const [selectedImage, setSelectedImage] =
     useState<File | null>(null);
@@ -39,50 +48,104 @@ function Programs() {
   const [imagePreview, setImagePreview] =
     useState<string>("");
 
-  const loadPrograms = async () => {
+  /*
+   * LOAD BLOG POSTS
+   */
+  const loadBlogPosts = async () => {
     setLoading(true);
     setError("");
 
-    const { data, error } = await supabase
-      .from("programs")
-      .select("*")
-      .order("created_at", { ascending: false });
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    if (error) {
-      console.error("PROGRAMS ERROR:", error);
-      setError(error.message);
-      setPrograms([]);
-    } else {
-      setPrograms(data || []);
+      console.log("ADMIN USER:", user);
+
+      if (!user) {
+        setError("You are not logged in as an admin.");
+        setPosts([]);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
+
+      console.log("BLOG DATA:", data);
+      console.log("BLOG ERROR:", error);
+
+      if (error) {
+        setError(
+          `Unable to load blog posts: ${error.message}`
+        );
+
+        setPosts([]);
+        return;
+      }
+
+      setPosts((data || []) as BlogPost[]);
+    } catch (err: any) {
+      console.error("BLOG LOAD FAILED:", err);
+
+      setError(
+        err?.message ||
+          "Something went wrong while loading blog posts."
+      );
+
+      setPosts([]);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
-    loadPrograms();
+    loadBlogPosts();
   }, []);
 
+  /*
+   * RESET FORM
+   */
   const resetForm = () => {
     setTitle("");
-    setDescription("");
     setCategory("");
+    setAuthor("");
+    setExcerpt("");
+    setContent("");
     setImageUrl("");
     setStatus("draft");
+    setFeatured(false);
+    setHomepage(false);
 
     setEditingId(null);
     setSelectedImage(null);
     setImagePreview("");
   };
 
+  /*
+   * GENERATE SLUG
+   */
+  const generateSlug = (value: string) => {
+    return value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+  };
+
+  /*
+   * IMAGE SELECTION
+   */
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     if (!file.type.startsWith("image/")) {
       setError("Please select an image file.");
@@ -105,15 +168,18 @@ function Programs() {
     setImagePreview(previewUrl);
   };
 
-  const uploadProgramImage = async (
+  /*
+   * UPLOAD IMAGE
+   */
+  const uploadBlogImage = async (
     file: File,
-    programId: string
+    postId: string
   ) => {
     const fileExtension =
       file.name.split(".").pop()?.toLowerCase() || "jpg";
 
     const filePath =
-      `${programId}-${Date.now()}.${fileExtension}`;
+      `${postId}-${Date.now()}.${fileExtension}`;
 
     const { error: uploadError } =
       await supabase.storage
@@ -135,12 +201,13 @@ function Programs() {
     return data.publicUrl;
   };
 
+  /*
+   * DELETE STORAGE IMAGE
+   */
   const deleteStorageImage = async (
     imageUrlToDelete: string | null
   ) => {
-    if (!imageUrlToDelete) {
-      return;
-    }
+    if (!imageUrlToDelete) return;
 
     try {
       const marker =
@@ -149,47 +216,56 @@ function Programs() {
       const index =
         imageUrlToDelete.indexOf(marker);
 
-      if (index === -1) {
-        return;
-      }
+      if (index === -1) return;
 
       const filePath =
         imageUrlToDelete.substring(
           index + marker.length
         );
 
-      if (!filePath) {
-        return;
-      }
+      if (!filePath) return;
 
       await supabase.storage
         .from(STORAGE_BUCKET)
         .remove([filePath]);
     } catch (storageError) {
       console.warn(
-        "Could not delete old program image:",
+        "Could not delete old blog image:",
         storageError
       );
     }
   };
 
+  /*
+   * SAVE BLOG
+   */
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
     if (!title.trim()) {
-      setError("Program title is required.");
+      setError("Blog title is required.");
       return;
     }
 
     if (!category.trim()) {
-      setError("Program category is required.");
+      setError("Blog category is required.");
       return;
     }
 
-    if (!description.trim()) {
-      setError("Program description is required.");
+    if (!author.trim()) {
+      setError("Author is required.");
+      return;
+    }
+
+    if (!excerpt.trim()) {
+      setError("Blog excerpt is required.");
+      return;
+    }
+
+    if (!content.trim()) {
+      setError("Full article content is required.");
       return;
     }
 
@@ -197,10 +273,10 @@ function Programs() {
     setError("");
 
     try {
-      const now =
-        new Date().toISOString();
+      const now = new Date().toISOString();
+      const slug = generateSlug(title);
 
-      let programId = editingId;
+      let postId = editingId;
       let finalImageUrl = imageUrl || null;
 
       /*
@@ -209,13 +285,18 @@ function Programs() {
       if (!editingId) {
         const { data, error: insertError } =
           await supabase
-            .from("programs")
+            .from("blog_posts")
             .insert({
               title: title.trim(),
-              description: description.trim(),
+              slug,
+              excerpt: excerpt.trim(),
+              content: content.trim(),
               category: category.trim(),
+              author: author.trim(),
               image_url: null,
               status,
+              featured,
+              homepage,
               created_at: now,
               updated_at: now,
             })
@@ -226,36 +307,38 @@ function Programs() {
           throw insertError;
         }
 
-        programId = data.id;
+        postId = data.id;
       }
 
       /*
        * UPLOAD NEW IMAGE
        */
-      if (selectedImage && programId) {
-        const uploadedImageUrl =
-          await uploadProgramImage(
-            selectedImage,
-            programId
-          );
-
+      if (selectedImage && postId) {
         finalImageUrl =
-          uploadedImageUrl;
+          await uploadBlogImage(
+            selectedImage,
+            postId
+          );
       }
 
       /*
-       * UPDATE
+       * UPDATE EXISTING POST
        */
       if (editingId) {
         const { error: updateError } =
           await supabase
-            .from("programs")
+            .from("blog_posts")
             .update({
               title: title.trim(),
-              description: description.trim(),
+              slug,
+              excerpt: excerpt.trim(),
+              content: content.trim(),
               category: category.trim(),
+              author: author.trim(),
               image_url: finalImageUrl,
               status,
+              featured,
+              homepage,
               updated_at: now,
             })
             .eq("id", editingId);
@@ -264,81 +347,70 @@ function Programs() {
           throw updateError;
         }
 
-        /*
-         * Delete old image only after
-         * the new image has successfully
-         * been uploaded and saved.
-         */
         if (
           selectedImage &&
           imageUrl &&
           finalImageUrl !== imageUrl
         ) {
-          await deleteStorageImage(
-            imageUrl
-          );
+          await deleteStorageImage(imageUrl);
         }
-      } else {
-        /*
-         * Save uploaded image URL
-         * for a newly created program.
-         */
-        if (programId) {
-          const { error: imageUpdateError } =
-            await supabase
-              .from("programs")
-              .update({
-                image_url: finalImageUrl,
-                updated_at: now,
-              })
-              .eq("id", programId);
+      }
 
-          if (imageUpdateError) {
-            throw imageUpdateError;
-          }
+      /*
+       * SAVE IMAGE URL FOR NEW POST
+       */
+      if (!editingId && postId) {
+        const { error: imageUpdateError } =
+          await supabase
+            .from("blog_posts")
+            .update({
+              image_url: finalImageUrl,
+              updated_at: now,
+            })
+            .eq("id", postId);
+
+        if (imageUpdateError) {
+          throw imageUpdateError;
         }
       }
 
       resetForm();
       setShowForm(false);
 
-      await loadPrograms();
+      await loadBlogPosts();
     } catch (submitError: any) {
       console.error(
-        "PROGRAM SAVE ERROR:",
+        "BLOG SAVE ERROR:",
         submitError
       );
 
       setError(
         submitError?.message ||
-          "Something went wrong while saving the program."
+          "Something went wrong while saving the blog post."
       );
     } finally {
       setSaving(false);
     }
   };
 
-  const handleEdit = (program: Program) => {
-    setEditingId(program.id);
+  /*
+   * EDIT
+   */
+  const handleEdit = (post: BlogPost) => {
+    setEditingId(post.id);
 
-    setTitle(program.title);
-    setDescription(
-      program.description || ""
-    );
-    setCategory(
-      program.category || ""
-    );
-    setImageUrl(
-      program.image_url || ""
-    );
-    setStatus(
-      program.status || "draft"
-    );
+    setTitle(post.title);
+    setCategory(post.category || "");
+    setAuthor(post.author || "");
+    setExcerpt(post.excerpt || "");
+    setContent(post.content || "");
+    setImageUrl(post.image_url || "");
+    setStatus(post.status || "draft");
+    setFeatured(post.featured || false);
+    setHomepage(post.homepage || false);
 
     setSelectedImage(null);
-    setImagePreview(
-      program.image_url || ""
-    );
+    setImagePreview(post.image_url || "");
 
     setShowForm(true);
 
@@ -348,77 +420,84 @@ function Programs() {
     });
   };
 
+  /*
+   * DELETE
+   */
   const handleDelete = async (
-    program: Program
+    post: BlogPost
   ) => {
     const confirmed =
       window.confirm(
-        `Are you sure you want to delete "${program.title}"?`
+        `Are you sure you want to delete "${post.title}"?`
       );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     setError("");
 
     try {
       const { error: deleteError } =
         await supabase
-          .from("programs")
+          .from("blog_posts")
           .delete()
-          .eq("id", program.id);
+          .eq("id", post.id);
 
       if (deleteError) {
         throw deleteError;
       }
 
       await deleteStorageImage(
-        program.image_url
+        post.image_url
       );
 
-      await loadPrograms();
+      await loadBlogPosts();
     } catch (deleteError: any) {
       console.error(
-        "PROGRAM DELETE ERROR:",
+        "BLOG DELETE ERROR:",
         deleteError
       );
 
       setError(
         deleteError?.message ||
-          "Unable to delete the program."
+          "Unable to delete the blog post."
       );
     }
   };
 
+  /*
+   * PUBLISH / UNPUBLISH
+   */
   const handleTogglePublish = async (
-    program: Program
+    post: BlogPost
   ) => {
     setError("");
 
     const newStatus =
-      program.status === "published"
+      post.status === "published"
         ? "draft"
         : "published";
 
     const { error: updateError } =
       await supabase
-        .from("programs")
+        .from("blog_posts")
         .update({
           status: newStatus,
           updated_at:
             new Date().toISOString(),
         })
-        .eq("id", program.id);
+        .eq("id", post.id);
 
     if (updateError) {
       setError(updateError.message);
       return;
     }
 
-    await loadPrograms();
+    await loadBlogPosts();
   };
 
+  /*
+   * REMOVE IMAGE
+   */
   const handleRemoveSelectedImage = () => {
     setSelectedImage(null);
     setImagePreview("");
@@ -426,11 +505,11 @@ function Programs() {
   };
 
   return (
-    <main className="programs-page">
+    <main className="blog-page">
 
       {/* HEADER */}
 
-      <div className="programs-header">
+      <div className="blog-header">
 
         <div>
 
@@ -444,21 +523,21 @@ function Programs() {
             ← Back to Dashboard
           </button>
 
-          <span className="programs-badge">
+          <span className="blog-badge">
             TCA ADMIN
           </span>
 
-          <h1>Programs</h1>
+          <h1>Blog</h1>
 
           <p>
             Create and manage Teens Connect Africa
-            programs.
+            blog posts.
           </p>
 
         </div>
 
         <button
-          className="add-program-button"
+          className="add-blog-button"
           type="button"
           onClick={() => {
             if (showForm) {
@@ -472,7 +551,7 @@ function Programs() {
         >
           {showForm
             ? "Close Form"
-            : "+ Add Program"}
+            : "+ Add Blog Post"}
         </button>
 
       </div>
@@ -480,7 +559,7 @@ function Programs() {
       {/* ERROR */}
 
       {error && (
-        <div className="programs-error">
+        <div className="blog-error">
           {error}
         </div>
       )}
@@ -488,12 +567,12 @@ function Programs() {
       {/* FORM */}
 
       {showForm && (
-        <section className="program-form-card">
+        <section className="blog-form-card">
 
           <h2>
             {editingId
-              ? "Edit Program"
-              : "Add New Program"}
+              ? "Edit Blog Post"
+              : "Add New Blog Post"}
           </h2>
 
           <form onSubmit={handleSubmit}>
@@ -501,7 +580,7 @@ function Programs() {
             <div className="form-field">
 
               <label htmlFor="title">
-                Program Title
+                Blog Title
               </label>
 
               <input
@@ -513,9 +592,16 @@ function Programs() {
                     event.target.value
                   )
                 }
-                placeholder="e.g. Future Leaders Program"
+                placeholder="e.g. 5 Ways Teens Can Build Leadership Skills"
                 required
               />
+
+              {title.trim() && (
+                <small className="slug-preview">
+                  Slug:{" "}
+                  {generateSlug(title)}
+                </small>
+              )}
 
             </div>
 
@@ -534,7 +620,7 @@ function Programs() {
                     event.target.value
                   )
                 }
-                placeholder="e.g. Leadership"
+                placeholder="e.g. Education"
                 required
               />
 
@@ -542,56 +628,104 @@ function Programs() {
 
             <div className="form-field">
 
-              <label htmlFor="description">
-                Description
-              </label>
-
-              <textarea
-                id="description"
-                value={description}
-                onChange={(event) =>
-                  setDescription(
-                    event.target.value
-                  )
-                }
-                placeholder="Describe the program..."
-                rows={5}
-                required
-              />
-
-            </div>
-
-            {/* PROGRAM IMAGE */}
-
-            <div className="form-field">
-
-              <label htmlFor="programImage">
-                Program Flier / Image
+              <label htmlFor="author">
+                Author
               </label>
 
               <input
-                id="programImage"
+                id="author"
+                type="text"
+                value={author}
+                onChange={(event) =>
+                  setAuthor(
+                    event.target.value
+                  )
+                }
+                placeholder="e.g. Teens Connect Africa"
+                required
+              />
+
+            </div>
+
+            <div className="form-field">
+
+              <label htmlFor="excerpt">
+                Excerpt
+              </label>
+
+              <textarea
+                id="excerpt"
+                value={excerpt}
+                onChange={(event) =>
+                  setExcerpt(
+                    event.target.value
+                  )
+                }
+                placeholder="Write a short summary of the article..."
+                rows={4}
+                required
+              />
+
+              <small className="image-help-text">
+                This will be used as the
+                short description on blog
+                cards and previews.
+              </small>
+
+            </div>
+
+            <div className="form-field">
+
+              <label htmlFor="content">
+                Full Article Content
+              </label>
+
+              <textarea
+                id="content"
+                value={content}
+                onChange={(event) =>
+                  setContent(
+                    event.target.value
+                  )
+                }
+                placeholder="Write the full article here..."
+                rows={14}
+                required
+              />
+
+            </div>
+
+            {/* COVER IMAGE */}
+
+            <div className="form-field">
+
+              <label htmlFor="blogImage">
+                Cover Image
+              </label>
+
+              <input
+                id="blogImage"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 onChange={handleImageChange}
               />
 
               <small className="image-help-text">
-                Upload a JPG, PNG or WebP image.
-                Maximum size: 5MB.
+                Upload a JPG, PNG or WebP
+                image. Maximum size: 5MB.
               </small>
 
               {imagePreview && (
-                <div className="program-image-preview">
+                <div className="blog-image-preview">
 
                   <img
                     src={imagePreview}
-                    alt="Program preview"
+                    alt="Blog cover preview"
                   />
 
                   <button
                     type="button"
-                    className="remove-program-image-button"
+                    className="remove-blog-image-button"
                     onClick={
                       handleRemoveSelectedImage
                     }
@@ -619,7 +753,6 @@ function Programs() {
                   )
                 }
               >
-
                 <option value="draft">
                   Draft
                 </option>
@@ -627,8 +760,49 @@ function Programs() {
                 <option value="published">
                   Published
                 </option>
-
               </select>
+
+            </div>
+
+            {/* OPTIONS */}
+
+            <div className="blog-options">
+
+              <label className="blog-checkbox">
+
+                <input
+                  type="checkbox"
+                  checked={featured}
+                  onChange={(event) =>
+                    setFeatured(
+                      event.target.checked
+                    )
+                  }
+                />
+
+                <span>
+                  Featured
+                </span>
+
+              </label>
+
+              <label className="blog-checkbox">
+
+                <input
+                  type="checkbox"
+                  checked={homepage}
+                  onChange={(event) =>
+                    setHomepage(
+                      event.target.checked
+                    )
+                  }
+                />
+
+                <span>
+                  Show on Homepage
+                </span>
+
+              </label>
 
             </div>
 
@@ -636,19 +810,19 @@ function Programs() {
 
               <button
                 type="submit"
-                className="save-program-button"
+                className="save-blog-button"
                 disabled={saving}
               >
                 {saving
                   ? "Saving..."
                   : editingId
-                  ? "Update Program"
-                  : "Save Program"}
+                  ? "Update Blog Post"
+                  : "Save Blog Post"}
               </button>
 
               <button
                 type="button"
-                className="cancel-program-button"
+                className="cancel-blog-button"
                 onClick={() => {
                   resetForm();
                   setShowForm(false);
@@ -664,17 +838,17 @@ function Programs() {
         </section>
       )}
 
-      {/* PROGRAM LIST */}
+      {/* BLOG LIST */}
 
-      <section className="programs-list">
+      <section className="blogs-list">
 
         <div className="section-heading">
 
-          <h2>All Programs</h2>
+          <h2>All Blog Posts</h2>
 
           <span>
-            {programs.length} program
-            {programs.length !== 1
+            {posts.length} post
+            {posts.length !== 1
               ? "s"
               : ""}
           </span>
@@ -683,88 +857,110 @@ function Programs() {
 
         {loading ? (
 
-          <div className="programs-loading">
-            Loading programs...
+          <div className="blogs-loading">
+            Loading blog posts...
           </div>
 
-        ) : programs.length === 0 ? (
+        ) : posts.length === 0 ? (
 
-          <div className="programs-empty">
+          <div className="blogs-empty">
 
-            <h3>No programs yet</h3>
+            <h3>No blog posts yet</h3>
 
             <p>
-              Click "Add Program" to create
-              your first program.
+              Click "Add Blog Post" to create
+              your first article.
             </p>
 
           </div>
 
         ) : (
 
-          <div className="programs-grid">
+          <div className="blogs-grid">
 
-            {programs.map((program) => (
+            {posts.map((post) => (
 
               <article
-                className="program-card"
-                key={program.id}
+                className="blog-card"
+                key={post.id}
               >
 
-                {program.image_url ? (
+                {post.image_url ? (
 
                   <img
-                    src={program.image_url}
-                    alt={program.title}
-                    className="program-image"
+                    src={post.image_url}
+                    alt={post.title}
+                    className="blog-image"
                   />
 
                 ) : (
 
-                  <div className="program-image-placeholder">
+                  <div className="blog-image-placeholder">
                     No image
                   </div>
 
                 )}
 
-                <div className="program-card-content">
+                <div className="blog-card-content">
 
-                  <div className="program-card-top">
+                  <div className="blog-card-top">
 
-                    <span className="program-category">
-                      {program.category ||
+                    <span className="blog-category">
+                      {post.category ||
                         "General"}
                     </span>
 
                     <span
-                      className={`program-status ${
-                        program.status ===
+                      className={`blog-status ${
+                        post.status ===
                         "published"
                           ? "published"
                           : "draft"
                       }`}
                     >
-                      {program.status}
+                      {post.status}
                     </span>
 
                   </div>
 
+                  {post.featured && (
+                    <span className="featured-badge">
+                      Featured
+                    </span>
+                  )}
+
                   <h3>
-                    {program.title}
+                    {post.title}
                   </h3>
 
-                  <p>
-                    {program.description ||
-                      "No description available."}
+                  <p className="blog-excerpt">
+                    {post.excerpt ||
+                      "No excerpt available."}
                   </p>
 
-                  <div className="program-card-actions">
+                  <div className="blog-meta">
+
+                    <span>
+                      By{" "}
+                      {post.author ||
+                        "TCA"}
+                    </span>
+
+                    <span>
+                      {new Date(
+                        post.created_at
+                      ).toLocaleDateString()}
+                    </span>
+
+                  </div>
+
+                  <div className="blog-card-actions">
 
                     <button
                       type="button"
-                      className="edit-program-button"
+                      className="edit-blog-button"
                       onClick={() =>
-                        handleEdit(program)
+                        handleEdit(post)
                       }
                     >
                       Edit
@@ -772,14 +968,14 @@ function Programs() {
 
                     <button
                       type="button"
-                      className="publish-program-button"
+                      className="publish-blog-button"
                       onClick={() =>
                         handleTogglePublish(
-                          program
+                          post
                         )
                       }
                     >
-                      {program.status ===
+                      {post.status ===
                       "published"
                         ? "Unpublish"
                         : "Publish"}
@@ -787,9 +983,9 @@ function Programs() {
 
                     <button
                       type="button"
-                      className="delete-program-button"
+                      className="delete-blog-button"
                       onClick={() =>
-                        handleDelete(program)
+                        handleDelete(post)
                       }
                     >
                       Delete
@@ -813,4 +1009,4 @@ function Programs() {
   );
 }
 
-export default Programs;
+export default Blog;

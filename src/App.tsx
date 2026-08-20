@@ -9,6 +9,10 @@ import AdminLogin from "./pages/Login/AdminLogin";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import Programs from "./pages/Programs/Programs";
 import Events from "./pages/Events/Events";
+import Blog from "./pages/Blog/Blog";
+import Gallery from "./pages/Gallery/Gallery";
+import Membership from "./pages/Membership/Membership";
+
 
 
 function App() {
@@ -26,6 +30,10 @@ function App() {
           }
         />
 
+<Route
+  path="/admin/membership"
+  element={<Membership />}
+/>
         <Route
           path="/admin/login"
           element={<AdminLogin />}
@@ -44,6 +52,16 @@ function App() {
         <Route
           path="/admin/events"
           element={<Events />}
+        />
+
+        <Route
+          path="/admin/blog"
+          element={<Blog />}
+        />
+
+        <Route
+          path="/admin/gallery"
+          element={<Gallery />}
         />
 
       </Routes>

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import "./AdminDashboard.css";
 
-function AdminDashboard() {
+const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -41,7 +41,9 @@ function AdminDashboard() {
 
   return (
     <main className="dashboard-page">
+
       <header className="dashboard-header">
+
         <div>
           <span className="dashboard-badge">
             TCA ADMIN
@@ -49,15 +51,19 @@ function AdminDashboard() {
 
           <h1>Admin Dashboard</h1>
 
-          <p>Welcome back, {email}</p>
+          <p>
+            Welcome back, {email}
+          </p>
         </div>
 
         <button
           className="logout-button"
+          type="button"
           onClick={handleLogout}
         >
           Logout
         </button>
+
       </header>
 
       <section className="dashboard-grid">
@@ -73,7 +79,10 @@ function AdminDashboard() {
           </p>
 
           <button
-            onClick={() => navigate("/admin/programs")}
+            type="button"
+            onClick={() =>
+              navigate("/admin/programs")
+            }
           >
             Manage Programs
           </button>
@@ -90,7 +99,10 @@ function AdminDashboard() {
           </p>
 
           <button
-            onClick={() => navigate("/admin/events")}
+            type="button"
+            onClick={() =>
+              navigate("/admin/events")
+            }
           >
             Manage Events
           </button>
@@ -107,7 +119,10 @@ function AdminDashboard() {
           </p>
 
           <button
-            onClick={() => navigate("/admin/blog")}
+            type="button"
+            onClick={() =>
+              navigate("/admin/blog")
+            }
           >
             Manage Blog
           </button>
@@ -124,15 +139,39 @@ function AdminDashboard() {
           </p>
 
           <button
-            onClick={() => navigate("/admin/gallery")}
+            type="button"
+            onClick={() =>
+              navigate("/admin/gallery")
+            }
           >
             Manage Gallery
           </button>
         </div>
 
+        {/* MEMBERSHIP */}
+        <div className="dashboard-card">
+          <span>05</span>
+
+          <h2>Membership</h2>
+
+          <p>
+            View and manage registered TCA members.
+          </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              navigate("/admin/membership")
+            }
+          >
+            Manage Membership
+          </button>
+        </div>
+
       </section>
+
     </main>
   );
-}
+};
 
 export default AdminDashboard;

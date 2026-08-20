@@ -1,0 +1,696 @@
+/* =========================================================
+   TEENS CONNECT AFRICA
+   ADMIN MEMBERSHIP PAGE
+   ========================================================= */
+
+.membership-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: #f8fafc;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.membership-header {
+  max-width: 1400px;
+  margin: 0 auto 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.membership-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.membership-header p {
+  margin: 0.45rem 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.membership-add-button {
+  border: none;
+  border-radius: 0.65rem;
+  padding: 0.85rem 1.15rem;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.membership-add-button:hover {
+  background: #115e59;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(15, 118, 110, 0.18);
+}
+
+.membership-add-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   SUMMARY CARDS
+   ========================================================= */
+
+.membership-summary {
+  max-width: 1400px;
+  margin: 0 auto 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.membership-summary-card {
+  min-height: 110px;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.membership-summary-card span {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.membership-summary-card strong {
+  display: block;
+  margin-top: 0.45rem;
+  color: #0f172a;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.membership-form-card {
+  max-width: 1400px;
+  margin: 0 auto 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.9rem;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.membership-form-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.membership-form-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.membership-form-header p {
+  margin: 0.4rem 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.membership-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.membership-field {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.membership-field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.membership-field input,
+.membership-field select,
+.membership-field textarea {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.55rem;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.membership-field textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.membership-field input::placeholder,
+.membership-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.membership-field input:focus,
+.membership-field select:focus,
+.membership-field textarea:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.membership-field input:disabled,
+.membership-field select:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   NAME SUGGESTIONS
+   ========================================================= */
+
+.membership-suggestions {
+  position: absolute;
+  top: calc(100% - 0.7rem);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.65rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.membership-suggestions > strong {
+  display: block;
+  padding: 0.45rem 0.55rem;
+  color: #64748b;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.membership-suggestion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.65rem;
+  border: none;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: #0f172a;
+  text-align: left;
+  cursor: pointer;
+}
+
+.membership-suggestion:hover {
+  background: #f1f5f9;
+}
+
+.membership-suggestion span {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.membership-suggestion small {
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+/* =========================================================
+   DUPLICATE WARNING
+   ========================================================= */
+
+.membership-duplicate-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #fecaca;
+  border-radius: 0.55rem;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.membership-duplicate-warning strong {
+  font-size: 0.78rem;
+}
+
+.membership-duplicate-warning span {
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   ADMIN INFORMATION BOX
+   ========================================================= */
+
+.membership-pending-info {
+  margin: 0.5rem 0 1.25rem;
+  padding: 1rem;
+  border: 1px solid #bae6fd;
+  border-radius: 0.65rem;
+  background: #f0f9ff;
+  color: #075985;
+}
+
+.membership-pending-info strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.82rem;
+}
+
+.membership-pending-info p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   FORM BUTTONS
+   ========================================================= */
+
+.membership-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.membership-save-button,
+.membership-cancel-button {
+  border: none;
+  border-radius: 0.55rem;
+  padding: 0.8rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.membership-save-button {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.membership-save-button:hover:not(:disabled) {
+  background: #115e59;
+}
+
+.membership-save-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.membership-cancel-button {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.membership-cancel-button:hover {
+  background: #e2e8f0;
+}
+
+/* =========================================================
+   SEARCH TOOLBAR
+   ========================================================= */
+
+.membership-toolbar {
+  max-width: 1400px;
+  margin: 0 auto 1rem;
+  padding: 1rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  box-sizing: border-box;
+}
+
+.membership-search {
+  width: min(500px, 100%);
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.55rem;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.membership-search:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.membership-count {
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MEMBER LIST
+   ========================================================= */
+
+.membership-list {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.membership-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.membership-table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+}
+
+.membership-table th,
+.membership-table td {
+  padding: 0.95rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.membership-table th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.membership-table td {
+  color: #334155;
+  font-size: 0.82rem;
+}
+
+.membership-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.membership-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.membership-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================================================
+   MEMBER IDENTITY
+   ========================================================= */
+
+.membership-member {
+  min-width: 190px;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.membership-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ccfbf1;
+  color: #0f766e;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.membership-member strong {
+  display: block;
+  max-width: 190px;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 0.83rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.membership-member small {
+  display: block;
+  margin-top: 0.2rem;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  text-transform: capitalize;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.membership-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.membership-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.membership-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.membership-status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.membership-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 240px;
+}
+
+.membership-edit-button,
+.membership-activate-button,
+.membership-deactivate-button,
+.membership-delete-button {
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.48rem 0.65rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.membership-edit-button {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.membership-edit-button:hover {
+  background: #bae6fd;
+}
+
+.membership-activate-button {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.membership-activate-button:hover:not(:disabled) {
+  background: #bbf7d0;
+}
+
+.membership-deactivate-button {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.membership-deactivate-button:hover:not(:disabled) {
+  background: #fde68a;
+}
+
+.membership-delete-button {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.membership-delete-button:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+.membership-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   LOADING / EMPTY
+   ========================================================= */
+
+.membership-loading,
+.membership-empty {
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.membership-loading {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.membership-empty h3 {
+  margin: 0 0 0.4rem;
+  color: #334155;
+  font-size: 1rem;
+}
+
+.membership-empty p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.82rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .membership-page {
+    padding: 1.5rem;
+  }
+
+  .membership-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .membership-page {
+    padding: 1rem;
+  }
+
+  .membership-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .membership-add-button {
+    width: 100%;
+  }
+
+  .membership-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .membership-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .membership-search {
+    width: 100%;
+  }
+
+  .membership-count {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 550px) {
+  .membership-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .membership-form-card {
+    padding: 1rem;
+  }
+
+  .membership-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .membership-save-button,
+  .membership-cancel-button {
+    width: 100%;
+  }
+
+  .membership-header h1 {
+    font-size: 1.8rem;
+  }
+}

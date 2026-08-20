@@ -1,8 +1,8 @@
 /* ==========================
-   PROGRAMS PAGE
+   BLOG PAGE
 ========================== */
 
-.programs-page {
+.blog-page {
     min-height: 100vh;
     padding: clamp(2rem, 5vw, 4rem);
     background: #f8fafc;
@@ -13,7 +13,7 @@
    HEADER
 ========================== */
 
-.programs-header {
+.blog-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -21,7 +21,7 @@
     margin-bottom: 2.5rem;
 }
 
-.programs-header > div {
+.blog-header > div {
     min-width: 0;
 }
 
@@ -43,7 +43,7 @@
     text-decoration: underline;
 }
 
-.programs-badge {
+.blog-badge {
     display: inline-block;
     margin-bottom: .8rem;
     padding: .4rem .85rem;
@@ -55,13 +55,13 @@
     letter-spacing: .08em;
 }
 
-.programs-header h1 {
+.blog-header h1 {
     margin: 0 0 .6rem;
     font-size: clamp(2rem, 4vw, 3rem);
     color: #0f172a;
 }
 
-.programs-header p {
+.blog-header p {
     margin: 0;
     color: #64748b;
     line-height: 1.7;
@@ -71,7 +71,7 @@
    ADD BUTTON
 ========================== */
 
-.add-program-button {
+.add-blog-button {
     border: none;
     background: #0ea5a4;
     color: #ffffff;
@@ -84,7 +84,7 @@
     white-space: nowrap;
 }
 
-.add-program-button:hover {
+.add-blog-button:hover {
     background: #0f766e;
     transform: translateY(-2px);
 }
@@ -93,7 +93,7 @@
    ERROR
 ========================== */
 
-.programs-error {
+.blog-error {
     margin-bottom: 1.5rem;
     padding: 1rem 1.2rem;
     border-radius: .75rem;
@@ -107,7 +107,7 @@
    FORM CARD
 ========================== */
 
-.program-form-card {
+.blog-form-card {
     margin-bottom: 2.5rem;
     padding: clamp(1.5rem, 4vw, 2.5rem);
     background: #ffffff;
@@ -116,13 +116,13 @@
     box-shadow: 0 15px 40px rgba(15, 23, 42, .06);
 }
 
-.program-form-card h2 {
+.blog-form-card h2 {
     margin: 0 0 2rem;
     color: #0f172a;
     font-size: 1.5rem;
 }
 
-.program-form-card form {
+.blog-form-card form {
     display: grid;
     gap: 1.25rem;
 }
@@ -171,9 +171,14 @@
     box-shadow: 0 0 0 3px rgba(14, 165, 164, .12);
 }
 
-.image-help-text {
+.image-help-text,
+.slug-preview {
     color: #64748b;
     font-size: .78rem;
+}
+
+.slug-preview {
+    color: #0f766e;
 }
 
 /* ==========================
@@ -192,9 +197,9 @@
     background: #f0fdfa;
 }
 
-.program-image-preview {
+.blog-image-preview {
     width: 100%;
-    max-width: 360px;
+    max-width: 500px;
     margin-top: .5rem;
     border: 1px solid #e2e8f0;
     border-radius: .75rem;
@@ -202,14 +207,14 @@
     background: #f8fafc;
 }
 
-.program-image-preview img {
+.blog-image-preview img {
     display: block;
     width: 100%;
-    max-height: 280px;
+    max-height: 320px;
     object-fit: contain;
 }
 
-.remove-program-image-button {
+.remove-blog-image-button {
     width: 100%;
     border: none;
     background: #fef2f2;
@@ -220,8 +225,39 @@
     cursor: pointer;
 }
 
-.remove-program-image-button:hover {
+.remove-blog-image-button:hover {
     background: #fee2e2;
+}
+
+/* ==========================
+   BLOG OPTIONS
+========================== */
+
+.blog-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: .75rem;
+    background: #f8fafc;
+}
+
+.blog-checkbox {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: #334155;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.blog-checkbox input {
+    width: 17px;
+    height: 17px;
+    accent-color: #0ea5a4;
+    cursor: pointer;
 }
 
 /* ==========================
@@ -236,8 +272,8 @@
     margin-top: .75rem;
 }
 
-.cancel-program-button,
-.save-program-button {
+.cancel-blog-button,
+.save-blog-button {
     border: none;
     padding: .85rem 1.4rem;
     border-radius: .65rem;
@@ -246,34 +282,34 @@
     transition: .25s ease;
 }
 
-.cancel-program-button {
+.cancel-blog-button {
     background: #f1f5f9;
     color: #475569;
 }
 
-.cancel-program-button:hover {
+.cancel-blog-button:hover {
     background: #e2e8f0;
 }
 
-.save-program-button {
+.save-blog-button {
     background: #0ea5a4;
     color: #ffffff;
 }
 
-.save-program-button:hover {
+.save-blog-button:hover {
     background: #0f766e;
 }
 
-.save-program-button:disabled {
+.save-blog-button:disabled {
     opacity: .6;
     cursor: not-allowed;
 }
 
 /* ==========================
-   PROGRAM LIST
+   BLOG LIST
 ========================== */
 
-.programs-list {
+.blogs-list {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
@@ -302,10 +338,10 @@
 }
 
 /* ==========================
-   PROGRAM GRID
+   BLOG GRID
 ========================== */
 
-.programs-grid {
+.blogs-grid {
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
@@ -316,10 +352,10 @@
 }
 
 /* ==========================
-   PROGRAM CARD
+   BLOG CARD
 ========================== */
 
-.program-card {
+.blog-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
@@ -330,23 +366,23 @@
     flex-direction: column;
 }
 
-.program-card:hover {
+.blog-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 45px rgba(15, 23, 42, .1);
 }
 
 /* ==========================
-   PROGRAM IMAGE
+   BLOG IMAGE
 ========================== */
 
-.program-image {
+.blog-image {
     width: 100%;
     height: 210px;
     object-fit: cover;
     display: block;
 }
 
-.program-image-placeholder {
+.blog-image-placeholder {
     width: 100%;
     height: 210px;
     display: flex;
@@ -361,14 +397,14 @@
    CARD CONTENT
 ========================== */
 
-.program-card-content {
+.blog-card-content {
     display: flex;
     flex-direction: column;
     flex: 1;
     padding: 1.5rem;
 }
 
-.program-card-top {
+.blog-card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -376,7 +412,7 @@
     margin-bottom: 1rem;
 }
 
-.program-category {
+.blog-category {
     color: #0f766e;
     font-size: .78rem;
     font-weight: 800;
@@ -384,7 +420,7 @@
     letter-spacing: .04em;
 }
 
-.program-status {
+.blog-status {
     display: inline-flex;
     align-items: center;
     padding: .35rem .7rem;
@@ -394,41 +430,78 @@
     text-transform: capitalize;
 }
 
-.program-status.published {
+.blog-status.published {
     background: #dcfce7;
     color: #15803d;
 }
 
-.program-status.draft {
+.blog-status.draft {
     background: #f1f5f9;
     color: #64748b;
 }
 
-.program-card h3 {
+/* ==========================
+   FEATURED
+========================== */
+
+.featured-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: .75rem;
+    padding: .3rem .65rem;
+    border-radius: 999px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: .7rem;
+    font-weight: 800;
+}
+
+/* ==========================
+   CARD TEXT
+========================== */
+
+.blog-card h3 {
     margin: 0 0 1rem;
     color: #0f172a;
     font-size: clamp(1.2rem, 2vw, 1.5rem);
+    line-height: 1.35;
 }
 
-.program-card p {
+.blog-excerpt {
     flex: 1;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1.2rem;
     color: #64748b;
     line-height: 1.8;
+}
+
+/* ==========================
+   META
+========================== */
+
+.blog-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding-top: 1rem;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: .78rem;
 }
 
 /* ==========================
    CARD ACTIONS
 ========================== */
 
-.program-card-actions {
+.blog-card-actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: .5rem;
 }
 
-.program-card-actions button {
+.blog-card-actions button {
     border: none;
     padding: .5rem .75rem;
     border-radius: .5rem;
@@ -438,30 +511,30 @@
     transition: .2s ease;
 }
 
-.edit-program-button {
+.edit-blog-button {
     background: #f0fdfa;
     color: #0f766e;
 }
 
-.edit-program-button:hover {
+.edit-blog-button:hover {
     background: #ccfbf1;
 }
 
-.publish-program-button {
+.publish-blog-button {
     background: #f0fdf4;
     color: #15803d;
 }
 
-.publish-program-button:hover {
+.publish-blog-button:hover {
     background: #dcfce7;
 }
 
-.delete-program-button {
+.delete-blog-button {
     background: #fef2f2;
     color: #dc2626;
 }
 
-.delete-program-button:hover {
+.delete-blog-button:hover {
     background: #fee2e2;
 }
 
@@ -469,22 +542,22 @@
    LOADING / EMPTY
 ========================== */
 
-.programs-loading,
-.programs-empty {
+.blogs-loading,
+.blogs-empty {
     padding: 4rem 2rem;
     text-align: center;
 }
 
-.programs-loading {
+.blogs-loading {
     color: #64748b;
 }
 
-.programs-empty h3 {
+.blogs-empty h3 {
     margin: 0 0 .5rem;
     color: #0f172a;
 }
 
-.programs-empty p {
+.blogs-empty p {
     margin: 0;
     color: #64748b;
 }
@@ -495,20 +568,20 @@
 
 @media (max-width: 800px) {
 
-    .programs-page {
+    .blog-page {
         padding: 2rem 1.25rem;
     }
 
-    .programs-header {
+    .blog-header {
         align-items: flex-start;
         flex-direction: column;
     }
 
-    .add-program-button {
+    .add-blog-button {
         width: 100%;
     }
 
-    .programs-grid {
+    .blogs-grid {
         grid-template-columns: 1fr;
         padding: 1.25rem;
     }
@@ -521,19 +594,19 @@
 
 @media (max-width: 600px) {
 
-    .programs-page {
+    .blog-page {
         padding: 1.5rem 1rem;
     }
 
-    .programs-header h1 {
+    .blog-header h1 {
         font-size: 2rem;
     }
 
-    .program-form-card {
+    .blog-form-card {
         padding: 1.25rem;
     }
 
-    .programs-list {
+    .blogs-list {
         border-radius: .85rem;
     }
 
@@ -543,31 +616,41 @@
         padding: 1.25rem;
     }
 
-    .programs-grid {
+    .blogs-grid {
         padding: 1rem;
     }
 
-    .program-image,
-    .program-image-placeholder {
+    .blog-image,
+    .blog-image-placeholder {
         height: 190px;
+    }
+
+    .blog-options {
+        flex-direction: column;
+        gap: .9rem;
     }
 
     .form-actions {
         flex-direction: column-reverse;
     }
 
-    .cancel-program-button,
-    .save-program-button {
+    .cancel-blog-button,
+    .save-blog-button {
         width: 100%;
     }
 
-    .program-card-actions {
+    .blog-card-actions {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .program-card-actions button {
+    .blog-card-actions button {
         width: 100%;
+    }
+
+    .blog-meta {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
 }
@@ -578,12 +661,12 @@
 
 @media (min-width: 1440px) {
 
-    .programs-page {
+    .blog-page {
         padding-left: clamp(3rem, 5vw, 6rem);
         padding-right: clamp(3rem, 5vw, 6rem);
     }
 
-    .programs-grid {
+    .blogs-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
