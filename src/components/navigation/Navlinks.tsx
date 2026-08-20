@@ -6,7 +6,7 @@ const navigationLinks = [
   { name: "Programs", href: "#programs" },
   { name: "Events", href: "#events" },
   { name: "Testimonials", href: "#testimonials" },
-  { name: "AI Coach", href: "#ai-coach" },
+  { name: "Gallery", href: "#gallery" },
   { name: "Contact", href: "#contact" },
 ];
 

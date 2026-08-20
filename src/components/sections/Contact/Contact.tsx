@@ -47,6 +47,50 @@ const socialLinks = [
 ];
 
 export default function Contact() {
+
+  const handleSubmit = (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+
+    const formData = new FormData(form);
+
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const subject = formData.get("subject") as string;
+    const message = formData.get("message") as string;
+
+    const whatsappMessage = `
+Hello Teens Connect Africa,
+
+I would like to get in touch.
+
+Name: ${name}
+
+Email: ${email}
+
+Subject: ${subject}
+
+Message:
+${message}
+`;
+
+    const whatsappUrl =
+      `https://wa.me/2349025489850?text=${encodeURIComponent(
+        whatsappMessage
+      )}`;
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    form.reset();
+  };
+
   return (
     <section className="contact" id="contact">
       <div className="contact-container">
@@ -70,6 +114,7 @@ export default function Contact() {
           {/* CONTACT INFORMATION */}
           <div className="contact-details">
 
+            {/* LOCATION */}
             <div className="contact-item">
               <div className="contact-icon">
                 <FaLocationDot />
@@ -77,10 +122,19 @@ export default function Contact() {
 
               <div>
                 <h3>Our Location</h3>
-                <p>Abuja, Nigeria</p>
+
+                <a
+                  href="https://maps.app.goo.gl/tkAdJB4gF4t8qyyg8?g_st=ac"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-location-link"
+                >
+                  Abuja, Nigeria
+                </a>
               </div>
             </div>
 
+            {/* EMAIL */}
             <div className="contact-item">
               <div className="contact-icon">
                 <FaEnvelope />
@@ -92,6 +146,7 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* PHONE */}
             <div className="contact-item">
               <div className="contact-icon">
                 <FaPhone />
@@ -100,11 +155,12 @@ export default function Contact() {
               <div>
                 <h3>Call Us</h3>
                 <p>+234 902 548 9850</p>
-                 <p>+234 813 338 4466</p>
-                  <p>+234 806 2772493</p>
+                <p>+234 813 338 4466</p>
+                <p>+234 806 2772493</p>
               </div>
             </div>
 
+            {/* MEETING */}
             <div className="contact-item">
               <div className="contact-icon">
                 <FaCalendarDays />
@@ -141,7 +197,7 @@ export default function Contact() {
           {/* CONTACT FORM */}
           <form
             className="contact-form"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleSubmit}
           >
 
             <div className="form-group">

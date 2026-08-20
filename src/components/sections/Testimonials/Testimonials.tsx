@@ -3,9 +3,9 @@ import "./Testimonials.css";
 const testimonials = [
   {
     id: 1,
-    name: "Daniel Okafor",
-    role: "Teen Member",
-    image: "/images/testimonials/daniel.jpg",
+    name: "Emmanuel Sadiq",
+    role: " Graphic designer and Teen Member",
+    image: "src/components/sections/Hero/207574 (2).jpg",
     rating: 5,
     message:
       "Teens Connect Africa gave me the confidence to speak in public and believe in my future. Every meeting leaves me motivated to become a better leader."
@@ -13,29 +13,29 @@ const testimonials = [
 
   {
     id: 2,
-    name: "Favour Johnson",
-    role: "Teen Member",
-    image: "/images/testimonials/favour.jpg",
+    name: "Olaniyi Shakira",
+    role: "President of TCA 2026,spoken Word Poet",
+    image: "src/components/sections/Hero/aa019b45-3609-411b-97d5-d825f8e4bd77 (1).jpg",
     rating: 5,
     message:
-      "I joined because I wanted friends, but I found mentors, opportunities and a family that truly believes in young people."
+      "I joined because I wanted friends, but I found mentors, opportunities and a family that truly believes in young people. I am ecited i have discovered my public speaking skills."
   },
 
   {
     id: 3,
-    name: "Michael Peters",
-    role: "Teen Member",
-    image: "/images/testimonials/michael.jpg",
+    name: "Obize Gospel",
+    role: "Tech Enthusiast and Teen Member",
+    image: "src/components/sections/Hero/126908.jpg",
     rating: 5,
     message:
-      "The AI programs and leadership trainings helped me discover talents I never knew I had. My confidence has grown tremendously."
+      "I started with this organization from the beginning. The programs and leadership trainings helped me discover talents I never knew I had. My confidence has grown tremendously."
   },
 
   {
     id: 4,
-    name: "Esther Williams",
+    name: "Success Sadiq",
     role: "Teen Member",
-    image: "/images/testimonials/esther.jpg",
+    image: "src/components/sections/Hero/207577 (1).jpg",
     rating: 5,
     message:
       "Every monthly meeting teaches me something new. I've learned communication, teamwork and how to set meaningful goals."
@@ -43,19 +43,19 @@ const testimonials = [
 
   {
     id: 5,
-    name: "Joshua Emmanuel",
-    role: "Teen Member",
-    image: "/images/testimonials/joshua.jpg",
+    name: "Anslem Chiagozie",
+    role: "Spoken Word Poet and Teen Member",
+    image: "src/components/sections/Hero/207578 (1) (1).jpg",
     rating: 5,
     message:
-      "Being part of this community has inspired me to pursue technology and leadership. I now believe I can make a difference in Africa."
+      "Being part of this community has inspired me to pursue public speaking. I now believe I can make a difference in Africa."
   },
 
   {
     id: 6,
-    name: "Precious Grace",
-    role: "Teen Member",
-    image: "/images/testimonials/precious.jpg",
+    name: "Abraham O.",
+    role: "Auto engineer and Teen Member",
+    image: "src/components/sections/Hero/207566 (1).jpg",
     rating: 5,
     message:
       "Teens Connect Africa has changed how I see myself. I've made lifelong friends and gained skills that will help me throughout my life."

@@ -460,3 +460,13 @@
         gap: 6rem;
     }
 }
+.contact-location-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact-location-link:hover {
+  color: #0f766e;
+  text-decoration: underline;
+}

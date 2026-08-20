@@ -1,180 +1,427 @@
-.hero{
-    width:100%;
-    min-height:100vh;
+.hero {
+    width: 100%;
+    min-height: 100vh;
+
+    position: relative;
+    overflow: hidden;
+
+    background: #07234b;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* =========================
+   HERO BACKGROUND
+========================= */
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+}
+
+
+/* =========================
+   INDIVIDUAL SLIDES
+========================= */
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+
+    transform: scale(1);
+
+    transition:
+        opacity 1.5s ease-in-out,
+        transform 6s ease-in-out;
+}
+
+
+.hero-slide.active {
+    opacity: 1;
+
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   EXISTING DARK OVERLAY
+========================= */
+
+.hero-background::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
     background:
-    linear-gradient(rgba(7,35,75,.82),rgba(7,35,75,.88)),
-    url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80");
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    align-items:center;
+        linear-gradient(
+            rgba(7, 35, 75, .82),
+            rgba(7, 35, 75, .88)
+        );
+
+    z-index: 2;
 }
 
-.hero-overlay{
-    width:100%;
+
+/* =========================
+   HERO OVERLAY
+========================= */
+
+.hero-overlay {
+    width: 100%;
+
+    position: relative;
+
+    z-index: 3;
 }
 
-.hero-content{
-    width:min(92%,1400px);
-    margin:auto;
-    padding:clamp(6rem,10vw,8rem) 0;
-    color:#fff;
+
+/* =========================
+   HERO CONTENT
+========================= */
+
+.hero-content {
+    width: min(92%, 1400px);
+
+    margin: auto;
+
+    padding: clamp(6rem, 10vw, 8rem) 0;
+
+    color: #fff;
 }
 
-.hero-tag{
-    display:inline-block;
-    background:#ffffff20;
-    padding:.6rem 1.2rem;
-    border-radius:999px;
-    font-size:clamp(.8rem,1vw,.9rem);
-    margin-bottom:1.5rem;
+
+.hero-tag {
+    display: inline-block;
+
+    background: #ffffff20;
+
+    padding: .6rem 1.2rem;
+
+    border-radius: 999px;
+
+    font-size: clamp(.8rem, 1vw, .9rem);
+
+    margin-bottom: 1.5rem;
+
+    animation: heroContentIn 1s ease both;
 }
 
-.hero h1{
-    font-size:clamp(2.2rem,6vw,4rem);
-    line-height:1.15;
-    margin-bottom:1.5rem;
-    max-width:16ch;
+
+.hero h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+
+    line-height: 1.15;
+
+    margin-bottom: 1.5rem;
+
+    max-width: 16ch;
+
+    animation: heroContentIn 1s ease .15s both;
 }
 
-.hero h1 span{
-    color:#22c55e;
+
+.hero h1 span {
+    color: #22c55e;
 }
 
-.hero p{
-    max-width:42rem;
-    font-size:clamp(1rem,1.5vw,1.25rem);
-    line-height:1.8;
-    margin-bottom:2.5rem;
-    color:#eeeeee;
+
+.hero p {
+    max-width: 42rem;
+
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+
+    line-height: 1.8;
+
+    margin-bottom: 2.5rem;
+
+    color: #eeeeee;
+
+    animation: heroContentIn 1s ease .3s both;
 }
 
-.hero-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:1rem;
-    margin-bottom:4rem;
+
+/* =========================
+   BUTTONS
+========================= */
+
+.hero-buttons {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    margin-bottom: 4rem;
+
+    animation: heroContentIn 1s ease .45s both;
 }
+
 
 .primary-btn,
-.secondary-btn{
-    padding:.95rem 2rem;
-    border-radius:.6rem;
-    cursor:pointer;
-    font-size:1rem;
-    font-weight:600;
-    transition:.3s;
+.secondary-btn {
+    padding: .95rem 2rem;
+
+    border-radius: .6rem;
+
+    cursor: pointer;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    transition: .3s;
 }
 
-.primary-btn{
-    background:#22c55e;
-    color:#fff;
-    border:none;
+
+.primary-btn {
+    background: #22c55e;
+
+    color: #fff;
+
+    border: none;
 }
 
-.secondary-btn{
-    background:transparent;
-    color:#fff;
-    border:2px solid #fff;
+
+.secondary-btn {
+    background: transparent;
+
+    color: #fff;
+
+    border: 2px solid #fff;
 }
+
 
 .primary-btn:hover,
-.secondary-btn:hover{
-    transform:translateY(-2px);
+.secondary-btn:hover {
+    transform: translateY(-2px);
 }
 
-.hero-stats{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:1.5rem;
+
+/* =========================
+   STATS
+========================= */
+
+.hero-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 1.5rem;
+
+    animation: heroContentIn 1s ease .6s both;
 }
 
-.stat{
-    background:#ffffff18;
-    backdrop-filter:blur(8px);
-    border-radius:1rem;
-    text-align:center;
-    padding:1.5rem;
+
+.stat {
+    background: #ffffff18;
+
+    backdrop-filter: blur(8px);
+
+    border-radius: 1rem;
+
+    text-align: center;
+
+    padding: 1.5rem;
+
+    transition:
+        transform .3s ease,
+        background .3s ease;
 }
 
-.stat h2{
-    color:#22c55e;
-    font-size:clamp(1.8rem,3vw,2.3rem);
-    margin-bottom:.5rem;
+
+.stat:hover {
+    transform: translateY(-6px);
+
+    background: #ffffff25;
 }
 
-.stat span{
-    color:#fff;
-    font-size:.95rem;
+
+.stat h2 {
+    color: #22c55e;
+
+    font-size: clamp(1.8rem, 3vw, 2.3rem);
+
+    margin-bottom: .5rem;
 }
 
-/* ======================
-   Tablets
-====================== */
 
-@media (max-width:900px){
+.stat span {
+    color: #fff;
 
-.hero-content{
-    width:92%;
+    font-size: .95rem;
 }
 
-.hero{
-    min-height:auto;
+
+/* =========================
+   SLIDER INDICATORS
+========================= */
+
+.hero-indicators {
+    position: absolute;
+
+    bottom: 25px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
 }
 
-.hero h1{
-    max-width:100%;
+
+.hero-indicator {
+    width: 9px;
+
+    height: 9px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ffffff70;
+
+    cursor: pointer;
+
+    transition:
+        width .4s ease,
+        background .4s ease;
 }
 
-.hero-buttons{
-    justify-content:flex-start;
+
+.hero-indicator.active {
+    width: 28px;
+
+    border-radius: 999px;
+
+    background: #22c55e;
 }
 
-.hero-stats{
-    grid-template-columns:repeat(2,1fr);
-}
 
-}
+/* =========================
+   CONTENT ANIMATION
+========================= */
 
-/* ======================
-   Phones
-====================== */
+@keyframes heroContentIn {
 
-@media (max-width:600px){
+    from {
+        opacity: 0;
 
-.hero-content{
-    width:94%;
-    text-align:center;
-}
+        transform:
+            translateY(25px);
+    }
 
-.hero-buttons{
-    flex-direction:column;
-    align-items:stretch;
-}
+    to {
+        opacity: 1;
 
-.primary-btn,
-.secondary-btn{
-    width:100%;
-}
-
-.hero p{
-    margin-inline:auto;
-}
-
-.hero-stats{
-    grid-template-columns:1fr;
-}
+        transform:
+            translateY(0);
+    }
 
 }
 
-/* ======================
-   Large Desktop
-====================== */
 
-@media (min-width:1440px){
+/* =========================
+   TABLETS
+========================= */
 
-.hero-content{
-    width:min(88%,1500px);
+@media (max-width: 900px) {
+
+    .hero-content {
+        width: 92%;
+    }
+
+    .hero {
+        min-height: auto;
+    }
+
+    .hero h1 {
+        max-width: 100%;
+    }
+
+    .hero-buttons {
+        justify-content: flex-start;
+    }
+
+    .hero-stats {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
 }
+
+
+/* =========================
+   PHONES
+========================= */
+
+@media (max-width: 600px) {
+
+    .hero-content {
+        width: 94%;
+
+        text-align: center;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+    }
+
+    .hero p {
+        margin-inline: auto;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-indicators {
+        bottom: 15px;
+    }
+
+}
+
+
+/* =========================
+   LARGE DESKTOP
+========================= */
+
+@media (min-width: 1440px) {
+
+    .hero-content {
+        width: min(88%, 1500px);
+    }
 
 }

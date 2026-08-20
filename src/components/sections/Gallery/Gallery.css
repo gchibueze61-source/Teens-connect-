@@ -1,0 +1,539 @@
+/* =========================================
+   PUBLIC GALLERY
+========================================= */
+
+.public-gallery {
+  width: 100%;
+  padding: 7rem clamp(1rem, 5vw, 5rem) 5rem;
+  background: #f8fafc;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.public-gallery-heading {
+  width: min(900px, 100%);
+  margin: 0 auto 3.5rem;
+  text-align: center;
+}
+
+.public-gallery-badge {
+  display: inline-block;
+
+  margin-bottom: 0.75rem;
+
+  padding: 0.4rem 0.85rem;
+
+  border-radius: 999px;
+
+  background: #ccfbf1;
+  color: #0f766e;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.public-gallery-heading h2 {
+  margin: 0 0 1rem;
+
+  font-size: clamp(2.2rem, 5vw, 4rem);
+
+  line-height: 1.1;
+
+  color: #0f172a;
+}
+
+.public-gallery-heading p {
+  max-width: 700px;
+
+  margin: 0 auto;
+
+  color: #64748b;
+
+  font-size: 1rem;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================
+   GALLERY GRID
+========================================= */
+
+.public-gallery-grid {
+  width: min(1400px, 100%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+
+/* =========================================
+   GALLERY CARD
+========================================= */
+
+.public-gallery-card {
+  position: relative;
+
+  overflow: hidden;
+
+  min-width: 0;
+
+  padding: 1rem;
+
+  border-radius: 1rem;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.07);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.public-gallery-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 16px 35px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.public-gallery-card-heading {
+  margin-bottom: 0.75rem;
+}
+
+.public-gallery-category {
+  display: block;
+
+  margin-bottom: 0.4rem;
+
+  color: #0f766e;
+
+  font-size: 0.7rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+.public-gallery-card-heading h3 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 1.15rem;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.public-gallery-description {
+  margin: 0 0 1rem;
+
+  color: #64748b;
+
+  font-size: 0.85rem;
+
+  line-height: 1.6;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   SIX IMAGE GRID
+========================================= */
+
+.public-gallery-images {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 0.5rem;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.public-gallery-image {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 4 / 3;
+
+  overflow: hidden;
+
+  border-radius: 0.6rem;
+
+  background: #e2e8f0;
+}
+
+.public-gallery-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.4s ease;
+}
+
+.public-gallery-image:hover img {
+  transform: scale(1.05);
+}
+
+
+/* =========================================
+   CARD FOOTER
+========================================= */
+
+.public-gallery-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 0.75rem;
+
+  margin-top: 1rem;
+}
+
+.public-gallery-footer > span {
+  color: #64748b;
+
+  font-size: 0.75rem;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   VIEW GALLERY BUTTON
+========================================= */
+
+.public-gallery-more-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.4rem;
+
+  padding: 0.65rem 0.9rem;
+
+  border: none;
+
+  border-radius: 0.55rem;
+
+  background: #0ea5a4;
+
+  color: #ffffff;
+
+  font-size: 0.78rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.public-gallery-more-button:hover {
+  background: #0f766e;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   VIEW ALL BUTTON
+========================================= */
+
+.public-gallery-view-all {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 3rem;
+}
+
+.public-gallery-view-all button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.4rem;
+
+  padding: 0.75rem 1.2rem;
+
+  border: none;
+
+  border-radius: 0.55rem;
+
+  background: #0ea5a4;
+
+  color: #ffffff;
+
+  font-size: 0.82rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.public-gallery-view-all button:hover {
+  background: #0f766e;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.public-gallery-loading {
+  width: min(700px, 100%);
+
+  margin: 5rem auto;
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 1rem;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.public-gallery-empty {
+  width: min(700px, 100%);
+
+  margin: 5rem auto;
+
+  padding: 3rem 1.5rem;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 1rem;
+}
+
+.public-gallery-empty h3 {
+  margin: 0 0 0.5rem;
+
+  color: #0f172a;
+}
+
+.public-gallery-empty p {
+  margin: 0;
+
+  color: #64748b;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .public-gallery-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================
+   SMALL TABLET
+========================================= */
+
+@media (max-width: 800px) {
+
+  .public-gallery {
+    padding:
+      6rem 1.25rem 4rem;
+  }
+
+  .public-gallery-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 0.8rem;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .public-gallery {
+    padding:
+      5rem 1rem 3rem;
+  }
+
+  .public-gallery-heading {
+    margin-bottom: 2rem;
+  }
+
+  .public-gallery-heading h2 {
+    font-size: 2.2rem;
+  }
+
+  .public-gallery-heading p {
+    font-size: 0.9rem;
+  }
+
+  .public-gallery-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 0.65rem;
+  }
+
+  .public-gallery-card {
+    padding: 0.75rem;
+
+    border-radius: 0.7rem;
+  }
+
+  .public-gallery-images {
+    gap: 0.35rem;
+  }
+
+  .public-gallery-image {
+    border-radius: 0.45rem;
+  }
+
+  .public-gallery-card-heading h3 {
+    font-size: 0.95rem;
+  }
+
+  .public-gallery-description {
+    font-size: 0.78rem;
+  }
+
+  .public-gallery-footer {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .public-gallery-more-button {
+    width: 100%;
+
+    justify-content: center;
+
+    padding: 0.6rem 0.7rem;
+  }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+
+  .public-gallery-grid {
+    gap: 0.5rem;
+  }
+
+  .public-gallery-card {
+    padding: 0.65rem;
+  }
+
+  .public-gallery-card-heading h3 {
+    font-size: 0.88rem;
+  }
+
+  .public-gallery-images {
+    gap: 0.3rem;
+  }
+
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .public-gallery-card,
+  .public-gallery-image img,
+  .public-gallery-more-button,
+  .public-gallery-view-all button {
+
+    transition: none;
+  }
+
+}

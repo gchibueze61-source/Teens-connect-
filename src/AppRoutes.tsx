@@ -2,23 +2,70 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import App from "./App";
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import MemberPortal from "./pages/MemberPortal/MemberPortal";
+
+import Programs from "./components/sections/Programs";
+
+import GalleryPage from "./pages/Gallery/GalleryPage";
+import GalleryDetails from "./pages/Gallery/GalleryDetails";
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="*" element={<App />} />
 
+      {/* =========================
+          PUBLIC HOMEPAGE
+      ========================= */}
       <Route
-        path="/admin/login"
-        element={<AdminLogin />}
+        path="/"
+        element={<App />}
+      />
+
+      {/* =========================
+          USER AUTHENTICATION
+      ========================= */}
+      <Route
+        path="/register"
+        element={<Register />}
       />
 
       <Route
-        path="/admin/dashboard"
-        element={<AdminDashboard />}
+        path="/login"
+        element={<Login />}
       />
+
+      {/* =========================
+          MEMBER PORTAL
+      ========================= */}
+      <Route
+        path="/member-portal"
+        element={<MemberPortal />}
+      />
+
+      {/* =========================
+          PROGRAMS
+      ========================= */}
+      <Route
+        path="/programs"
+        element={<Programs />}
+      />
+
+      {/* =========================
+          GALLERY
+      ========================= */}
+      <Route
+        path="/gallery"
+        element={<GalleryPage />}
+      />
+
+      <Route
+        path="/gallery/:id"
+        element={<GalleryDetails />}
+      />
+
     </Routes>
   );
 };
