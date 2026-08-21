@@ -4,7 +4,6 @@ import "./components/navigation/MobileMenu.css";
 import Navbar from "./components/navigation/Navbar";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About/About";
-import Statistics from "./components/sections/Statistics";
 import Programs from "./components/sections/Programs";
 import Events from "./components/sections/Events";
 import Testimonials from "./components/sections/Testimonials";
@@ -21,7 +20,6 @@ function App() {
       <main>
         <Hero />
         <About />
-        <Statistics />
         <Programs />
         <Events />
         <Testimonials />

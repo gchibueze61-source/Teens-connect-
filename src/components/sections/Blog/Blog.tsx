@@ -1,87 +1,292 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../../../lib/supabase";
 import "./Blog.css";
 
-const blogPosts = [
-  {
-    id: 1,
-    title: "Why Every Teen Should Learn Leadership Early",
-    category: "Leadership",
-    date: "August 2026",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
-    excerpt:
-      "Leadership is more than holding a position. Discover practical ways teenagers can begin leading in school, church and their communities."
-  },
+type BlogPost = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  category: string | null;
+  author: string | null;
+  image_url: string | null;
+  status: string;
+  featured: boolean;
+  homepage: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
-  {
-    id: 2,
-    title: "Artificial Intelligence Is Creating New Opportunities",
-    category: "Technology",
-    date: "August 2026",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    excerpt:
-      "AI is changing education, business and careers. Learn how teenagers can prepare themselves for an AI-driven future."
-  },
+function Blog() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPost, setSelectedPost] =
+    useState<BlogPost | null>(null);
 
-  {
-    id: 3,
-    title: "Building Confidence Through Community",
-    category: "Personal Growth",
-    date: "August 2026",
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80",
-    excerpt:
-      "Confidence grows when young people learn together. Here's how community and mentorship shape future leaders."
-  }
-];
+  useEffect(() => {
+    const loadPublishedPosts = async () => {
+      setLoading(true);
 
-export default function Blog() {
-  return (
-    <section className="blog" id="blog">
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("status", "published")
+        .order("created_at", {
+          ascending: false,
+        });
 
-      <div className="container">
+      if (error) {
+        console.error("PUBLIC BLOG ERROR:", error);
+        setBlogPosts([]);
+      } else {
+        setBlogPosts((data || []) as BlogPost[]);
+      }
 
-        <div className="section-header">
-          <h2>Latest Articles</h2>
-          <p>
-            Insights, inspiration and practical knowledge to help teenagers
-            grow in leadership, technology and purpose.
-          </p>
-        </div>
+      setLoading(false);
+    };
 
-        <div className="blog-grid">
+    loadPublishedPosts();
+  }, []);
 
-          {blogPosts.map((post) => (
+  const handleReadMore = (post: BlogPost) => {
+    setSelectedPost(post);
 
-            <article className="blog-card" key={post.id}>
+    // Move to the beginning of the article
+    setTimeout(() => {
+      document
+        .getElementById("blog-article")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 50);
+  };
 
-              <img
-                src={post.image}
-                alt={post.title}
-                className="blog-image"
-              />
+  const handleBack = () => {
+    setSelectedPost(null);
 
-              <div className="blog-content">
+    setTimeout(() => {
+      document
+        .getElementById("blog")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 50);
+  };
 
-                <span className="blog-category">
-                  {post.category}
+  /*
+   * ==============================
+   * FULL ARTICLE
+   * ==============================
+   */
+
+  if (selectedPost) {
+    return (
+      <section
+        className="blog blog-article-view"
+        id="blog-article"
+      >
+        <div className="container">
+
+          <button
+            type="button"
+            className="blog-back-button"
+            onClick={handleBack}
+          >
+            ← Back to Articles
+          </button>
+
+          <article className="full-blog-article">
+
+            {selectedPost.image_url && (
+              <div className="full-blog-image-wrapper">
+                <img
+                  src={selectedPost.image_url}
+                  alt={selectedPost.title}
+                  className="full-blog-image"
+                />
+              </div>
+            )}
+
+            <div className="full-blog-content">
+
+              <div className="full-blog-meta">
+
+                {selectedPost.category && (
+                  <span className="blog-category">
+                    {selectedPost.category}
+                  </span>
+                )}
+
+                <span className="full-blog-date">
+                  {new Date(
+                    selectedPost.created_at
+                  ).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </span>
-
-                <h3>{post.title}</h3>
-
-                <small>{post.date}</small>
-
-                <p>{post.excerpt}</p>
-
-                <button>Read More</button>
 
               </div>
 
-            </article>
+              <h1>{selectedPost.title}</h1>
 
-          ))}
+              <div className="full-blog-author">
+                By{" "}
+                {selectedPost.author ||
+                  "Teens Connect Africa"}
+              </div>
+
+              {selectedPost.excerpt && (
+                <p className="full-blog-excerpt">
+                  {selectedPost.excerpt}
+                </p>
+              )}
+
+              {/* FULL CONTENT FROM SUPABASE */}
+
+              <div className="full-blog-body">
+                {selectedPost.content
+                  .split(/\r?\n/)
+                  .map((line, index) => {
+                    const trimmedLine = line.trim();
+
+                    if (!trimmedLine) {
+                      return (
+                        <div
+                          key={index}
+                          className="article-space"
+                        />
+                      );
+                    }
+
+                    return (
+                      <p key={index}>
+                        {trimmedLine}
+                      </p>
+                    );
+                  })}
+              </div>
+
+              <button
+                type="button"
+                className="blog-back-bottom-button"
+                onClick={handleBack}
+              >
+                ← Back to Articles
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+      </section>
+    );
+  }
+
+  /*
+   * ==============================
+   * BLOG LIST
+   * ==============================
+   */
+
+  return (
+    <section
+      className="blog"
+      id="blog"
+    >
+      <div className="container">
+
+        <div className="section-header">
+
+          <h2>Latest Articles</h2>
+
+          <p>
+            Insights, inspiration and practical
+            knowledge to help teenagers grow in
+            leadership, technology and purpose.
+          </p>
 
         </div>
 
-      </div>
+        {loading ? (
+          <div className="blog-loading">
+            Loading articles...
+          </div>
+        ) : blogPosts.length === 0 ? (
+          <div className="blog-empty">
+            <p>No published articles yet.</p>
+          </div>
+        ) : (
+          <div className="blog-grid">
 
+            {blogPosts.map((post) => (
+              <article
+                className="blog-card"
+                key={post.id}
+              >
+
+                {post.image_url ? (
+                  <img
+                    src={post.image_url}
+                    alt={post.title}
+                    className="blog-image"
+                  />
+                ) : (
+                  <div className="blog-image-placeholder">
+                    No image
+                  </div>
+                )}
+
+                <div className="blog-content">
+
+                  {post.category && (
+                    <span className="blog-category">
+                      {post.category}
+                    </span>
+                  )}
+
+                  <h3>{post.title}</h3>
+
+                  <small>
+                    {new Date(
+                      post.created_at
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </small>
+
+                  <p>
+                    {post.excerpt ||
+                      "Read this article to learn more."}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleReadMore(post)
+                    }
+                  >
+                    Read More
+                  </button>
+
+                </div>
+
+              </article>
+            ))}
+
+          </div>
+        )}
+
+      </div>
     </section>
   );
 }
+
+export default Blog;

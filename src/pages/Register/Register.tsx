@@ -1,6 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
-import { Country, State, City } from "country-state-city";
+import {
+  Country,
+  State,
+  City,
+} from "country-state-city";
 import "./Register.css";
 import { supabase } from "../../lib/supabase";
 
@@ -11,60 +19,60 @@ interface LocationItem {
 }
 
 const AFRICAN_COUNTRY_CODES = [
-  "DZ", // Algeria
-  "AO", // Angola
-  "BJ", // Benin
-  "BW", // Botswana
-  "BF", // Burkina Faso
-  "BI", // Burundi
-  "CV", // Cabo Verde
-  "CM", // Cameroon
-  "CF", // Central African Republic
-  "TD", // Chad
-  "KM", // Comoros
-  "CD", // Democratic Republic of the Congo
-  "DJ", // Djibouti
-  "EG", // Egypt
-  "GQ", // Equatorial Guinea
-  "ER", // Eritrea
-  "SZ", // Eswatini
-  "ET", // Ethiopia
-  "GA", // Gabon
-  "GM", // Gambia
-  "GH", // Ghana
-  "GN", // Guinea
-  "GW", // Guinea-Bissau
-  "CI", // Ivory Coast
-  "KE", // Kenya
-  "LS", // Lesotho
-  "LR", // Liberia
-  "LY", // Libya
-  "MG", // Madagascar
-  "MW", // Malawi
-  "ML", // Mali
-  "MR", // Mauritania
-  "MU", // Mauritius
-  "MA", // Morocco
-  "MZ", // Mozambique
-  "NA", // Namibia
-  "NE", // Niger
-  "NG", // Nigeria
-  "CG", // Republic of the Congo
-  "RW", // Rwanda
-  "ST", // Sao Tome and Principe
-  "SN", // Senegal
-  "SC", // Seychelles
-  "SL", // Sierra Leone
-  "SO", // Somalia
-  "ZA", // South Africa
-  "SS", // South Sudan
-  "SD", // Sudan
-  "TZ", // Tanzania
-  "TG", // Togo
-  "TN", // Tunisia
-  "UG", // Uganda
-  "ZM", // Zambia
-  "ZW", // Zimbabwe
+  "DZ",
+  "AO",
+  "BJ",
+  "BW",
+  "BF",
+  "BI",
+  "CV",
+  "CM",
+  "CF",
+  "TD",
+  "KM",
+  "CD",
+  "DJ",
+  "EG",
+  "GQ",
+  "ER",
+  "SZ",
+  "ET",
+  "GA",
+  "GM",
+  "GH",
+  "GN",
+  "GW",
+  "CI",
+  "KE",
+  "LS",
+  "LR",
+  "LY",
+  "MG",
+  "MW",
+  "ML",
+  "MR",
+  "MU",
+  "MA",
+  "MZ",
+  "NA",
+  "NE",
+  "NG",
+  "CG",
+  "RW",
+  "ST",
+  "SN",
+  "SC",
+  "SL",
+  "SO",
+  "ZA",
+  "SS",
+  "SD",
+  "TZ",
+  "TG",
+  "TN",
+  "UG",
+  "ZM",
+  "ZW",
 ];
 
 const Register: React.FC = () => {
@@ -77,7 +85,10 @@ const Register: React.FC = () => {
     phone: "",
     country: "",
     state: "",
+    lga: "",
     city: "",
+    community: "",
+    address: "",
     location: "",
     school: "",
     interests: "",
@@ -88,12 +99,9 @@ const Register: React.FC = () => {
     useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
-
   const [message, setMessage] = useState("");
-
-  const [messageType, setMessageType] = useState<
-    "success" | "error" | ""
-  >("");
+  const [messageType, setMessageType] =
+    useState<"success" | "error" | "">("");
 
   const [selectedCountryCode, setSelectedCountryCode] =
     useState("");
@@ -101,15 +109,11 @@ const Register: React.FC = () => {
   const [selectedStateCode, setSelectedStateCode] =
     useState("");
 
-  const [states, setStates] = useState<LocationItem[]>([]);
+  const [states, setStates] =
+    useState<LocationItem[]>([]);
 
-  const [cities, setCities] = useState<LocationItem[]>([]);
-
-  /*
-   * ------------------------------------------------
-   * AFRICAN COUNTRIES
-   * ------------------------------------------------
-   */
+  const [cities, setCities] =
+    useState<LocationItem[]>([]);
 
   const africanCountries = useMemo(() => {
     return Country.getAllCountries()
@@ -122,12 +126,6 @@ const Register: React.FC = () => {
         a.name.localeCompare(b.name)
       );
   }, []);
-
-  /*
-   * ------------------------------------------------
-   * LOAD STATES WHEN COUNTRY CHANGES
-   * ------------------------------------------------
-   */
 
   useEffect(() => {
     if (!selectedCountryCode) {
@@ -142,15 +140,8 @@ const Register: React.FC = () => {
       );
 
     setStates(countryStates);
-
     setCities([]);
   }, [selectedCountryCode]);
-
-  /*
-   * ------------------------------------------------
-   * LOAD CITIES WHEN STATE CHANGES
-   * ------------------------------------------------
-   */
 
   useEffect(() => {
     if (
@@ -173,28 +164,18 @@ const Register: React.FC = () => {
     selectedStateCode,
   ]);
 
-  /*
-   * ------------------------------------------------
-   * HANDLE TEXT INPUTS
-   * ------------------------------------------------
-   */
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
+    const { name, value } = e.target;
+
     setFormData((previous) => ({
       ...previous,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
-
-  /*
-   * ------------------------------------------------
-   * COUNTRY CHANGE
-   * ------------------------------------------------
-   */
 
   const handleCountryChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -207,23 +188,19 @@ const Register: React.FC = () => {
     );
 
     setSelectedCountryCode(countryCode);
-
     setSelectedStateCode("");
 
     setFormData((previous) => ({
       ...previous,
       country: country?.name || "",
       state: "",
+      lga: "",
       city: "",
+      community: "",
+      address: "",
       location: country?.name || "",
     }));
   };
-
-  /*
-   * ------------------------------------------------
-   * STATE CHANGE
-   * ------------------------------------------------
-   */
 
   const handleStateChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -240,7 +217,10 @@ const Register: React.FC = () => {
     setFormData((previous) => ({
       ...previous,
       state: selectedState?.name || "",
+      lga: "",
       city: "",
+      community: "",
+      address: "",
       location: [
         selectedState?.name,
         previous.country,
@@ -249,12 +229,6 @@ const Register: React.FC = () => {
         .join(", "),
     }));
   };
-
-  /*
-   * ------------------------------------------------
-   * CITY CHANGE
-   * ------------------------------------------------
-   */
 
   const handleCityChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -274,16 +248,41 @@ const Register: React.FC = () => {
     }));
   };
 
-  /*
-   * ------------------------------------------------
-   * SUBMIT REGISTRATION
-   * ------------------------------------------------
-   */
+  const handleLocationDetailChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((previous) => {
+      const updated = {
+        ...previous,
+        [name]: value,
+      };
+
+      updated.location = [
+        updated.community,
+        updated.city,
+        updated.lga,
+        updated.state,
+        updated.country,
+      ]
+        .filter(Boolean)
+        .join(", ");
+
+      return updated;
+    });
+  };
 
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
     e.preventDefault();
+
+    if (loading) {
+      return;
+    }
 
     setLoading(true);
     setMessage("");
@@ -294,10 +293,15 @@ const Register: React.FC = () => {
         formData.full_name.trim();
 
       const email =
-        formData.email.trim().toLowerCase();
+        formData.email
+          .trim()
+          .toLowerCase();
 
       const password =
         formData.password;
+
+      const phone =
+        formData.phone.trim();
 
       const country =
         formData.country.trim();
@@ -305,8 +309,26 @@ const Register: React.FC = () => {
       const state =
         formData.state.trim();
 
+      const lga =
+        formData.lga.trim();
+
       const city =
         formData.city.trim();
+
+      const community =
+        formData.community.trim();
+
+      const address =
+        formData.address.trim();
+
+      const school =
+        formData.school.trim();
+
+      const interests =
+        formData.interests.trim();
+
+      const bio =
+        formData.bio.trim();
 
       if (!fullName) {
         throw new Error(
@@ -326,6 +348,12 @@ const Register: React.FC = () => {
         );
       }
 
+      if (!phone) {
+        throw new Error(
+          "Please enter your phone number."
+        );
+      }
+
       if (!country) {
         throw new Error(
           "Please select your country."
@@ -338,47 +366,70 @@ const Register: React.FC = () => {
         );
       }
 
+      if (!lga) {
+        throw new Error(
+          "Please enter your LGA or district."
+        );
+      }
+
       if (!city) {
         throw new Error(
           "Please select your city or town."
         );
       }
 
+      if (!community) {
+        throw new Error(
+          "Please enter your community."
+        );
+      }
+
+      if (!address) {
+        throw new Error(
+          "Please enter your address."
+        );
+      }
+
+      if (!school) {
+        throw new Error(
+          "Please enter your school."
+        );
+      }
+
+      if (!interests) {
+        throw new Error(
+          "Please enter your interests."
+        );
+      }
+
+      if (profileImage) {
+        if (
+          profileImage.size >
+          5 * 1024 * 1024
+        ) {
+          throw new Error(
+            "Profile image must be 5MB or smaller."
+          );
+        }
+      }
+
       /*
        * ------------------------------------------------
-       * CHECK WHETHER MEMBERSHIP ALREADY EXISTS
+       * CHECK WHETHER ADMIN ALREADY CREATED PROFILE
        * ------------------------------------------------
        */
 
       const {
-        data: existingMembership,
-        error: membershipCheckError,
+        data: existingProfile,
+        error: existingProfileError,
       } = await supabase
         .from("profiles")
         .select("*")
         .ilike("email", email)
         .maybeSingle();
 
-      if (membershipCheckError) {
-        throw membershipCheckError;
-      }
-
-      /*
-       * ------------------------------------------------
-       * IF MEMBER ALREADY HAS AN AUTH ACCOUNT
-       * ------------------------------------------------
-       */
-
-      if (
-        existingMembership &&
-        existingMembership.auth_user_id
-      ) {
-        setMessage(
-          "An account already exists with this email address. Please log in instead."
-        );
-
-        setMessageType("error");
-        return;
+      if (existingProfileError) {
+        throw existingProfileError;
       }
 
       /*
@@ -390,10 +441,11 @@ const Register: React.FC = () => {
       const {
         data: authData,
         error: authError,
-      } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+      } =
+        await supabase.auth.signUp({
+          email,
+          password,
+        });
 
       if (authError) {
         throw authError;
@@ -408,22 +460,17 @@ const Register: React.FC = () => {
       const authUserId =
         authData.user.id;
 
-      let profileImageUrl: string | null =
-        null;
-
       /*
        * ------------------------------------------------
-       * UPLOAD PROFILE IMAGE
+       * PROFILE IMAGE
        * ------------------------------------------------
        */
 
-      if (profileImage) {
-        if (profileImage.size > 5 * 1024 * 1024) {
-          throw new Error(
-            "Profile image must be 5MB or smaller."
-          );
-        }
+      let profileImageUrl =
+        existingProfile?.profile_image_url ||
+        null;
 
+      if (profileImage) {
         const fileExt =
           profileImage.name
             .split(".")
@@ -431,29 +478,42 @@ const Register: React.FC = () => {
             ?.toLowerCase() || "jpg";
 
         const fileName =
-          `${authUserId}.${fileExt}`;
+          `${authUserId}-${Date.now()}.${fileExt}`;
 
         const {
           error: uploadError,
-        } = await supabase.storage
-          .from("profile-images")
-          .upload(
-            fileName,
-            profileImage,
-            {
-              upsert: true,
-            }
-          );
+        } =
+          await supabase.storage
+            .from("profile-images")
+            .upload(
+              fileName,
+              profileImage,
+              {
+                upsert: true,
+                contentType:
+                  profileImage.type,
+              }
+            );
 
         if (uploadError) {
-          throw uploadError;
+          console.error(
+            "IMAGE UPLOAD ERROR:",
+            uploadError
+          );
+
+          throw new Error(
+            "Your account was created, but your profile image could not be uploaded."
+          );
         }
 
         const {
           data: imageData,
-        } = supabase.storage
-          .from("profile-images")
-          .getPublicUrl(fileName);
+        } =
+          supabase.storage
+            .from("profile-images")
+            .getPublicUrl(
+              fileName
+            );
 
         profileImageUrl =
           imageData.publicUrl;
@@ -461,12 +521,14 @@ const Register: React.FC = () => {
 
       /*
        * ------------------------------------------------
-       * BUILD LOCATION
+       * FINAL LOCATION
        * ------------------------------------------------
        */
 
       const location = [
+        community,
         city,
+        lga,
         state,
         country,
       ]
@@ -475,170 +537,212 @@ const Register: React.FC = () => {
 
       /*
        * ------------------------------------------------
-       * ADMIN ALREADY ADDED THIS MEMBER
+       * PROFILE DATA
+       *
+       * IMPORTANT:
+       * profiles.id is NOT auth_user_id.
+       * This prevents profiles_pkey conflicts.
        * ------------------------------------------------
        */
 
-      if (existingMembership) {
+      const profileData = {
+        auth_user_id:
+          authUserId,
+
+        full_name:
+          fullName,
+
+        email,
+
+        phone,
+
+        country,
+
+        state,
+
+        lga,
+
+        city,
+
+        community,
+
+        address,
+
+        location,
+
+        school,
+
+        interests,
+
+        bio,
+
+        profile_image_url:
+          profileImageUrl,
+
+        role: "member",
+
+        /*
+         * NEW USERS MUST WAIT FOR ADMIN.
+         */
+        status:
+          existingProfile?.status ===
+          "active"
+            ? "active"
+            : "pending",
+
+        updated_at:
+          new Date().toISOString(),
+      };
+
+      /*
+       * ------------------------------------------------
+       * ADMIN PRE-CREATED MEMBER
+       *
+       * Update the existing row instead of inserting
+       * another row.
+       * ------------------------------------------------
+       */
+
+      if (existingProfile) {
         const {
           error: updateError,
         } = await supabase
           .from("profiles")
-          .update({
-            auth_user_id: authUserId,
-
-            full_name: fullName,
-
-            email,
-
-            phone:
-              formData.phone.trim() ||
-              existingMembership.phone ||
-              null,
-
-            country:
-              country ||
-              existingMembership.country ||
-              null,
-
-            state:
-              state ||
-              existingMembership.state ||
-              null,
-
-            city:
-              city ||
-              existingMembership.city ||
-              null,
-
-            location:
-              location ||
-              existingMembership.location ||
-              null,
-
-            school:
-              formData.school.trim() ||
-              existingMembership.school ||
-              null,
-
-            interests:
-              formData.interests.trim() ||
-              existingMembership.interests ||
-              null,
-
-            bio:
-              formData.bio.trim() ||
-              existingMembership.bio ||
-              null,
-
-            profile_image_url:
-              profileImageUrl ||
-              existingMembership.profile_image_url ||
-              null,
-
-            role: "member",
-
-            status: "active",
-
-            updated_at:
-              new Date().toISOString(),
-          })
+          .update(profileData)
           .eq(
             "id",
-            existingMembership.id
+            existingProfile.id
           );
 
         if (updateError) {
+          console.error(
+            "PROFILE UPDATE ERROR:",
+            updateError
+          );
+
           throw updateError;
         }
+      }
 
+      /*
+       * ------------------------------------------------
+       * COMPLETELY NEW MEMBER
+       *
+       * Do NOT specify profiles.id.
+       * PostgreSQL generates it.
+       * ------------------------------------------------
+       */
+
+      else {
+        const {
+          error: insertError,
+        } = await supabase
+          .from("profiles")
+          .insert({
+            ...profileData,
+          });
+
+        if (insertError) {
+          console.error(
+            "PROFILE INSERT ERROR:",
+            insertError
+          );
+
+          /*
+           * A trigger or another process may already
+           * have created the profile using auth_user_id.
+           *
+           * Try one final update instead of failing.
+           */
+
+          const {
+            data: profileCreatedElsewhere,
+          } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq(
+              "auth_user_id",
+              authUserId
+            )
+            .maybeSingle();
+
+          if (
+            profileCreatedElsewhere
+          ) {
+            const {
+              error:
+                recoveryError,
+            } =
+              await supabase
+                .from("profiles")
+                .update(
+                  profileData
+                )
+                .eq(
+                  "id",
+                  profileCreatedElsewhere.id
+                );
+
+            if (recoveryError) {
+              throw recoveryError;
+            }
+          } else {
+            throw insertError;
+          }
+        }
+      }
+
+      /*
+       * ------------------------------------------------
+       * GET CURRENT SESSION
+       * ------------------------------------------------
+       */
+
+      const {
+        data: sessionData,
+      } =
+        await supabase.auth.getSession();
+
+      /*
+       * ------------------------------------------------
+       * EMAIL CONFIRMATION SHOULD BE DISABLED
+       *
+       * Therefore a session should exist immediately.
+       * ------------------------------------------------
+       */
+
+      if (!sessionData.session) {
         setMessage(
-          "Registration successful! Your existing Teens Connect Africa membership has been activated."
+          "Your account was created. Please check your email confirmation settings before trying again."
         );
 
-        setMessageType("success");
+        setMessageType("error");
 
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        setLoading(false);
 
         return;
       }
 
       /*
        * ------------------------------------------------
-       * COMPLETELY NEW MEMBER
-       * ------------------------------------------------
-       */
-
-      const {
-        error: profileError,
-      } = await supabase
-        .from("profiles")
-        .insert({
-          id: authUserId,
-
-          auth_user_id: authUserId,
-
-          full_name: fullName,
-
-          email,
-
-          phone:
-            formData.phone.trim() ||
-            null,
-
-          country:
-            country || null,
-
-          state:
-            state || null,
-
-          city:
-            city || null,
-
-          location:
-            location || null,
-
-          school:
-            formData.school.trim() ||
-            null,
-
-          interests:
-            formData.interests.trim() ||
-            null,
-
-          bio:
-            formData.bio.trim() ||
-            null,
-
-          profile_image_url:
-            profileImageUrl,
-
-          role: "member",
-
-          status: "active",
-        });
-
-      if (profileError) {
-        throw profileError;
-      }
-
-      /*
-       * ------------------------------------------------
-       * SUCCESS
+       * DIRECTLY ENTER MEMBER PORTAL
        * ------------------------------------------------
        */
 
       setMessage(
-        "Registration successful! Your Teens Connect Africa account has been created."
+        "Registration successful! Your membership is awaiting admin approval."
       );
 
       setMessageType("success");
 
       setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+        navigate(
+          "/member-portal",
+          {
+            replace: true,
+          }
+        );
+      }, 700);
 
     } catch (error: any) {
       console.error(
@@ -652,7 +756,6 @@ const Register: React.FC = () => {
       );
 
       setMessageType("error");
-
     } finally {
       setLoading(false);
     }
@@ -665,17 +768,13 @@ const Register: React.FC = () => {
 
         <div className="register-card">
 
-          {/* HEADER */}
-
           <div className="register-header">
 
             <div className="register-logo">
-
               <img
                 src="/logo/bobdaddy%202%201580.jpg"
                 alt="Teens Connect Africa"
               />
-
             </div>
 
             <h1>
@@ -689,15 +788,9 @@ const Register: React.FC = () => {
 
           </div>
 
-
-          {/* FORM */}
-
           <form onSubmit={handleSubmit}>
 
-            {/* FULL NAME */}
-
             <div className="register-field">
-
               <label htmlFor="full_name">
                 Full Name
               </label>
@@ -707,18 +800,15 @@ const Register: React.FC = () => {
                 name="full_name"
                 type="text"
                 placeholder="Enter your full name"
-                value={formData.full_name}
+                value={
+                  formData.full_name
+                }
                 onChange={handleChange}
                 required
               />
-
             </div>
 
-
-            {/* EMAIL */}
-
             <div className="register-field">
-
               <label htmlFor="email">
                 Email Address
               </label>
@@ -728,18 +818,15 @@ const Register: React.FC = () => {
                 name="email"
                 type="email"
                 placeholder="Enter your email"
-                value={formData.email}
+                value={
+                  formData.email
+                }
                 onChange={handleChange}
                 required
               />
-
             </div>
 
-
-            {/* PASSWORD */}
-
             <div className="register-field">
-
               <label htmlFor="password">
                 Password
               </label>
@@ -749,24 +836,20 @@ const Register: React.FC = () => {
                 name="password"
                 type="password"
                 placeholder="Create your password"
-                value={formData.password}
+                value={
+                  formData.password
+                }
                 onChange={handleChange}
                 minLength={6}
                 required
               />
 
               <small>
-                Create a password for your
-                account. At least 6 characters.
+                At least 6 characters.
               </small>
-
             </div>
 
-
-            {/* PHONE */}
-
             <div className="register-field">
-
               <label htmlFor="phone">
                 Phone Number
               </label>
@@ -776,30 +859,29 @@ const Register: React.FC = () => {
                 name="phone"
                 type="tel"
                 placeholder="Enter your phone number"
-                value={formData.phone}
+                value={
+                  formData.phone
+                }
                 onChange={handleChange}
                 required
               />
-
             </div>
 
-
-            {/* COUNTRY */}
-
             <div className="register-field">
-
               <label htmlFor="country">
                 Country
               </label>
 
               <select
                 id="country"
-                name="country"
-                value={selectedCountryCode}
-                onChange={handleCountryChange}
+                value={
+                  selectedCountryCode
+                }
+                onChange={
+                  handleCountryChange
+                }
                 required
               >
-
                 <option value="">
                   Select your country
                 </option>
@@ -807,38 +889,39 @@ const Register: React.FC = () => {
                 {africanCountries.map(
                   (country) => (
                     <option
-                      key={country.isoCode}
-                      value={country.isoCode}
+                      key={
+                        country.isoCode
+                      }
+                      value={
+                        country.isoCode
+                      }
                     >
                       {country.name}
                     </option>
                   )
                 )}
-
               </select>
-
             </div>
 
-
-            {/* STATE / REGION */}
-
             <div className="register-field">
-
               <label htmlFor="state">
                 State / Province / Region
               </label>
 
               {states.length > 0 ? (
-
                 <select
                   id="state"
-                  name="state"
-                  value={selectedStateCode}
-                  onChange={handleStateChange}
+                  value={
+                    selectedStateCode
+                  }
+                  onChange={
+                    handleStateChange
+                  }
+                  disabled={
+                    !selectedCountryCode
+                  }
                   required
-                  disabled={!selectedCountryCode}
                 >
-
                   <option value="">
                     Select your state / region
                   </option>
@@ -846,57 +929,80 @@ const Register: React.FC = () => {
                   {states.map(
                     (state) => (
                       <option
-                        key={state.isoCode}
-                        value={state.isoCode}
+                        key={
+                          state.isoCode
+                        }
+                        value={
+                          state.isoCode
+                        }
                       >
                         {state.name}
                       </option>
                     )
                   )}
-
                 </select>
-
               ) : (
-
                 <input
                   id="state"
                   name="state"
                   type="text"
-                  placeholder={
-                    selectedCountryCode
-                      ? "Enter your state / region"
-                      : "Select your country first"
+                  placeholder="Enter your state / region"
+                  value={
+                    formData.state
                   }
-                  value={formData.state}
-                  onChange={handleChange}
-                  disabled={!selectedCountryCode}
+                  onChange={
+                    handleChange
+                  }
+                  disabled={
+                    !selectedCountryCode
+                  }
                   required
                 />
-
               )}
-
             </div>
 
+            <div className="register-field">
+              <label htmlFor="lga">
+                LGA / District
+              </label>
 
-            {/* CITY */}
+              <input
+                id="lga"
+                name="lga"
+                type="text"
+                placeholder="Enter your LGA / district"
+                value={
+                  formData.lga
+                }
+                onChange={
+                  handleLocationDetailChange
+                }
+                disabled={
+                  !selectedCountryCode
+                }
+                required
+              />
+            </div>
 
             <div className="register-field">
-
               <label htmlFor="city">
                 City / Town
               </label>
 
               {cities.length > 0 ? (
-
                 <select
                   id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleCityChange}
+                  value={
+                    formData.city
+                  }
+                  onChange={
+                    handleCityChange
+                  }
+                  disabled={
+                    !selectedStateCode
+                  }
                   required
-                  disabled={!selectedStateCode}
                 >
-
                   <option value="">
                     Select your city / town
                   </option>
@@ -905,60 +1011,92 @@ const Register: React.FC = () => {
                     (city, index) => (
                       <option
                         key={`${city.name}-${index}`}
-                        value={city.name}
+                        value={
+                          city.name
+                        }
                       >
                         {city.name}
                       </option>
                     )
                   )}
-
                 </select>
-
               ) : (
-
                 <input
                   id="city"
                   name="city"
                   type="text"
-                  placeholder={
-                    selectedStateCode
-                      ? "Enter your city / town"
-                      : "Select your state / region first"
+                  placeholder="Enter your city / town"
+                  value={
+                    formData.city
                   }
-                  value={formData.city}
-                  onChange={handleChange}
-                  disabled={!selectedCountryCode}
+                  onChange={
+                    handleLocationDetailChange
+                  }
+                  disabled={
+                    !selectedCountryCode
+                  }
                   required
                 />
-
               )}
-
             </div>
 
+            <div className="register-field">
+              <label htmlFor="community">
+                Community
+              </label>
 
-            {/* LOCATION PREVIEW */}
+              <input
+                id="community"
+                name="community"
+                type="text"
+                placeholder="Enter your community"
+                value={
+                  formData.community
+                }
+                onChange={
+                  handleLocationDetailChange
+                }
+                required
+              />
+            </div>
+
+            <div className="register-field">
+              <label htmlFor="address">
+                Address
+              </label>
+
+              <input
+                id="address"
+                name="address"
+                type="text"
+                placeholder="Enter your address"
+                value={
+                  formData.address
+                }
+                onChange={
+                  handleLocationDetailChange
+                }
+                required
+              />
+            </div>
 
             {formData.location && (
               <div className="register-field">
-
                 <label>
                   Your Location
                 </label>
 
                 <input
                   type="text"
-                  value={formData.location}
+                  value={
+                    formData.location
+                  }
                   readOnly
                 />
-
               </div>
             )}
 
-
-            {/* SCHOOL */}
-
             <div className="register-field">
-
               <label htmlFor="school">
                 School
               </label>
@@ -968,18 +1106,15 @@ const Register: React.FC = () => {
                 name="school"
                 type="text"
                 placeholder="Enter your school"
-                value={formData.school}
+                value={
+                  formData.school
+                }
                 onChange={handleChange}
                 required
               />
-
             </div>
 
-
-            {/* INTERESTS */}
-
             <div className="register-field">
-
               <label htmlFor="interests">
                 Interests
               </label>
@@ -989,18 +1124,15 @@ const Register: React.FC = () => {
                 name="interests"
                 type="text"
                 placeholder="e.g. Technology, Business, Writing"
-                value={formData.interests}
+                value={
+                  formData.interests
+                }
                 onChange={handleChange}
                 required
               />
-
             </div>
 
-
-            {/* BIO */}
-
             <div className="register-field">
-
               <label htmlFor="bio">
                 Tell us about yourself
               </label>
@@ -1009,26 +1141,18 @@ const Register: React.FC = () => {
                 id="bio"
                 name="bio"
                 placeholder="Tell us a little about yourself..."
-                value={formData.bio}
+                value={
+                  formData.bio
+                }
                 onChange={handleChange}
                 rows={4}
               />
-
             </div>
 
-
-            {/* PROFILE IMAGE */}
-
             <div className="register-field">
-
               <label htmlFor="profileImage">
-
                 Profile Image
-
-                <span>
-                  {" "} (Optional)
-                </span>
-
+                <span> (Optional)</span>
               </label>
 
               <input
@@ -1038,7 +1162,7 @@ const Register: React.FC = () => {
                 onChange={(e) =>
                   setProfileImage(
                     e.target.files?.[0] ||
-                    null
+                      null
                   )
                 }
               />
@@ -1046,16 +1170,13 @@ const Register: React.FC = () => {
               <small>
                 Maximum file size: 5MB
               </small>
-
             </div>
-
-
-            {/* MESSAGE */}
 
             {message && (
               <div
                 className={`register-message ${
-                  messageType === "success"
+                  messageType ===
+                  "success"
                     ? "success"
                     : "error"
                 }`}
@@ -1063,9 +1184,6 @@ const Register: React.FC = () => {
                 {message}
               </div>
             )}
-
-
-            {/* SUBMIT */}
 
             <button
               type="submit"
@@ -1079,11 +1197,7 @@ const Register: React.FC = () => {
 
           </form>
 
-
-          {/* LOGIN */}
-
           <div className="register-login">
-
             <span>
               Already have an account?
             </span>
@@ -1096,11 +1210,7 @@ const Register: React.FC = () => {
             >
               Login
             </button>
-
           </div>
-
-
-          {/* HOME */}
 
           <button
             type="button"
