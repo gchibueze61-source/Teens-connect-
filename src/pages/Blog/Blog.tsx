@@ -46,7 +46,7 @@ function Blog() {
     useState<File | null>(null);
 
   const [imagePreview, setImagePreview] =
-    useState<string>("");
+    useState("");
 
   /*
    * LOAD BLOG POSTS
@@ -60,10 +60,8 @@ function Blog() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      console.log("ADMIN USER:", user);
-
       if (!user) {
-        setError("You are not logged in as an admin.");
+        setError("You are not logged in.");
         setPosts([]);
         return;
       }
@@ -75,25 +73,17 @@ function Blog() {
           ascending: false,
         });
 
-      console.log("BLOG DATA:", data);
-      console.log("BLOG ERROR:", error);
-
       if (error) {
-        setError(
-          `Unable to load blog posts: ${error.message}`
-        );
-
-        setPosts([]);
-        return;
+        throw error;
       }
 
       setPosts((data || []) as BlogPost[]);
     } catch (err: any) {
-      console.error("BLOG LOAD FAILED:", err);
+      console.error("BLOG LOAD ERROR:", err);
 
       setError(
         err?.message ||
-          "Something went wrong while loading blog posts."
+          "Unable to load blog posts."
       );
 
       setPosts([]);
@@ -126,7 +116,7 @@ function Blog() {
   };
 
   /*
-   * GENERATE SLUG
+   * GENERATE BASIC SLUG
    */
   const generateSlug = (value: string) => {
     return value
@@ -138,23 +128,84 @@ function Blog() {
   };
 
   /*
+   * GENERATE UNIQUE SLUG
+   *
+   * If:
+   *
+   * my-article
+   *
+   * already exists, this creates:
+   *
+   * my-article-2
+   *
+   * then:
+   *
+   * my-article-3
+   */
+  const generateUniqueSlug = async (
+    titleValue: string,
+    currentPostId?: string | null
+  ) => {
+    const baseSlug =
+      generateSlug(titleValue) ||
+      `blog-post-${Date.now()}`;
+
+    let candidate = baseSlug;
+    let counter = 2;
+
+    while (true) {
+      let query = supabase
+        .from("blog_posts")
+        .select("id")
+        .eq("slug", candidate);
+
+      if (currentPostId) {
+        query = query.neq(
+          "id",
+          currentPostId
+        );
+      }
+
+      const { data, error } = await query.maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data) {
+        return candidate;
+      }
+
+      candidate = `${baseSlug}-${counter}`;
+      counter++;
+    }
+  };
+
+  /*
    * IMAGE SELECTION
    */
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    const file =
+      event.target.files?.[0];
 
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setError("Please select an image file.");
+      setError(
+        "Please select an image file."
+      );
+
       event.target.value = "";
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setError("Image must be less than 5MB.");
+      setError(
+        "Image must be less than 5MB."
+      );
+
       event.target.value = "";
       return;
     }
@@ -163,31 +214,40 @@ function Blog() {
 
     setSelectedImage(file);
 
-    const previewUrl = URL.createObjectURL(file);
+    const previewUrl =
+      URL.createObjectURL(file);
 
     setImagePreview(previewUrl);
   };
 
   /*
-   * UPLOAD IMAGE
+   * UPLOAD BLOG IMAGE
    */
   const uploadBlogImage = async (
     file: File,
     postId: string
   ) => {
     const fileExtension =
-      file.name.split(".").pop()?.toLowerCase() || "jpg";
+      file.name
+        .split(".")
+        .pop()
+        ?.toLowerCase() || "jpg";
 
     const filePath =
       `${postId}-${Date.now()}.${fileExtension}`;
 
-    const { error: uploadError } =
-      await supabase.storage
-        .from(STORAGE_BUCKET)
-        .upload(filePath, file, {
+    const {
+      error: uploadError,
+    } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(
+        filePath,
+        file,
+        {
           cacheControl: "3600",
           upsert: false,
-        });
+        }
+      );
 
     if (uploadError) {
       throw uploadError;
@@ -196,7 +256,9 @@ function Blog() {
     const { data } =
       supabase.storage
         .from(STORAGE_BUCKET)
-        .getPublicUrl(filePath);
+        .getPublicUrl(
+          filePath
+        );
 
     return data.publicUrl;
   };
@@ -205,29 +267,41 @@ function Blog() {
    * DELETE STORAGE IMAGE
    */
   const deleteStorageImage = async (
-    imageUrlToDelete: string | null
+    imageUrlToDelete:
+      | string
+      | null
   ) => {
-    if (!imageUrlToDelete) return;
+    if (!imageUrlToDelete) {
+      return;
+    }
 
     try {
       const marker =
         `/storage/v1/object/public/${STORAGE_BUCKET}/`;
 
       const index =
-        imageUrlToDelete.indexOf(marker);
+        imageUrlToDelete.indexOf(
+          marker
+        );
 
-      if (index === -1) return;
+      if (index === -1) {
+        return;
+      }
 
       const filePath =
         imageUrlToDelete.substring(
           index + marker.length
         );
 
-      if (!filePath) return;
+      if (!filePath) {
+        return;
+      }
 
       await supabase.storage
         .from(STORAGE_BUCKET)
-        .remove([filePath]);
+        .remove([
+          filePath,
+        ]);
     } catch (storageError) {
       console.warn(
         "Could not delete old blog image:",
@@ -245,27 +319,37 @@ function Blog() {
     event.preventDefault();
 
     if (!title.trim()) {
-      setError("Blog title is required.");
+      setError(
+        "Blog title is required."
+      );
       return;
     }
 
     if (!category.trim()) {
-      setError("Blog category is required.");
+      setError(
+        "Blog category is required."
+      );
       return;
     }
 
     if (!author.trim()) {
-      setError("Author is required.");
+      setError(
+        "Author is required."
+      );
       return;
     }
 
     if (!excerpt.trim()) {
-      setError("Blog excerpt is required.");
+      setError(
+        "Blog excerpt is required."
+      );
       return;
     }
 
     if (!content.trim()) {
-      setError("Full article content is required.");
+      setError(
+        "Full article content is required."
+      );
       return;
     }
 
@@ -273,47 +357,84 @@ function Blog() {
     setError("");
 
     try {
-      const now = new Date().toISOString();
-      const slug = generateSlug(title);
-
-      let postId = editingId;
-      let finalImageUrl = imageUrl || null;
+      const now =
+        new Date().toISOString();
 
       /*
-       * CREATE
+       * CREATE A UNIQUE SLUG
+       */
+      const slug =
+        await generateUniqueSlug(
+          title,
+          editingId
+        );
+
+      let postId =
+        editingId;
+
+      let finalImageUrl =
+        imageUrl || null;
+
+      /*
+       * CREATE NEW POST
        */
       if (!editingId) {
-        const { data, error: insertError } =
-          await supabase
-            .from("blog_posts")
-            .insert({
-              title: title.trim(),
-              slug,
-              excerpt: excerpt.trim(),
-              content: content.trim(),
-              category: category.trim(),
-              author: author.trim(),
-              image_url: null,
-              status,
-              featured,
-              homepage,
-              created_at: now,
-              updated_at: now,
-            })
-            .select()
-            .single();
+        const {
+          data,
+          error: insertError,
+        } = await supabase
+          .from("blog_posts")
+          .insert({
+            title:
+              title.trim(),
+
+            slug,
+
+            excerpt:
+              excerpt.trim(),
+
+            content:
+              content.trim(),
+
+            category:
+              category.trim(),
+
+            author:
+              author.trim(),
+
+            image_url:
+              null,
+
+            status,
+
+            featured,
+
+            homepage,
+
+            created_at:
+              now,
+
+            updated_at:
+              now,
+          })
+          .select()
+          .single();
 
         if (insertError) {
           throw insertError;
         }
 
-        postId = data.id;
+        postId =
+          data.id;
       }
 
       /*
        * UPLOAD NEW IMAGE
        */
-      if (selectedImage && postId) {
+      if (
+        selectedImage &&
+        postId
+      ) {
         finalImageUrl =
           await uploadBlogImage(
             selectedImage,
@@ -325,49 +446,88 @@ function Blog() {
        * UPDATE EXISTING POST
        */
       if (editingId) {
-        const { error: updateError } =
-          await supabase
-            .from("blog_posts")
-            .update({
-              title: title.trim(),
-              slug,
-              excerpt: excerpt.trim(),
-              content: content.trim(),
-              category: category.trim(),
-              author: author.trim(),
-              image_url: finalImageUrl,
-              status,
-              featured,
-              homepage,
-              updated_at: now,
-            })
-            .eq("id", editingId);
+        const {
+          error: updateError,
+        } = await supabase
+          .from("blog_posts")
+          .update({
+            title:
+              title.trim(),
+
+            slug,
+
+            excerpt:
+              excerpt.trim(),
+
+            content:
+              content.trim(),
+
+            category:
+              category.trim(),
+
+            author:
+              author.trim(),
+
+            image_url:
+              finalImageUrl,
+
+            status,
+
+            featured,
+
+            homepage,
+
+            updated_at:
+              now,
+          })
+          .eq(
+            "id",
+            editingId
+          );
 
         if (updateError) {
           throw updateError;
         }
 
+        /*
+         * Delete old image only
+         * after the new one succeeds.
+         */
         if (
           selectedImage &&
           imageUrl &&
-          finalImageUrl !== imageUrl
+          finalImageUrl !==
+            imageUrl
         ) {
-          await deleteStorageImage(imageUrl);
+          await deleteStorageImage(
+            imageUrl
+          );
         }
       }
 
       /*
        * SAVE IMAGE URL FOR NEW POST
        */
-      if (!editingId && postId) {
-        const { error: imageUpdateError } =
-          await supabase
-            .from("blog_posts")
-            .update({
-              image_url: finalImageUrl,
-              updated_at: now,
-            })
-            .eq("id", postId);
+      if (
+        !editingId &&
+        postId
+      ) {
+        const {
+          error:
+            imageUpdateError,
+        } = await supabase
+          .from("blog_posts")
+          .update({
+            image_url:
+              finalImageUrl,
+
+            updated_at:
+              now,
+          })
+          .eq(
+            "id",
+            postId
+          );
 
         if (imageUpdateError) {
           throw imageUpdateError;
@@ -396,21 +556,54 @@ function Blog() {
   /*
    * EDIT
    */
-  const handleEdit = (post: BlogPost) => {
-    setEditingId(post.id);
+  const handleEdit = (
+    post: BlogPost
+  ) => {
+    setEditingId(
+      post.id
+    );
 
-    setTitle(post.title);
-    setCategory(post.category || "");
-    setAuthor(post.author || "");
-    setExcerpt(post.excerpt || "");
-    setContent(post.content || "");
-    setImageUrl(post.image_url || "");
-    setStatus(post.status || "draft");
-    setFeatured(post.featured || false);
-    setHomepage(post.homepage || false);
+    setTitle(
+      post.title
+    );
+
+    setCategory(
+      post.category || ""
+    );
+
+    setAuthor(
+      post.author || ""
+    );
+
+    setExcerpt(
+      post.excerpt || ""
+    );
+
+    setContent(
+      post.content || ""
+    );
+
+    setImageUrl(
+      post.image_url || ""
+    );
+
+    setStatus(
+      post.status || "draft"
+    );
+
+    setFeatured(
+      post.featured || false
+    );
+
+    setHomepage(
+      post.homepage || false
+    );
 
     setSelectedImage(null);
-    setImagePreview(post.image_url || "");
+
+    setImagePreview(
+      post.image_url || ""
+    );
 
     setShowForm(true);
 
@@ -431,16 +624,22 @@ function Blog() {
         `Are you sure you want to delete "${post.title}"?`
       );
 
-    if (!confirmed) return;
+    if (!confirmed) {
+      return;
+    }
 
     setError("");
 
     try {
-      const { error: deleteError } =
-        await supabase
-          .from("blog_posts")
-          .delete()
-          .eq("id", post.id);
+      const {
+        error: deleteError,
+      } = await supabase
+        .from("blog_posts")
+        .delete()
+        .eq(
+          "id",
+          post.id
+        );
 
       if (deleteError) {
         throw deleteError;
@@ -473,22 +672,31 @@ function Blog() {
     setError("");
 
     const newStatus =
-      post.status === "published"
+      post.status ===
+      "published"
         ? "draft"
         : "published";
 
-    const { error: updateError } =
-      await supabase
-        .from("blog_posts")
-        .update({
-          status: newStatus,
-          updated_at:
-            new Date().toISOString(),
-        })
-        .eq("id", post.id);
+    const {
+      error: updateError,
+    } = await supabase
+      .from("blog_posts")
+      .update({
+        status:
+          newStatus,
+
+        updated_at:
+          new Date().toISOString(),
+      })
+      .eq(
+        "id",
+        post.id
+      );
 
     if (updateError) {
-      setError(updateError.message);
+      setError(
+        updateError.message
+      );
       return;
     }
 
@@ -498,11 +706,12 @@ function Blog() {
   /*
    * REMOVE IMAGE
    */
-  const handleRemoveSelectedImage = () => {
-    setSelectedImage(null);
-    setImagePreview("");
-    setImageUrl("");
-  };
+  const handleRemoveSelectedImage =
+    () => {
+      setSelectedImage(null);
+      setImagePreview("");
+      setImageUrl("");
+    };
 
   return (
     <main className="blog-page">
@@ -517,7 +726,9 @@ function Blog() {
             className="back-dashboard-button"
             type="button"
             onClick={() =>
-              navigate("/admin/dashboard")
+              navigate(
+                "/admin/dashboard"
+              )
             }
           >
             ← Back to Dashboard
@@ -527,10 +738,13 @@ function Blog() {
             TCA ADMIN
           </span>
 
-          <h1>Blog</h1>
+          <h1>
+            Blog
+          </h1>
 
           <p>
-            Create and manage Teens Connect Africa
+            Create and manage
+            Teens Connect Africa
             blog posts.
           </p>
 
@@ -575,7 +789,11 @@ function Blog() {
               : "Add New Blog Post"}
           </h2>
 
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={
+              handleSubmit
+            }
+          >
 
             <div className="form-field">
 
@@ -599,7 +817,9 @@ function Blog() {
               {title.trim() && (
                 <small className="slug-preview">
                   Slug:{" "}
-                  {generateSlug(title)}
+                  {generateSlug(
+                    title
+                  )}
                 </small>
               )}
 
@@ -667,9 +887,10 @@ function Blog() {
               />
 
               <small className="image-help-text">
-                This will be used as the
-                short description on blog
-                cards and previews.
+                This will be used as
+                the short description
+                on blog cards and
+                previews.
               </small>
 
             </div>
@@ -707,19 +928,24 @@ function Blog() {
                 id="blogImage"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                onChange={handleImageChange}
+                onChange={
+                  handleImageChange
+                }
               />
 
               <small className="image-help-text">
-                Upload a JPG, PNG or WebP
-                image. Maximum size: 5MB.
+                Upload a JPG, PNG or
+                WebP image.
+                Maximum size: 5MB.
               </small>
 
               {imagePreview && (
                 <div className="blog-image-preview">
 
                   <img
-                    src={imagePreview}
+                    src={
+                      imagePreview
+                    }
                     alt="Blog cover preview"
                   />
 
@@ -772,10 +998,13 @@ function Blog() {
 
                 <input
                   type="checkbox"
-                  checked={featured}
+                  checked={
+                    featured
+                  }
                   onChange={(event) =>
                     setFeatured(
-                      event.target.checked
+                      event.target
+                        .checked
                     )
                   }
                 />
@@ -790,10 +1019,13 @@ function Blog() {
 
                 <input
                   type="checkbox"
-                  checked={homepage}
+                  checked={
+                    homepage
+                  }
                   onChange={(event) =>
                     setHomepage(
-                      event.target.checked
+                      event.target
+                        .checked
                     )
                   }
                 />
@@ -844,7 +1076,9 @@ function Blog() {
 
         <div className="section-heading">
 
-          <h2>All Blog Posts</h2>
+          <h2>
+            All Blog Posts
+          </h2>
 
           <span>
             {posts.length} post
@@ -865,11 +1099,14 @@ function Blog() {
 
           <div className="blogs-empty">
 
-            <h3>No blog posts yet</h3>
+            <h3>
+              No blog posts yet
+            </h3>
 
             <p>
-              Click "Add Blog Post" to create
-              your first article.
+              Click "Add Blog Post"
+              to create your first
+              article.
             </p>
 
           </div>
@@ -878,126 +1115,138 @@ function Blog() {
 
           <div className="blogs-grid">
 
-            {posts.map((post) => (
+            {posts.map(
+              (post) => (
 
-              <article
-                className="blog-card"
-                key={post.id}
-              >
+                <article
+                  className="blog-card"
+                  key={
+                    post.id
+                  }
+                >
 
-                {post.image_url ? (
+                  {post.image_url ? (
 
-                  <img
-                    src={post.image_url}
-                    alt={post.title}
-                    className="blog-image"
-                  />
+                    <img
+                      src={
+                        post.image_url
+                      }
+                      alt={
+                        post.title
+                      }
+                      className="blog-image"
+                    />
 
-                ) : (
+                  ) : (
 
-                  <div className="blog-image-placeholder">
-                    No image
-                  </div>
+                    <div className="blog-image-placeholder">
+                      No image
+                    </div>
 
-                )}
-
-                <div className="blog-card-content">
-
-                  <div className="blog-card-top">
-
-                    <span className="blog-category">
-                      {post.category ||
-                        "General"}
-                    </span>
-
-                    <span
-                      className={`blog-status ${
-                        post.status ===
-                        "published"
-                          ? "published"
-                          : "draft"
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-
-                  </div>
-
-                  {post.featured && (
-                    <span className="featured-badge">
-                      Featured
-                    </span>
                   )}
 
-                  <h3>
-                    {post.title}
-                  </h3>
+                  <div className="blog-card-content">
 
-                  <p className="blog-excerpt">
-                    {post.excerpt ||
-                      "No excerpt available."}
-                  </p>
+                    <div className="blog-card-top">
 
-                  <div className="blog-meta">
+                      <span className="blog-category">
+                        {post.category ||
+                          "General"}
+                      </span>
 
-                    <span>
-                      By{" "}
-                      {post.author ||
-                        "TCA"}
-                    </span>
+                      <span
+                        className={`blog-status ${
+                          post.status ===
+                          "published"
+                            ? "published"
+                            : "draft"
+                        }`}
+                      >
+                        {post.status}
+                      </span>
 
-                    <span>
-                      {new Date(
-                        post.created_at
-                      ).toLocaleDateString()}
-                    </span>
+                    </div>
+
+                    {post.featured && (
+                      <span className="featured-badge">
+                        Featured
+                      </span>
+                    )}
+
+                    <h3>
+                      {post.title}
+                    </h3>
+
+                    <p className="blog-excerpt">
+                      {post.excerpt ||
+                        "No excerpt available."}
+                    </p>
+
+                    <div className="blog-meta">
+
+                      <span>
+                        By{" "}
+                        {post.author ||
+                          "TCA"}
+                      </span>
+
+                      <span>
+                        {new Date(
+                          post.created_at
+                        ).toLocaleDateString()}
+                      </span>
+
+                    </div>
+
+                    <div className="blog-card-actions">
+
+                      <button
+                        type="button"
+                        className="edit-blog-button"
+                        onClick={() =>
+                          handleEdit(
+                            post
+                          )
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="publish-blog-button"
+                        onClick={() =>
+                          handleTogglePublish(
+                            post
+                          )
+                        }
+                      >
+                        {post.status ===
+                        "published"
+                          ? "Unpublish"
+                          : "Publish"}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="delete-blog-button"
+                        onClick={() =>
+                          handleDelete(
+                            post
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div className="blog-card-actions">
+                </article>
 
-                    <button
-                      type="button"
-                      className="edit-blog-button"
-                      onClick={() =>
-                        handleEdit(post)
-                      }
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      type="button"
-                      className="publish-blog-button"
-                      onClick={() =>
-                        handleTogglePublish(
-                          post
-                        )
-                      }
-                    >
-                      {post.status ===
-                      "published"
-                        ? "Unpublish"
-                        : "Publish"}
-                    </button>
-
-                    <button
-                      type="button"
-                      className="delete-blog-button"
-                      onClick={() =>
-                        handleDelete(post)
-                      }
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-
-                </div>
-
-              </article>
-
-            ))}
+              )
+            )}
 
           </div>
 
