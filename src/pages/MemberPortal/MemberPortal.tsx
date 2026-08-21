@@ -36,6 +36,20 @@ interface Profile {
   updated_at?: string | null;
 }
 
+interface ProfileForm {
+  full_name: string;
+  phone: string;
+  country: string;
+  state: string;
+  lga: string;
+  city: string;
+  community: string;
+  address: string;
+  school: string;
+  interests: string;
+  bio: string;
+}
+
 const MemberPortal: React.FC = () => {
   const navigate = useNavigate();
 
@@ -48,6 +62,33 @@ const MemberPortal: React.FC = () => {
   const [refreshing, setRefreshing] =
     useState(false);
 
+  const [editing, setEditing] =
+    useState(false);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  const [form, setForm] =
+    useState<ProfileForm>({
+      full_name: "",
+      phone: "",
+      country: "",
+      state: "",
+      lga: "",
+      city: "",
+      community: "",
+      address: "",
+      school: "",
+      interests: "",
+      bio: "",
+    });
+
   const loadMember = async (
     showLoader = true
   ) => {
@@ -56,11 +97,12 @@ const MemberPortal: React.FC = () => {
         setLoading(true);
       }
 
+      setError("");
+
       const {
         data: { user },
         error: userError,
-      } =
-        await supabase.auth.getUser();
+      } = await supabase.auth.getUser();
 
       if (
         userError ||
@@ -73,9 +115,6 @@ const MemberPortal: React.FC = () => {
         return;
       }
 
-      /*
-       * Find profile by auth_user_id.
-       */
       const {
         data,
         error,
@@ -94,6 +133,8 @@ const MemberPortal: React.FC = () => {
           error
         );
 
+        setError(error.message);
+
         return;
       }
 
@@ -102,12 +143,16 @@ const MemberPortal: React.FC = () => {
           "No profile found for authenticated user."
         );
 
+        setError(
+          "We could not find your member profile."
+        );
+
         return;
       }
 
       /*
-       * BOTH pending and active members
-       * are allowed into the portal.
+       * Both pending and active members
+       * can access the portal.
        */
       if (
         data.status !== "pending" &&
@@ -126,10 +171,55 @@ const MemberPortal: React.FC = () => {
         data as Profile
       );
 
+      /*
+       * Keep the edit form synchronized
+       * with the latest database values.
+       */
+      setForm({
+        full_name:
+          data.full_name || "",
+
+        phone:
+          data.phone || "",
+
+        country:
+          data.country || "",
+
+        state:
+          data.state || "",
+
+        lga:
+          data.lga || "",
+
+        city:
+          data.city || "",
+
+        community:
+          data.community || "",
+
+        address:
+          data.address || "",
+
+        school:
+          data.school || "",
+
+        interests:
+          data.interests || "",
+
+        bio:
+          data.bio || "",
+      });
+
     } catch (error) {
       console.error(
         "Unable to load member profile:",
         error
+      );
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unable to load your profile."
       );
     } finally {
       setLoading(false);
@@ -139,9 +229,6 @@ const MemberPortal: React.FC = () => {
   useEffect(() => {
     loadMember(true);
 
-    /*
-     * Listen for Auth changes.
-     */
     const {
       data: authListener,
     } =
@@ -149,7 +236,7 @@ const MemberPortal: React.FC = () => {
         async (event) => {
           if (
             event ===
-              "SIGNED_OUT"
+            "SIGNED_OUT"
           ) {
             navigate("/login", {
               replace: true,
@@ -173,15 +260,284 @@ const MemberPortal: React.FC = () => {
   }, [navigate]);
 
   /*
-   * ------------------------------------------------
-   * REFRESH PROFILE
-   *
-   * Useful when admin changes pending -> active.
-   * ------------------------------------------------
+   * Update a form field.
    */
+  const handleFormChange = (
+    field: keyof ProfileForm,
+    value: string
+  ) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
 
+  /*
+   * Start editing.
+   */
+  const handleStartEditing = () => {
+    if (!profile) return;
+
+    setError("");
+    setSuccess("");
+
+    setForm({
+      full_name:
+        profile.full_name || "",
+
+      phone:
+        profile.phone || "",
+
+      country:
+        profile.country || "",
+
+      state:
+        profile.state || "",
+
+      lga:
+        profile.lga || "",
+
+      city:
+        profile.city || "",
+
+      community:
+        profile.community || "",
+
+      address:
+        profile.address || "",
+
+      school:
+        profile.school || "",
+
+      interests:
+        profile.interests || "",
+
+      bio:
+        profile.bio || "",
+    });
+
+    setEditing(true);
+  };
+
+  /*
+   * Cancel editing.
+   */
+  const handleCancelEditing = () => {
+    if (!profile) return;
+
+    setForm({
+      full_name:
+        profile.full_name || "",
+
+      phone:
+        profile.phone || "",
+
+      country:
+        profile.country || "",
+
+      state:
+        profile.state || "",
+
+      lga:
+        profile.lga || "",
+
+      city:
+        profile.city || "",
+
+      community:
+        profile.community || "",
+
+      address:
+        profile.address || "",
+
+      school:
+        profile.school || "",
+
+      interests:
+        profile.interests || "",
+
+      bio:
+        profile.bio || "",
+    });
+
+    setEditing(false);
+    setError("");
+  };
+
+  /*
+   * Save profile changes.
+   */
+  const handleSaveProfile = async (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
+
+    if (!profile) return;
+
+    setSaving(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      if (!form.full_name.trim()) {
+        throw new Error(
+          "Full name is required."
+        );
+      }
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (
+        userError ||
+        !user
+      ) {
+        throw new Error(
+          "Your login session has expired. Please log in again."
+        );
+      }
+
+      /*
+       * Update only the member's own profile.
+       *
+       * We identify the profile using
+       * auth_user_id rather than the profile id.
+       */
+      const {
+        data,
+        error: updateError,
+      } = await supabase
+        .from("profiles")
+        .update({
+          full_name:
+            form.full_name.trim(),
+
+          phone:
+            form.phone.trim() ||
+            null,
+
+          country:
+            form.country.trim() ||
+            null,
+
+          state:
+            form.state.trim() ||
+            null,
+
+          lga:
+            form.lga.trim() ||
+            null,
+
+          city:
+            form.city.trim() ||
+            null,
+
+          community:
+            form.community.trim() ||
+            null,
+
+          address:
+            form.address.trim() ||
+            null,
+
+          school:
+            form.school.trim() ||
+            null,
+
+          interests:
+            form.interests.trim() ||
+            null,
+
+          bio:
+            form.bio.trim() ||
+            null,
+
+          updated_at:
+            new Date().toISOString(),
+        })
+        .eq(
+          "auth_user_id",
+          user.id
+        )
+        .select()
+        .single();
+
+      if (updateError) {
+        throw new Error(
+          updateError.message
+        );
+      }
+
+      setProfile(
+        data as Profile
+      );
+
+      setForm({
+        full_name:
+          data.full_name || "",
+
+        phone:
+          data.phone || "",
+
+        country:
+          data.country || "",
+
+        state:
+          data.state || "",
+
+        lga:
+          data.lga || "",
+
+        city:
+          data.city || "",
+
+        community:
+          data.community || "",
+
+        address:
+          data.address || "",
+
+        school:
+          data.school || "",
+
+        interests:
+          data.interests || "",
+
+        bio:
+          data.bio || "",
+      });
+
+      setEditing(false);
+
+      setSuccess(
+        "Your profile has been updated successfully."
+      );
+
+    } catch (error) {
+      console.error(
+        "PROFILE UPDATE ERROR:",
+        error
+      );
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unable to update your profile."
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /*
+   * Refresh profile.
+   */
   const handleRefresh = async () => {
     setRefreshing(true);
+    setError("");
+    setSuccess("");
 
     await loadMember(false);
 
@@ -189,11 +545,8 @@ const MemberPortal: React.FC = () => {
   };
 
   /*
-   * ------------------------------------------------
-   * LOGOUT
-   * ------------------------------------------------
+   * Logout.
    */
-
   const handleLogout = async () => {
     await supabase.auth.signOut();
 
@@ -203,20 +556,19 @@ const MemberPortal: React.FC = () => {
   };
 
   /*
-   * ------------------------------------------------
-   * LOADING
-   * ------------------------------------------------
+   * Loading.
    */
-
   if (loading) {
     return (
       <main className="member-loading">
         <div className="member-loading-box">
+
           <div className="member-spinner"></div>
 
           <p>
             Loading your member portal...
           </p>
+
         </div>
       </main>
     );
@@ -225,9 +577,12 @@ const MemberPortal: React.FC = () => {
   if (!profile) {
     return (
       <main className="member-loading">
+
         <div className="member-loading-box">
+
           <p>
-            We could not find your member profile.
+            {error ||
+              "We could not find your member profile."}
           </p>
 
           <button
@@ -238,7 +593,9 @@ const MemberPortal: React.FC = () => {
           >
             Return to Login
           </button>
+
         </div>
+
       </main>
     );
   }
@@ -337,8 +694,6 @@ const MemberPortal: React.FC = () => {
 
             </div>
 
-            {/* STATUS */}
-
             <div
               className={
                 isActive
@@ -356,6 +711,34 @@ const MemberPortal: React.FC = () => {
             </div>
 
           </div>
+
+          {/* MESSAGES */}
+
+          {success && (
+            <div
+              className="member-location-summary"
+              style={{
+                marginBottom: "20px",
+              }}
+            >
+              <strong>
+                {success}
+              </strong>
+            </div>
+          )}
+
+          {error && (
+            <div
+              className="member-location-summary"
+              style={{
+                marginBottom: "20px",
+              }}
+            >
+              <strong>
+                {error}
+              </strong>
+            </div>
+          )}
 
           {/* PENDING NOTICE */}
 
@@ -384,10 +767,8 @@ const MemberPortal: React.FC = () => {
                   refreshing
                 }
                 style={{
-                  marginTop:
-                    "12px",
-                  padding:
-                    "10px 16px",
+                  marginTop: "12px",
+                  padding: "10px 16px",
                   cursor:
                     refreshing
                       ? "wait"
@@ -411,6 +792,7 @@ const MemberPortal: React.FC = () => {
               <div className="member-avatar">
 
                 {profile.profile_image_url ? (
+
                   <img
                     src={
                       profile.profile_image_url
@@ -419,15 +801,16 @@ const MemberPortal: React.FC = () => {
                       profile.full_name
                     }
                   />
+
                 ) : (
+
                   <span>
                     {profile.full_name
-                      ?.charAt(
-                        0
-                      )
+                      ?.charAt(0)
                       .toUpperCase() ||
                       "M"}
                   </span>
+
                 )}
 
               </div>
@@ -453,129 +836,508 @@ const MemberPortal: React.FC = () => {
 
             </div>
 
-            {/* DETAILS */}
+            {/* EDIT BUTTON */}
 
-            <div className="member-details">
+            {!editing && (
+              <div
+                style={{
+                  marginTop: "20px",
+                }}
+              >
 
-              <div className="member-detail">
-                <span>
-                  Phone
-                </span>
-
-                <strong>
-                  {profile.phone ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  Country
-                </span>
-
-                <strong>
-                  {profile.country ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  State / Region
-                </span>
-
-                <strong>
-                  {profile.state ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  LGA / District
-                </span>
-
-                <strong>
-                  {profile.lga ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  City / Town
-                </span>
-
-                <strong>
-                  {profile.city ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  Community
-                </span>
-
-                <strong>
-                  {profile.community ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  School
-                </span>
-
-                <strong>
-                  {profile.school ||
-                    "Not provided"}
-                </strong>
-              </div>
-
-              <div className="member-detail">
-                <span>
-                  Member Since
-                </span>
-
-                <strong>
-                  {memberSince}
-                </strong>
-              </div>
-
-            </div>
-
-            {/* LOCATION */}
-
-            {formattedLocation && (
-              <div className="member-location-summary">
-
-                <span>
-                  Full Location
-                </span>
-
-                <strong>
-                  {formattedLocation}
-                </strong>
+                <button
+                  type="button"
+                  onClick={
+                    handleStartEditing
+                  }
+                  style={{
+                    padding:
+                      "12px 20px",
+                    borderRadius:
+                      "8px",
+                    border: "none",
+                    cursor:
+                      "pointer",
+                    fontWeight: 600,
+                  }}
+                >
+                  Edit Profile
+                </button>
 
               </div>
             )}
 
-            {/* ADDRESS */}
+            {/* EDIT FORM */}
 
-            {profile.address && (
-              <div className="member-location-summary">
+            {editing ? (
 
-                <span>
-                  Address
-                </span>
+              <form
+                onSubmit={
+                  handleSaveProfile
+                }
+                style={{
+                  marginTop: "25px",
+                }}
+              >
 
-                <strong>
-                  {profile.address}
-                </strong>
+                <div className="member-details">
 
-              </div>
+                  <div className="member-detail">
+
+                    <span>
+                      Full Name
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.full_name
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "full_name",
+                          event.target.value
+                        )
+                      }
+                      required
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      Email
+                    </span>
+
+                    <strong>
+                      {profile.email}
+                    </strong>
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      Phone
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.phone
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "phone",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      Country
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.country
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "country",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      State / Region
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.state
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "state",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      LGA / District
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.lga
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "lga",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      City / Town
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.city
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "city",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      Community
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.community
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "community",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                  <div className="member-detail">
+
+                    <span>
+                      School
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        form.school
+                      }
+                      onChange={(event) =>
+                        handleFormChange(
+                          "school",
+                          event.target.value
+                        )
+                      }
+                    />
+
+                  </div>
+
+                </div>
+
+                {/* ADDRESS */}
+
+                <div
+                  className="member-location-summary"
+                  style={{
+                    marginTop: "20px",
+                  }}
+                >
+
+                  <span>
+                    Address
+                  </span>
+
+                  <textarea
+                    value={
+                      form.address
+                    }
+                    onChange={(event) =>
+                      handleFormChange(
+                        "address",
+                        event.target.value
+                      )
+                    }
+                    rows={3}
+                    placeholder="Enter your address"
+                  />
+
+                </div>
+
+                {/* INTERESTS */}
+
+                <div
+                  className="member-location-summary"
+                  style={{
+                    marginTop: "20px",
+                  }}
+                >
+
+                  <span>
+                    My Interests
+                  </span>
+
+                  <textarea
+                    value={
+                      form.interests
+                    }
+                    onChange={(event) =>
+                      handleFormChange(
+                        "interests",
+                        event.target.value
+                      )
+                    }
+                    rows={3}
+                    placeholder="Tell us about your interests"
+                  />
+
+                </div>
+
+                {/* BIO */}
+
+                <div
+                  className="member-location-summary"
+                  style={{
+                    marginTop: "20px",
+                  }}
+                >
+
+                  <span>
+                    About Me
+                  </span>
+
+                  <textarea
+                    value={
+                      form.bio
+                    }
+                    onChange={(event) =>
+                      handleFormChange(
+                        "bio",
+                        event.target.value
+                      )
+                    }
+                    rows={4}
+                    placeholder="Tell us a little about yourself"
+                  />
+
+                </div>
+
+                {/* ACTIONS */}
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "12px",
+                    marginTop: "20px",
+                    flexWrap: "wrap",
+                  }}
+                >
+
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    style={{
+                      padding:
+                        "12px 22px",
+                      borderRadius:
+                        "8px",
+                      border: "none",
+                      cursor:
+                        saving
+                          ? "wait"
+                          : "pointer",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {saving
+                      ? "Saving..."
+                      : "Save Changes"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={
+                      handleCancelEditing
+                    }
+                    disabled={saving}
+                    style={{
+                      padding:
+                        "12px 22px",
+                      borderRadius:
+                        "8px",
+                      cursor:
+                        saving
+                          ? "not-allowed"
+                          : "pointer",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Cancel
+                  </button>
+
+                </div>
+
+              </form>
+
+            ) : (
+
+              <>
+                {/* DETAILS */}
+
+                <div className="member-details">
+
+                  <div className="member-detail">
+                    <span>
+                      Phone
+                    </span>
+
+                    <strong>
+                      {profile.phone ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      Country
+                    </span>
+
+                    <strong>
+                      {profile.country ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      State / Region
+                    </span>
+
+                    <strong>
+                      {profile.state ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      LGA / District
+                    </span>
+
+                    <strong>
+                      {profile.lga ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      City / Town
+                    </span>
+
+                    <strong>
+                      {profile.city ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      Community
+                    </span>
+
+                    <strong>
+                      {profile.community ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      School
+                    </span>
+
+                    <strong>
+                      {profile.school ||
+                        "Not provided"}
+                    </strong>
+                  </div>
+
+                  <div className="member-detail">
+                    <span>
+                      Member Since
+                    </span>
+
+                    <strong>
+                      {memberSince}
+                    </strong>
+                  </div>
+
+                </div>
+
+                {/* LOCATION */}
+
+                {formattedLocation && (
+                  <div className="member-location-summary">
+
+                    <span>
+                      Full Location
+                    </span>
+
+                    <strong>
+                      {formattedLocation}
+                    </strong>
+
+                  </div>
+                )}
+
+                {/* ADDRESS */}
+
+                {profile.address && (
+                  <div className="member-location-summary">
+
+                    <span>
+                      Address
+                    </span>
+
+                    <strong>
+                      {profile.address}
+                    </strong>
+
+                  </div>
+                )}
+
+              </>
             )}
 
           </div>
@@ -689,41 +1451,42 @@ const MemberPortal: React.FC = () => {
 
           {/* INTERESTS / BIO */}
 
-          {(profile.interests ||
-            profile.bio) && (
+          {!editing &&
+            (profile.interests ||
+              profile.bio) && (
 
-            <div className="member-about">
+              <div className="member-about">
 
-              {profile.interests && (
-                <div className="member-about-box">
+                {profile.interests && (
+                  <div className="member-about-box">
 
-                  <h3>
-                    My Interests
-                  </h3>
+                    <h3>
+                      My Interests
+                    </h3>
 
-                  <p>
-                    {profile.interests}
-                  </p>
+                    <p>
+                      {profile.interests}
+                    </p>
 
-                </div>
-              )}
+                  </div>
+                )}
 
-              {profile.bio && (
-                <div className="member-about-box">
+                {profile.bio && (
+                  <div className="member-about-box">
 
-                  <h3>
-                    About Me
-                  </h3>
+                    <h3>
+                      About Me
+                    </h3>
 
-                  <p>
-                    {profile.bio}
-                  </p>
+                    <p>
+                      {profile.bio}
+                    </p>
 
-                </div>
-              )}
+                  </div>
+                )}
 
-            </div>
-          )}
+              </div>
+            )}
 
         </div>
 
