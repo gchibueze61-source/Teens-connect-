@@ -57,8 +57,7 @@ function Gallery() {
   const [description, setDescription] = useState("");
 
   const [externalUrl, setExternalUrl] = useState("");
-  const [externalPlatform, setExternalPlatform] =
-    useState("Instagram");
+  const [externalPlatform, setExternalPlatform] = useState("Instagram");
   const [externalLabel, setExternalLabel] =
     useState("View More Photos");
 
@@ -119,7 +118,9 @@ function Gallery() {
     } else {
       const grouped: Record<string, GalleryImage[]> = {};
 
-      (images || []).forEach((image) => {
+      const galleryImageRows = (images || []) as GalleryImage[];
+
+      galleryImageRows.forEach((image: GalleryImage) => {
         if (!grouped[image.gallery_item_id]) {
           grouped[image.gallery_item_id] = [];
         }
@@ -130,7 +131,7 @@ function Gallery() {
       setGalleryImages(grouped);
     }
 
-    setGalleryItems(items || []);
+    setGalleryItems((items || []) as GalleryItem[]);
     setLoading(false);
   };
 
@@ -343,10 +344,6 @@ function Gallery() {
 
       let galleryId = editingId;
 
-      /*
-       * CREATE GALLERY ITEM
-       */
-
       if (!editingId) {
         const {
           data,
@@ -378,10 +375,6 @@ function Gallery() {
 
         galleryId = data.id;
       }
-
-      /*
-       * UPLOAD IMAGES
-       */
 
       if (selectedImages.length > 0 && galleryId) {
         const uploadedImages: GalleryImage[] = [];
@@ -415,12 +408,8 @@ function Gallery() {
             throw imageInsertError;
           }
 
-          uploadedImages.push(data);
+          uploadedImages.push(data as GalleryImage);
         }
-
-        /*
-         * SET FIRST IMAGE AS COVER IMAGE
-         */
 
         if (galleryId && uploadedImages.length > 0) {
           const firstImage =
@@ -445,10 +434,6 @@ function Gallery() {
           }
         }
       }
-
-      /*
-       * UPDATE GALLERY ITEM
-       */
 
       if (editingId) {
         let finalImageUrl = imageUrl || null;
@@ -487,16 +472,18 @@ function Gallery() {
       setShowForm(false);
 
       await loadGalleryItems();
-    } catch (submitError: any) {
+    } catch (submitError: unknown) {
       console.error(
         "GALLERY SAVE ERROR:",
         submitError
       );
 
-      setError(
-        submitError?.message ||
-          "Something went wrong while saving the gallery."
-      );
+      const message =
+        submitError instanceof Error
+          ? submitError.message
+          : "Something went wrong while saving the gallery.";
+
+      setError(message);
     } finally {
       setSaving(false);
     }
@@ -539,7 +526,9 @@ function Gallery() {
       return;
     }
 
-    setExistingImages(data || []);
+    setExistingImages(
+      (data || []) as GalleryImage[]
+    );
 
     setShowForm(true);
 
@@ -574,22 +563,24 @@ function Gallery() {
 
       await deleteStorageImage(image.image_url);
 
-      setExistingImages((current) =>
-        current.filter((item) => item.id !== image.id)
+      const remainingImages = existingImages.filter(
+        (item) => item.id !== image.id
       );
+
+      setExistingImages(remainingImages);
 
       if (image.image_url === imageUrl) {
         setImageUrl(
-          existingImages.find(
-            (item) => item.id !== image.id
-          )?.image_url || ""
+          remainingImages[0]?.image_url || ""
         );
       }
-    } catch (deleteError: any) {
-      setError(
-        deleteError?.message ||
-          "Unable to delete the image."
-      );
+    } catch (deleteError: unknown) {
+      const message =
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Unable to delete the image.";
+
+      setError(message);
     }
   };
 
@@ -626,22 +617,26 @@ function Gallery() {
       }
 
       if (images) {
-        for (const image of images) {
+        for (const image of images as {
+          image_url: string | null;
+        }[]) {
           await deleteStorageImage(image.image_url);
         }
       }
 
       await loadGalleryItems();
-    } catch (deleteError: any) {
+    } catch (deleteError: unknown) {
       console.error(
         "GALLERY DELETE ERROR:",
         deleteError
       );
 
-      setError(
-        deleteError?.message ||
-          "Unable to delete the gallery item."
-      );
+      const message =
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Unable to delete the gallery item.";
+
+      setError(message);
     }
   };
 
@@ -675,13 +670,8 @@ function Gallery() {
 
   return (
     <main className="gallery-page">
-
-      {/* HEADER */}
-
       <div className="gallery-header">
-
         <div>
-
           <button
             className="back-dashboard-button"
             type="button"
@@ -702,7 +692,6 @@ function Gallery() {
             Create and manage Teens Connect Africa
             gallery collections.
           </p>
-
         </div>
 
         <button
@@ -722,10 +711,7 @@ function Gallery() {
             ? "Close Form"
             : "+ Add Gallery Item"}
         </button>
-
       </div>
-
-      {/* ERROR */}
 
       {error && (
         <div className="gallery-error">
@@ -733,11 +719,8 @@ function Gallery() {
         </div>
       )}
 
-      {/* FORM */}
-
       {showForm && (
         <section className="gallery-form-card">
-
           <h2>
             {editingId
               ? "Edit Gallery Item"
@@ -745,9 +728,7 @@ function Gallery() {
           </h2>
 
           <form onSubmit={handleSubmit}>
-
             <div className="form-field">
-
               <label htmlFor="gallery-title">
                 Gallery Title
               </label>
@@ -768,11 +749,9 @@ function Gallery() {
                   Slug: {generateSlug(title)}
                 </small>
               )}
-
             </div>
 
             <div className="form-field">
-
               <label htmlFor="gallery-category">
                 Category
               </label>
@@ -787,11 +766,9 @@ function Gallery() {
                 placeholder="e.g. Events"
                 required
               />
-
             </div>
 
             <div className="form-field">
-
               <label htmlFor="gallery-description">
                 Description
               </label>
@@ -806,13 +783,9 @@ function Gallery() {
                 rows={5}
                 required
               />
-
             </div>
 
-            {/* IMAGES */}
-
             <div className="form-field">
-
               <label htmlFor="gallery-images">
                 Gallery Images
               </label>
@@ -832,14 +805,12 @@ function Gallery() {
 
               {selectedImages.length > 0 && (
                 <div className="selected-gallery-images">
-
                   {selectedImages.map(
                     (image, index) => (
                       <div
                         className="selected-gallery-image"
                         key={image.preview}
                       >
-
                         <img
                           src={image.preview}
                           alt={`Selected ${index + 1}`}
@@ -857,35 +828,27 @@ function Gallery() {
                         >
                           Remove
                         </button>
-
                       </div>
                     )
                   )}
-
                 </div>
               )}
-
             </div>
-
-            {/* EXISTING IMAGES */}
 
             {editingId &&
               existingImages.length > 0 && (
                 <div className="form-field">
-
                   <label>
                     Existing Images
                   </label>
 
                   <div className="existing-gallery-images">
-
                     {existingImages.map(
                       (image, index) => (
                         <div
                           className="existing-gallery-image"
                           key={image.id}
                         >
-
                           <img
                             src={image.image_url}
                             alt={`Gallery ${index + 1}`}
@@ -904,20 +867,14 @@ function Gallery() {
                           >
                             Delete
                           </button>
-
                         </div>
                       )
                     )}
-
                   </div>
-
                 </div>
               )}
 
-            {/* EXTERNAL PLATFORM */}
-
             <div className="form-field">
-
               <label htmlFor="external-platform">
                 Where can users see more images?
               </label>
@@ -953,13 +910,9 @@ function Gallery() {
                   Other
                 </option>
               </select>
-
             </div>
 
-            {/* EXTERNAL URL */}
-
             <div className="form-field">
-
               <label htmlFor="external-url">
                 Social Media / Gallery Link
               </label>
@@ -979,13 +932,9 @@ function Gallery() {
                 The public gallery will use this link
                 for the "View More Photos" button.
               </small>
-
             </div>
 
-            {/* LINK LABEL */}
-
             <div className="form-field">
-
               <label htmlFor="external-label">
                 Link Button Text
               </label>
@@ -999,13 +948,9 @@ function Gallery() {
                 }
                 placeholder="View More Photos"
               />
-
             </div>
 
-            {/* STATUS */}
-
             <div className="form-field">
-
               <label htmlFor="gallery-status">
                 Status
               </label>
@@ -1025,15 +970,10 @@ function Gallery() {
                   Published
                 </option>
               </select>
-
             </div>
 
-            {/* OPTIONS */}
-
             <div className="gallery-options">
-
               <label className="gallery-checkbox">
-
                 <input
                   type="checkbox"
                   checked={featured}
@@ -1045,11 +985,9 @@ function Gallery() {
                 <span>
                   Featured
                 </span>
-
               </label>
 
               <label className="gallery-checkbox">
-
                 <input
                   type="checkbox"
                   checked={homepage}
@@ -1061,15 +999,10 @@ function Gallery() {
                 <span>
                   Show on Homepage
                 </span>
-
               </label>
-
             </div>
 
-            {/* ACTIONS */}
-
             <div className="form-actions">
-
               <button
                 type="submit"
                 className="save-gallery-button"
@@ -1092,20 +1025,13 @@ function Gallery() {
               >
                 Cancel
               </button>
-
             </div>
-
           </form>
-
         </section>
       )}
 
-      {/* GALLERY LIST */}
-
       <section className="galleries-list">
-
         <div className="section-heading">
-
           <h2>
             All Gallery Items
           </h2>
@@ -1116,19 +1042,14 @@ function Gallery() {
               ? "s"
               : ""}
           </span>
-
         </div>
 
         {loading ? (
-
           <div className="galleries-loading">
             Loading gallery...
           </div>
-
         ) : galleryItems.length === 0 ? (
-
           <div className="galleries-empty">
-
             <h3>
               No gallery items yet
             </h3>
@@ -1137,15 +1058,10 @@ function Gallery() {
               Click "Add Gallery Item" to create
               your first gallery collection.
             </p>
-
           </div>
-
         ) : (
-
           <div className="galleries-grid">
-
             {galleryItems.map((item) => {
-
               const images =
                 galleryImages[item.id] || [];
 
@@ -1154,30 +1070,21 @@ function Gallery() {
                   className="gallery-card"
                   key={item.id}
                 >
-
-                  {/* COVER */}
-
                   {item.image_url ? (
-
                     <img
                       src={item.image_url}
                       alt={item.title}
                       className="gallery-image"
                       loading="lazy"
                     />
-
                   ) : (
-
                     <div className="gallery-image-placeholder">
                       No image
                     </div>
-
                   )}
 
                   <div className="gallery-card-content">
-
                     <div className="gallery-card-top">
-
                       <span className="gallery-category">
                         {item.category ||
                           "General"}
@@ -1192,7 +1099,6 @@ function Gallery() {
                       >
                         {item.status}
                       </span>
-
                     </div>
 
                     {item.featured && (
@@ -1218,7 +1124,6 @@ function Gallery() {
                     </div>
 
                     <div className="gallery-external-info">
-
                       <span>
                         More images:
                       </span>
@@ -1227,11 +1132,9 @@ function Gallery() {
                         {item.external_platform ||
                           "External Link"}
                       </strong>
-
                     </div>
 
                     <div className="gallery-card-actions">
-
                       <button
                         type="button"
                         className="edit-gallery-button"
@@ -1263,21 +1166,14 @@ function Gallery() {
                       >
                         Delete
                       </button>
-
                     </div>
-
                   </div>
-
                 </article>
               );
             })}
-
           </div>
-
         )}
-
       </section>
-
     </main>
   );
 }
