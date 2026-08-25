@@ -82,14 +82,14 @@ const Register: React.FC = () => {
     full_name: "",
     email: "",
     password: "",
+    age: "",
     phone: "",
     country: "",
     state: "",
     lga: "",
     city: "",
-    community: "",
-    address: "",
     location: "",
+    address: "",
     school: "",
     interests: "",
     bio: "",
@@ -196,9 +196,8 @@ const Register: React.FC = () => {
       state: "",
       lga: "",
       city: "",
-      community: "",
+      location: "",
       address: "",
-      location: country?.name || "",
     }));
   };
 
@@ -219,60 +218,16 @@ const Register: React.FC = () => {
       state: selectedState?.name || "",
       lga: "",
       city: "",
-      community: "",
-      address: "",
-      location: [
-        selectedState?.name,
-        previous.country,
-      ]
-        .filter(Boolean)
-        .join(", "),
     }));
   };
 
   const handleCityChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const cityName = e.target.value;
-
     setFormData((previous) => ({
       ...previous,
-      city: cityName,
-      location: [
-        cityName,
-        previous.state,
-        previous.country,
-      ]
-        .filter(Boolean)
-        .join(", "),
+      city: e.target.value,
     }));
-  };
-
-  const handleLocationDetailChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value } = e.target;
-
-    setFormData((previous) => {
-      const updated = {
-        ...previous,
-        [name]: value,
-      };
-
-      updated.location = [
-        updated.community,
-        updated.city,
-        updated.lga,
-        updated.state,
-        updated.country,
-      ]
-        .filter(Boolean)
-        .join(", ");
-
-      return updated;
-    });
   };
 
   const handleSubmit = async (
@@ -300,6 +255,9 @@ const Register: React.FC = () => {
       const password =
         formData.password;
 
+      const age =
+        Number(formData.age);
+
       const phone =
         formData.phone.trim();
 
@@ -315,8 +273,8 @@ const Register: React.FC = () => {
       const city =
         formData.city.trim();
 
-      const community =
-        formData.community.trim();
+      const location =
+        formData.location.trim();
 
       const address =
         formData.address.trim();
@@ -345,6 +303,16 @@ const Register: React.FC = () => {
       if (password.length < 6) {
         throw new Error(
           "Password must be at least 6 characters."
+        );
+      }
+
+      if (
+        !Number.isInteger(age) ||
+        age < 10 ||
+        age > 100
+      ) {
+        throw new Error(
+          "Please enter a valid age."
         );
       }
 
@@ -378,15 +346,15 @@ const Register: React.FC = () => {
         );
       }
 
-      if (!community) {
+      if (!location) {
         throw new Error(
-          "Please enter your community."
+          "Please enter your present location."
         );
       }
 
       if (!address) {
         throw new Error(
-          "Please enter your address."
+          "Please enter your residential address."
         );
       }
 
@@ -414,11 +382,8 @@ const Register: React.FC = () => {
       }
 
       /*
-       * ------------------------------------------------
-       * CHECK WHETHER ADMIN ALREADY CREATED PROFILE
-       * ------------------------------------------------
+       * CHECK FOR ADMIN-PRECREATED PROFILE
        */
-
       const {
         data: existingProfile,
         error: existingProfileError,
@@ -433,11 +398,8 @@ const Register: React.FC = () => {
       }
 
       /*
-       * ------------------------------------------------
        * CREATE AUTH ACCOUNT
-       * ------------------------------------------------
        */
-
       const {
         data: authData,
         error: authError,
@@ -461,11 +423,8 @@ const Register: React.FC = () => {
         authData.user.id;
 
       /*
-       * ------------------------------------------------
        * PROFILE IMAGE
-       * ------------------------------------------------
        */
-
       let profileImageUrl =
         existingProfile?.profile_image_url ||
         null;
@@ -520,31 +479,8 @@ const Register: React.FC = () => {
       }
 
       /*
-       * ------------------------------------------------
-       * FINAL LOCATION
-       * ------------------------------------------------
-       */
-
-      const location = [
-        community,
-        city,
-        lga,
-        state,
-        country,
-      ]
-        .filter(Boolean)
-        .join(", ");
-
-      /*
-       * ------------------------------------------------
        * PROFILE DATA
-       *
-       * IMPORTANT:
-       * profiles.id is NOT auth_user_id.
-       * This prevents profiles_pkey conflicts.
-       * ------------------------------------------------
        */
-
       const profileData = {
         auth_user_id:
           authUserId,
@@ -553,6 +489,8 @@ const Register: React.FC = () => {
           fullName,
 
         email,
+
+        age,
 
         phone,
 
@@ -564,11 +502,9 @@ const Register: React.FC = () => {
 
         city,
 
-        community,
+        location,
 
         address,
-
-        location,
 
         school,
 
@@ -581,9 +517,6 @@ const Register: React.FC = () => {
 
         role: "member",
 
-        /*
-         * NEW USERS MUST WAIT FOR ADMIN.
-         */
         status:
           existingProfile?.status ===
           "active"
@@ -595,14 +528,8 @@ const Register: React.FC = () => {
       };
 
       /*
-       * ------------------------------------------------
        * ADMIN PRE-CREATED MEMBER
-       *
-       * Update the existing row instead of inserting
-       * another row.
-       * ------------------------------------------------
        */
-
       if (existingProfile) {
         const {
           error: updateError,
@@ -615,24 +542,13 @@ const Register: React.FC = () => {
           );
 
         if (updateError) {
-          console.error(
-            "PROFILE UPDATE ERROR:",
-            updateError
-          );
-
           throw updateError;
         }
       }
 
       /*
-       * ------------------------------------------------
-       * COMPLETELY NEW MEMBER
-       *
-       * Do NOT specify profiles.id.
-       * PostgreSQL generates it.
-       * ------------------------------------------------
+       * NEW MEMBER
        */
-
       else {
         const {
           error: insertError,
@@ -643,20 +559,13 @@ const Register: React.FC = () => {
           });
 
         if (insertError) {
-          console.error(
-            "PROFILE INSERT ERROR:",
-            insertError
-          );
-
           /*
-           * A trigger or another process may already
-           * have created the profile using auth_user_id.
-           *
-           * Try one final update instead of failing.
+           * Recover if another process already
+           * created the profile.
            */
-
           const {
-            data: profileCreatedElsewhere,
+            data:
+              profileCreatedElsewhere,
           } = await supabase
             .from("profiles")
             .select("id")
@@ -693,23 +602,12 @@ const Register: React.FC = () => {
       }
 
       /*
-       * ------------------------------------------------
        * GET CURRENT SESSION
-       * ------------------------------------------------
        */
-
       const {
         data: sessionData,
       } =
         await supabase.auth.getSession();
-
-      /*
-       * ------------------------------------------------
-       * EMAIL CONFIRMATION SHOULD BE DISABLED
-       *
-       * Therefore a session should exist immediately.
-       * ------------------------------------------------
-       */
 
       if (!sessionData.session) {
         setMessage(
@@ -717,17 +615,8 @@ const Register: React.FC = () => {
         );
 
         setMessageType("error");
-
-        setLoading(false);
-
         return;
       }
-
-      /*
-       * ------------------------------------------------
-       * DIRECTLY ENTER MEMBER PORTAL
-       * ------------------------------------------------
-       */
 
       setMessage(
         "Registration successful! Your membership is awaiting admin approval."
@@ -763,9 +652,7 @@ const Register: React.FC = () => {
 
   return (
     <main className="register-page">
-
       <div className="register-container">
-
         <div className="register-card">
 
           <div className="register-header">
@@ -847,6 +734,24 @@ const Register: React.FC = () => {
               <small>
                 At least 6 characters.
               </small>
+            </div>
+
+            <div className="register-field">
+              <label htmlFor="age">
+                Age
+              </label>
+
+              <input
+                id="age"
+                name="age"
+                type="number"
+                min="10"
+                max="100"
+                placeholder="Enter your age"
+                value={formData.age}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="register-field">
@@ -950,9 +855,7 @@ const Register: React.FC = () => {
                   value={
                     formData.state
                   }
-                  onChange={
-                    handleChange
-                  }
+                  onChange={handleChange}
                   disabled={
                     !selectedCountryCode
                   }
@@ -974,9 +877,7 @@ const Register: React.FC = () => {
                 value={
                   formData.lga
                 }
-                onChange={
-                  handleLocationDetailChange
-                }
+                onChange={handleChange}
                 disabled={
                   !selectedCountryCode
                 }
@@ -1029,9 +930,7 @@ const Register: React.FC = () => {
                   value={
                     formData.city
                   }
-                  onChange={
-                    handleLocationDetailChange
-                  }
+                  onChange={handleChange}
                   disabled={
                     !selectedCountryCode
                   }
@@ -1041,60 +940,40 @@ const Register: React.FC = () => {
             </div>
 
             <div className="register-field">
-              <label htmlFor="community">
-                Community
+              <label htmlFor="location">
+                Present Location
               </label>
 
               <input
-                id="community"
-                name="community"
+                id="location"
+                name="location"
                 type="text"
-                placeholder="Enter your community"
+                placeholder="Where do you currently live?"
                 value={
-                  formData.community
+                  formData.location
                 }
-                onChange={
-                  handleLocationDetailChange
-                }
+                onChange={handleChange}
                 required
               />
             </div>
 
             <div className="register-field">
               <label htmlFor="address">
-                Address
+                Residential Address
               </label>
 
               <input
                 id="address"
                 name="address"
                 type="text"
-                placeholder="Enter your address"
+                placeholder="Enter your residential address"
                 value={
                   formData.address
                 }
-                onChange={
-                  handleLocationDetailChange
-                }
+                onChange={handleChange}
                 required
               />
             </div>
-
-            {formData.location && (
-              <div className="register-field">
-                <label>
-                  Your Location
-                </label>
-
-                <input
-                  type="text"
-                  value={
-                    formData.location
-                  }
-                  readOnly
-                />
-              </div>
-            )}
 
             <div className="register-field">
               <label htmlFor="school">
@@ -1223,9 +1102,7 @@ const Register: React.FC = () => {
           </button>
 
         </div>
-
       </div>
-
     </main>
   );
 };
