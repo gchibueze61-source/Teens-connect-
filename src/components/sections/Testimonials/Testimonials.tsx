@@ -31,7 +31,7 @@ const testimonials = [
   {
     id: 3,
     name: "Obize Gospel",
-    role: "Tech Enthusiast and Teen Member",
+    role: "Web Developer, AI Generalistand Teen Member",
     image: testimonial3,
     rating: 5,
     message:
@@ -60,8 +60,8 @@ const testimonials = [
 
   {
     id: 6,
-    name: "Abraham O.",
-    role: "Auto engineer and Teen Member",
+    name: "Abraham Obidike.",
+    role: "Teen Member",
     image: testimonial6,
     rating: 5,
     message:

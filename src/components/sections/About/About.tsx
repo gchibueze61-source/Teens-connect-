@@ -40,7 +40,7 @@ equality, decent, work and economic growth and partnership for the goals.
           <div className="about-card">
             <h3>Our Impact</h3>
             <p>
-              Through online and physical programs, we  have connected with  teenagers in  lagos,abuja starting from Zuba community.
+              Through online and physical programs, we  have connected with  teenagers in  Lagos,Abuja starting from Zuba community.
             we have given teenagrs access to  mentors, scholarships, career guidance and a supportive
               community.
             </p>
