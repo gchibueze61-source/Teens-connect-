@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useNavigate } from "react-router-dom";
 import countries from "world-countries";
 import { supabase } from "../../lib/supabase";
 import "./Membership.css";
@@ -7,11 +12,14 @@ interface Member {
   id: string;
   full_name: string;
   email: string;
+  age: number | null;
   phone: string | null;
   location: string | null;
+  address: string | null;
   school: string | null;
   interests: string | null;
   bio: string | null;
+  profile_image_url: string | null;
   role: string;
   status: string;
   created_at: string;
@@ -21,19 +29,19 @@ interface Member {
   lga: string | null;
   city: string | null;
   community: string | null;
-  address: string | null;
   auth_user_id: string | null;
 }
 
 interface FormData {
   full_name: string;
   email: string;
+  age: string;
   phone: string;
   country: string;
   state: string;
   lga: string;
   city: string;
-  community: string;
+  location: string;
   address: string;
   school: string;
   interests: string;
@@ -41,31 +49,27 @@ interface FormData {
   status: string;
 }
 
-interface LocationData {
-  states: string[];
-  lgas: Record<string, string[]>;
-}
-
-/*
- * Get African countries directly from world-countries.
- * This means you no longer have to manually maintain
- * the African country list.
- */
 const AFRICAN_COUNTRIES = countries
-  .filter((country) => country.region === "Africa")
+  .filter(
+    (country) =>
+      country.region === "Africa"
+  )
   .sort((a, b) =>
-    a.name.common.localeCompare(b.name.common)
+    a.name.common.localeCompare(
+      b.name.common
+    )
   );
 
 const emptyForm: FormData = {
   full_name: "",
   email: "",
+  age: "",
   phone: "",
   country: "",
   state: "",
   lga: "",
   city: "",
-  community: "",
+  location: "",
   address: "",
   school: "",
   interests: "",
@@ -73,542 +77,76 @@ const emptyForm: FormData = {
   status: "pending",
 };
 
-/*
- * Location data currently available in the application.
- *
- * Countries not listed here will still work.
- * Their state/region and district fields will become
- * normal text inputs instead of select boxes.
- */
-const LOCATION_OPTIONS: Record<string, LocationData> = {
-  Nigeria: {
-    states: [
-      "Abia",
-      "Adamawa",
-      "Akwa Ibom",
-      "Anambra",
-      "Bauchi",
-      "Bayelsa",
-      "Benue",
-      "Borno",
-      "Cross River",
-      "Delta",
-      "Ebonyi",
-      "Edo",
-      "Ekiti",
-      "Enugu",
-      "Gombe",
-      "Imo",
-      "Jigawa",
-      "Kaduna",
-      "Kano",
-      "Katsina",
-      "Kebbi",
-      "Kogi",
-      "Kwara",
-      "Lagos",
-      "Nasarawa",
-      "Niger",
-      "Ogun",
-      "Ondo",
-      "Osun",
-      "Oyo",
-      "Plateau",
-      "Rivers",
-      "Sokoto",
-      "Taraba",
-      "Yobe",
-      "Zamfara",
-      "Federal Capital Territory",
-    ],
-
-    lgas: {
-      "Federal Capital Territory": [
-        "Abaji",
-        "Abuja Municipal Area Council",
-        "Bwari",
-        "Gwagwalada",
-        "Kuje",
-        "Kwali",
-      ],
-
-      Abia: [
-        "Aba North",
-        "Aba South",
-        "Arochukwu",
-        "Bende",
-        "Ikwuano",
-        "Isiala Ngwa North",
-        "Isiala Ngwa South",
-        "Isuikwuato",
-        "Obi Ngwa",
-        "Ohafia",
-        "Osisioma",
-        "Ugwunagbo",
-        "Ukwa East",
-        "Ukwa West",
-        "Umuahia North",
-        "Umuahia South",
-        "Umunneochi",
-      ],
-
-      Anambra: [
-        "Aguata",
-        "Awka North",
-        "Awka South",
-        "Anambra East",
-        "Anambra West",
-        "Anaocha",
-        "Dunukofia",
-        "Ekwusigo",
-        "Idemili North",
-        "Idemili South",
-        "Ihiala",
-        "Njikoka",
-        "Nnewi North",
-        "Nnewi South",
-        "Ogbaru",
-        "Onitsha North",
-        "Onitsha South",
-        "Orumba North",
-        "Orumba South",
-        "Oyi",
-      ],
-
-      Lagos: [
-        "Agege",
-        "Ajeromi-Ifelodun",
-        "Alimosho",
-        "Amuwo-Odofin",
-        "Apapa",
-        "Badagry",
-        "Epe",
-        "Eti-Osa",
-        "Ibeju-Lekki",
-        "Ifako-Ijaiye",
-        "Ikeja",
-        "Ikorodu",
-        "Kosofe",
-        "Lagos Island",
-        "Lagos Mainland",
-        "Mushin",
-        "Ojo",
-        "Oshodi-Isolo",
-        "Shomolu",
-        "Surulere",
-      ],
-
-      Rivers: [
-        "Abua-Odual",
-        "Ahoada East",
-        "Ahoada West",
-        "Akuku-Toru",
-        "Andoni",
-        "Asari-Toru",
-        "Bonny",
-        "Degema",
-        "Eleme",
-        "Emohua",
-        "Etche",
-        "Gokana",
-        "Ikwerre",
-        "Khana",
-        "Obio-Akpor",
-        "Ogba-Egbema-Ndoni",
-        "Ogu-Bolo",
-        "Okrika",
-        "Omuma",
-        "Opobo-Nkoro",
-        "Oyigbo",
-        "Port Harcourt",
-        "Tai",
-      ],
-
-      Enugu: [
-        "Aninri",
-        "Awgu",
-        "Enugu East",
-        "Enugu North",
-        "Enugu South",
-        "Ezeagu",
-        "Igbo-Etiti",
-        "Igbo-Eze North",
-        "Igbo-Eze South",
-        "Isi-Uzo",
-        "Nkanu East",
-        "Nkanu West",
-        "Nsukka",
-        "Oji River",
-        "Udenu",
-        "Udi",
-        "Uzo-Uwani",
-      ],
-    },
-  },
-
-  Ghana: {
-    states: [
-      "Greater Accra",
-      "Ashanti",
-      "Brong-Ahafo",
-      "Central",
-      "Eastern",
-      "Northern",
-      "North East",
-      "Oti",
-      "Savannah",
-      "Upper East",
-      "Upper West",
-      "Volta",
-      "Western",
-      "Western North",
-    ],
-    lgas: {},
-  },
-
-  Kenya: {
-    states: [
-      "Nairobi",
-      "Mombasa",
-      "Kisumu",
-      "Nakuru",
-      "Kiambu",
-      "Machakos",
-      "Kajiado",
-      "Uasin Gishu",
-      "Kakamega",
-      "Meru",
-      "Nyeri",
-      "Kilifi",
-      "Bungoma",
-      "Murang'a",
-      "Narok",
-      "Bomet",
-      "Kericho",
-      "Laikipia",
-      "Nandi",
-      "Trans Nzoia",
-    ],
-    lgas: {},
-  },
-
-  "South Africa": {
-    states: [
-      "Eastern Cape",
-      "Free State",
-      "Gauteng",
-      "KwaZulu-Natal",
-      "Limpopo",
-      "Mpumalanga",
-      "Northern Cape",
-      "North West",
-      "Western Cape",
-    ],
-    lgas: {},
-  },
-
-  Tanzania: {
-    states: [
-      "Arusha",
-      "Dar es Salaam",
-      "Dodoma",
-      "Geita",
-      "Iringa",
-      "Kagera",
-      "Katavi",
-      "Kigoma",
-      "Kilimanjaro",
-      "Lindi",
-      "Manyara",
-      "Mara",
-      "Mbeya",
-      "Morogoro",
-      "Mtwara",
-      "Mwanza",
-      "Njombe",
-      "Pemba North",
-      "Pemba South",
-      "Pwani",
-      "Rukwa",
-      "Ruvuma",
-      "Shinyanga",
-      "Simiyu",
-      "Singida",
-      "Songwe",
-      "Tabora",
-      "Tanga",
-      "Zanzibar North",
-      "Zanzibar South",
-      "Zanzibar West",
-    ],
-    lgas: {},
-  },
-
-  Uganda: {
-    states: [
-      "Central Region",
-      "Eastern Region",
-      "Northern Region",
-      "Western Region",
-      "Kampala",
-    ],
-    lgas: {},
-  },
-
-  Rwanda: {
-    states: [
-      "Kigali",
-      "Eastern Province",
-      "Northern Province",
-      "Southern Province",
-      "Western Province",
-    ],
-    lgas: {},
-  },
-
-  Cameroon: {
-    states: [
-      "Adamawa",
-      "Centre",
-      "East",
-      "Far North",
-      "Littoral",
-      "North",
-      "North-West",
-      "South",
-      "South-West",
-      "West",
-    ],
-    lgas: {},
-  },
-
-  Ethiopia: {
-    states: [
-      "Addis Ababa",
-      "Afar",
-      "Amhara",
-      "Benishangul-Gumuz",
-      "Central Ethiopia",
-      "Dire Dawa",
-      "Gambela",
-      "Harari",
-      "Oromia",
-      "Sidama",
-      "Somali",
-      "South Ethiopia",
-      "South West Ethiopia",
-      "Tigray",
-    ],
-    lgas: {},
-  },
-
-  Zambia: {
-    states: [
-      "Central",
-      "Copperbelt",
-      "Eastern",
-      "Luapula",
-      "Lusaka",
-      "Muchinga",
-      "Northern",
-      "North-Western",
-      "Southern",
-      "Western",
-    ],
-    lgas: {},
-  },
-
-  Zimbabwe: {
-    states: [
-      "Bulawayo",
-      "Harare",
-      "Manicaland",
-      "Mashonaland Central",
-      "Mashonaland East",
-      "Mashonaland West",
-      "Masvingo",
-      "Matabeleland North",
-      "Matabeleland South",
-      "Midlands",
-    ],
-    lgas: {},
-  },
-
-  Botswana: {
-    states: [
-      "Central",
-      "Chobe",
-      "Francistown",
-      "Gaborone",
-      "Ghanzi",
-      "Kgalagadi",
-      "Kgatleng",
-      "Kweneng",
-      "North East",
-      "North West",
-      "South East",
-      "Southern",
-    ],
-    lgas: {},
-  },
-
-  Namibia: {
-    states: [
-      "Erongo",
-      "Hardap",
-      "Karas",
-      "Kavango East",
-      "Kavango West",
-      "Khomas",
-      "Kunene",
-      "Ohangwena",
-      "Omaheke",
-      "Omusati",
-      "Oshana",
-      "Oshikoto",
-      "Otjozondjupa",
-      "Zambezi",
-    ],
-    lgas: {},
-  },
-
-  Malawi: {
-    states: [
-      "Central Region",
-      "Northern Region",
-      "Southern Region",
-    ],
-    lgas: {},
-  },
-
-  Mozambique: {
-    states: [
-      "Cabo Delgado",
-      "Gaza",
-      "Inhambane",
-      "Manica",
-      "Maputo",
-      "Maputo City",
-      "Nampula",
-      "Niassa",
-      "Sofala",
-      "Tete",
-      "Zambezia",
-    ],
-    lgas: {},
-  },
-
-  Senegal: {
-    states: [
-      "Dakar",
-      "Diourbel",
-      "Fatick",
-      "Kaffrine",
-      "Kaolack",
-      "Kedougou",
-      "Kolda",
-      "Louga",
-      "Matam",
-      "Saint-Louis",
-      "Sedhiou",
-      "Tambacounda",
-      "Thies",
-      "Ziguinchor",
-    ],
-    lgas: {},
-  },
-
-  "Ivory Coast": {
-    states: [
-      "Abidjan",
-      "Bas-Sassandra",
-      "Comoe",
-      "Denguele",
-      "Goh-Djiboua",
-      "Lacs",
-      "Lagunes",
-      "Montagnes",
-      "Sassandra-Marahoue",
-      "Savanes",
-      "Vallee du Bandama",
-      "Woroba",
-      "Yamoussoukro",
-      "Zanzan",
-    ],
-    lgas: {},
-  },
-
-  Egypt: {
-    states: [
-      "Cairo",
-      "Alexandria",
-      "Giza",
-      "Qalyubia",
-      "Port Said",
-      "Suez",
-      "Luxor",
-      "Aswan",
-      "Red Sea",
-      "Beheira",
-      "Dakahlia",
-      "Damietta",
-      "Fayoum",
-      "Gharbia",
-      "Ismailia",
-      "Kafr El Sheikh",
-      "Matrouh",
-      "Minya",
-      "Monufia",
-      "New Valley",
-      "North Sinai",
-      "Qena",
-      "Sharqia",
-      "Sohag",
-      "South Sinai",
-    ],
-    lgas: {},
-  },
-};
-
 const Membership: React.FC = () => {
-  const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState<string | null>(null);
-  const [updating, setUpdating] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [members, setMembers] =
+    useState<Member[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [deleting, setDeleting] =
+    useState<string | null>(null);
+
+  const [updating, setUpdating] =
+    useState<string | null>(null);
+
+  const [showAddForm, setShowAddForm] =
+    useState(false);
+
+  const [showEditForm, setShowEditForm] =
+    useState(false);
 
   const [editingMember, setEditingMember] =
     useState<Member | null>(null);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] =
+    useState("");
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
 
   const [formData, setFormData] =
     useState<FormData>(emptyForm);
 
-  const [nameSuggestions, setNameSuggestions] =
-    useState<Member[]>([]);
-
   const [duplicateMember, setDuplicateMember] =
     useState<Member | null>(null);
 
+  const [nameSuggestions, setNameSuggestions] =
+    useState<Member[]>([]);
+
+  /*
+   * LOAD ALL EXISTING MEMBERS
+   */
   const loadMembers = async () => {
     setLoading(true);
+    setError("");
 
     try {
-      const { data, error } = await supabase
+      const {
+        data,
+        error: fetchError,
+      } = await supabase
         .from("profiles")
         .select(`
           id,
           full_name,
           email,
+          age,
           phone,
           location,
+          address,
           school,
           interests,
           bio,
+          profile_image_url,
           role,
           status,
           created_at,
@@ -618,25 +156,36 @@ const Membership: React.FC = () => {
           lga,
           city,
           community,
-          address,
           auth_user_id
         `)
-        .order("created_at", { ascending: false });
+        .order(
+          "created_at",
+          {
+            ascending: false,
+          }
+        );
 
-      if (error) {
-        throw error;
+      if (fetchError) {
+        throw fetchError;
       }
 
-      setMembers((data || []) as Member[]);
-    } catch (error: any) {
-      console.error("LOAD MEMBERS ERROR:", error);
+      setMembers(
+        (data || []) as Member[]
+      );
 
-      alert(
-        error?.message ||
+    } catch (loadError: any) {
+      console.error(
+        "LOAD MEMBERS ERROR:",
+        loadError
+      );
+
+      setError(
+        loadError?.message ||
           "Unable to load members."
       );
 
       setMembers([]);
+
     } finally {
       setLoading(false);
     }
@@ -646,6 +195,9 @@ const Membership: React.FC = () => {
     loadMembers();
   }, []);
 
+  /*
+   * HANDLE FORM CHANGES
+   */
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement |
@@ -653,124 +205,200 @@ const Membership: React.FC = () => {
       HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
+    const {
+      name,
+      value,
+    } = e.target;
 
-    if (name === "country") {
-      setFormData((previous) => ({
+    setFormData(
+      (previous) => ({
         ...previous,
-        country: value,
-        state: "",
-        lga: "",
-        city: "",
-        community: "",
-      }));
-
-      setDuplicateMember(null);
-      return;
-    }
-
-    if (name === "state") {
-      setFormData((previous) => ({
-        ...previous,
-        state: value,
-        lga: "",
-      }));
-
-      return;
-    }
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
+        [name]: value,
+      })
+    );
 
     if (name === "full_name") {
-      const typedName = value.trim().toLowerCase();
+      const searchName =
+        value
+          .trim()
+          .toLowerCase();
 
-      if (typedName.length < 2) {
+      if (searchName.length >= 2) {
+        setNameSuggestions(
+          members
+            .filter(
+              (member) =>
+                member.full_name
+                  ?.toLowerCase()
+                  .includes(searchName)
+            )
+            .slice(0, 5)
+        );
+      } else {
         setNameSuggestions([]);
-        return;
       }
-
-      const suggestions = members
-        .filter((member) =>
-          member.full_name
-            ?.toLowerCase()
-            .includes(typedName)
-        )
-        .slice(0, 5);
-
-      setNameSuggestions(suggestions);
     }
 
     if (name === "email") {
-      const typedEmail = value.trim().toLowerCase();
+      const email =
+        value
+          .trim()
+          .toLowerCase();
 
-      if (!typedEmail) {
-        setDuplicateMember(null);
-        return;
-      }
+      const existing =
+        members.find(
+          (member) =>
+            member.email
+              ?.trim()
+              .toLowerCase() ===
+            email
+        );
 
-      const existing = members.find(
-        (member) =>
-          member.email?.trim().toLowerCase() ===
-            typedEmail &&
-          member.id !== editingMember?.id
+      setDuplicateMember(
+        existing || null
       );
-
-      setDuplicateMember(existing || null);
     }
   };
 
-  const selectExistingMember = (member: Member) => {
+  /*
+   * SELECT EXISTING MEMBER
+   */
+  const selectExistingMember = (
+    member: Member
+  ) => {
     setFormData({
-      full_name: member.full_name || "",
-      email: member.email || "",
-      phone: member.phone || "",
-      country: member.country || "",
-      state: member.state || "",
-      lga: member.lga || "",
-      city: member.city || "",
-      community: member.community || "",
-      address: member.address || "",
-      school: member.school || "",
-      interests: member.interests || "",
-      bio: member.bio || "",
-      status: member.status || "pending",
+      full_name:
+        member.full_name || "",
+
+      email:
+        member.email || "",
+
+      age:
+        member.age !== null &&
+        member.age !== undefined
+          ? String(member.age)
+          : "",
+
+      phone:
+        member.phone || "",
+
+      country:
+        member.country || "",
+
+      state:
+        member.state || "",
+
+      lga:
+        member.lga || "",
+
+      city:
+        member.city || "",
+
+      location:
+        member.location || "",
+
+      address:
+        member.address || "",
+
+      school:
+        member.school || "",
+
+      interests:
+        member.interests || "",
+
+      bio:
+        member.bio || "",
+
+      status:
+        member.status ||
+        "pending",
     });
 
-    setNameSuggestions([]);
     setDuplicateMember(member);
+    setNameSuggestions([]);
   };
 
+  /*
+   * ADD MEMBER
+   */
   const handleAddMember = async (
-    e: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>
   ) => {
-    e.preventDefault();
+    event.preventDefault();
 
-    const fullName = formData.full_name.trim();
-    const email = formData.email.trim().toLowerCase();
+    setError("");
+    setSuccess("");
+
+    const fullName =
+      formData.full_name.trim();
+
+    const email =
+      formData.email
+        .trim()
+        .toLowerCase();
+
+    const age =
+      Number(formData.age);
 
     if (!fullName) {
-      alert("Please enter the member's full name.");
+      setError(
+        "Full name is required."
+      );
       return;
     }
 
     if (!email) {
-      alert("Please enter the member's email.");
+      setError(
+        "Email address is required."
+      );
       return;
     }
 
-    const localExisting = members.find(
-      (member) =>
-        member.email?.trim().toLowerCase() === email
-    );
+    if (
+      !Number.isInteger(age) ||
+      age < 10 ||
+      age > 100
+    ) {
+      setError(
+        "Please enter a valid age."
+      );
+      return;
+    }
 
-    if (localExisting) {
-      setDuplicateMember(localExisting);
+    /*
+     * CHECK DUPLICATE BEFORE INSERT
+     */
+    const {
+      data: existingMember,
+      error: duplicateError,
+    } = await supabase
+      .from("profiles")
+      .select(
+        "id, full_name, email"
+      )
+      .ilike(
+        "email",
+        email
+      )
+      .maybeSingle();
 
-      alert(
-        `This member already exists.\n\nName: ${localExisting.full_name}\nEmail: ${localExisting.email}`
+    if (duplicateError) {
+      setError(
+        duplicateError.message
+      );
+      return;
+    }
+
+    if (existingMember) {
+      const member =
+        existingMember as Member;
+
+      setDuplicateMember(
+        member
+      );
+
+      setError(
+        `This member already exists: ${existingMember.full_name} (${existingMember.email}).`
       );
 
       return;
@@ -780,101 +408,90 @@ const Membership: React.FC = () => {
 
     try {
       const {
-        data: existingMember,
-        error: checkError,
+        error: insertError,
       } = await supabase
         .from("profiles")
-        .select(`
-          id,
-          full_name,
-          email,
-          phone,
-          location,
-          school,
-          interests,
-          bio,
-          role,
-          status,
-          created_at,
-          updated_at,
-          country,
-          state,
-          lga,
-          city,
-          community,
-          address,
-          auth_user_id
-        `)
-        .ilike("email", email)
-        .maybeSingle();
-
-      if (checkError) {
-        throw checkError;
-      }
-
-      if (existingMember) {
-        setDuplicateMember(existingMember as Member);
-
-        alert(
-          `This member already exists.\n\nName: ${existingMember.full_name}\nEmail: ${existingMember.email}`
-        );
-
-        await loadMembers();
-        return;
-      }
-
-      const location = [
-        formData.community.trim(),
-        formData.city.trim(),
-        formData.lga.trim(),
-        formData.state.trim(),
-        formData.country.trim(),
-      ]
-        .filter(Boolean)
-        .join(", ");
-
-      const { error } = await supabase
-        .from("profiles")
         .insert({
-          full_name: fullName,
+          full_name:
+            fullName,
+
           email,
-          phone: formData.phone.trim() || null,
-          country: formData.country.trim() || null,
-          state: formData.state.trim() || null,
-          lga: formData.lga.trim() || null,
-          city: formData.city.trim() || null,
-          community:
-            formData.community.trim() || null,
-          address: formData.address.trim() || null,
-          location: location || null,
-          school: formData.school.trim() || null,
+
+          age,
+
+          phone:
+            formData.phone.trim() ||
+            null,
+
+          country:
+            formData.country.trim() ||
+            null,
+
+          state:
+            formData.state.trim() ||
+            null,
+
+          lga:
+            formData.lga.trim() ||
+            null,
+
+          city:
+            formData.city.trim() ||
+            null,
+
+          location:
+            formData.location.trim() ||
+            null,
+
+          address:
+            formData.address.trim() ||
+            null,
+
+          school:
+            formData.school.trim() ||
+            null,
+
           interests:
-            formData.interests.trim() || null,
-          bio: formData.bio.trim() || null,
+            formData.interests.trim() ||
+            null,
+
+          bio:
+            formData.bio.trim() ||
+            null,
+
           role: "member",
-          status: formData.status || "pending",
-          auth_user_id: null,
+
+          status:
+            formData.status ||
+            "pending",
         });
 
-      if (error) {
-        throw error;
+      if (insertError) {
+        throw insertError;
       }
 
-      alert(
-        `Member added successfully.\n\n${fullName} has been added to the membership list.\n\nNo password or account was created.`
+      setSuccess(
+        "Member was successfully added."
       );
 
-      setFormData(emptyForm);
-      setNameSuggestions([]);
+      setFormData(
+        emptyForm
+      );
+
       setDuplicateMember(null);
+      setNameSuggestions([]);
       setShowAddForm(false);
 
       await loadMembers();
-    } catch (error: any) {
-      console.error("ADD MEMBER ERROR:", error);
 
-      alert(
-        error?.message ||
+    } catch (addError: any) {
+      console.error(
+        "ADD MEMBER ERROR:",
+        addError
+      );
+
+      setError(
+        addError?.message ||
           "Unable to add member."
       );
     } finally {
@@ -882,63 +499,144 @@ const Membership: React.FC = () => {
     }
   };
 
-  const openEditMember = (member: Member) => {
-    setEditingMember(member);
+  /*
+   * OPEN EDIT
+   */
+  const openEditMember = (
+    member: Member
+  ) => {
+    setEditingMember(
+      member
+    );
 
     setFormData({
-      full_name: member.full_name || "",
-      email: member.email || "",
-      phone: member.phone || "",
-      country: member.country || "",
-      state: member.state || "",
-      lga: member.lga || "",
-      city: member.city || "",
-      community: member.community || "",
-      address: member.address || "",
-      school: member.school || "",
-      interests: member.interests || "",
-      bio: member.bio || "",
-      status: member.status || "pending",
+      full_name:
+        member.full_name || "",
+
+      email:
+        member.email || "",
+
+      age:
+        member.age !== null &&
+        member.age !== undefined
+          ? String(member.age)
+          : "",
+
+      phone:
+        member.phone || "",
+
+      country:
+        member.country || "",
+
+      state:
+        member.state || "",
+
+      lga:
+        member.lga || "",
+
+      city:
+        member.city || "",
+
+      location:
+        member.location || "",
+
+      address:
+        member.address || "",
+
+      school:
+        member.school || "",
+
+      interests:
+        member.interests || "",
+
+      bio:
+        member.bio || "",
+
+      status:
+        member.status ||
+        "pending",
     });
 
-    setDuplicateMember(null);
     setShowEditForm(true);
     setShowAddForm(false);
+    setDuplicateMember(null);
+    setNameSuggestions([]);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
+  /*
+   * UPDATE MEMBER
+   */
   const handleUpdateMember = async (
-    e: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>
   ) => {
-    e.preventDefault();
+    event.preventDefault();
 
     if (!editingMember) {
       return;
     }
 
-    const fullName = formData.full_name.trim();
-    const email = formData.email.trim().toLowerCase();
+    setError("");
+    setSuccess("");
+
+    const fullName =
+      formData.full_name.trim();
+
+    const email =
+      formData.email
+        .trim()
+        .toLowerCase();
+
+    const age =
+      Number(formData.age);
 
     if (!fullName) {
-      alert("Please enter the member's full name.");
+      setError(
+        "Full name is required."
+      );
       return;
     }
 
     if (!email) {
-      alert("Please enter the member's email.");
+      setError(
+        "Email address is required."
+      );
       return;
     }
 
-    const duplicate = members.find(
-      (member) =>
-        member.id !== editingMember.id &&
-        member.email?.trim().toLowerCase() === email
-    );
+    if (
+      !Number.isInteger(age) ||
+      age < 10 ||
+      age > 100
+    ) {
+      setError(
+        "Please enter a valid age."
+      );
+      return;
+    }
+
+    const duplicate =
+      members.find(
+        (member) =>
+          member.id !==
+            editingMember.id &&
+          member.email
+            ?.trim()
+            .toLowerCase() ===
+            email
+      );
 
     if (duplicate) {
-      setDuplicateMember(duplicate);
+      setDuplicateMember(
+        duplicate
+      );
 
-      alert(
-        `Another member already uses this email.\n\n${duplicate.full_name}\n${duplicate.email}`
+      setError(
+        `Another member already uses this email: ${duplicate.full_name}.`
       );
 
       return;
@@ -947,55 +645,94 @@ const Membership: React.FC = () => {
     setSaving(true);
 
     try {
-      const location = [
-        formData.community.trim(),
-        formData.city.trim(),
-        formData.lga.trim(),
-        formData.state.trim(),
-        formData.country.trim(),
-      ]
-        .filter(Boolean)
-        .join(", ");
-
-      const { error } = await supabase
+      const {
+        error: updateError,
+      } = await supabase
         .from("profiles")
         .update({
-          full_name: fullName,
-          email,
-          phone: formData.phone.trim() || null,
-          country: formData.country.trim() || null,
-          state: formData.state.trim() || null,
-          lga: formData.lga.trim() || null,
-          city: formData.city.trim() || null,
-          community:
-            formData.community.trim() || null,
-          address: formData.address.trim() || null,
-          location: location || null,
-          school: formData.school.trim() || null,
-          interests:
-            formData.interests.trim() || null,
-          bio: formData.bio.trim() || null,
-          status: formData.status || "pending",
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", editingMember.id);
+          full_name:
+            fullName,
 
-      if (error) {
-        throw error;
+          email,
+
+          age,
+
+          phone:
+            formData.phone.trim() ||
+            null,
+
+          country:
+            formData.country.trim() ||
+            null,
+
+          state:
+            formData.state.trim() ||
+            null,
+
+          lga:
+            formData.lga.trim() ||
+            null,
+
+          city:
+            formData.city.trim() ||
+            null,
+
+          location:
+            formData.location.trim() ||
+            null,
+
+          address:
+            formData.address.trim() ||
+            null,
+
+          school:
+            formData.school.trim() ||
+            null,
+
+          interests:
+            formData.interests.trim() ||
+            null,
+
+          bio:
+            formData.bio.trim() ||
+            null,
+
+          status:
+            formData.status ||
+            "pending",
+
+          updated_at:
+            new Date().toISOString(),
+        })
+        .eq(
+          "id",
+          editingMember.id
+        );
+
+      if (updateError) {
+        throw updateError;
       }
 
-      alert("Member information updated successfully.");
+      setSuccess(
+        "Member information updated successfully."
+      );
 
       setShowEditForm(false);
       setEditingMember(null);
-      setFormData(emptyForm);
+      setFormData(
+        emptyForm
+      );
 
       await loadMembers();
-    } catch (error: any) {
-      console.error("UPDATE MEMBER ERROR:", error);
 
-      alert(
-        error?.message ||
+    } catch (updateError: any) {
+      console.error(
+        "UPDATE MEMBER ERROR:",
+        updateError
+      );
+
+      setError(
+        updateError?.message ||
           "Unable to update member."
       );
     } finally {
@@ -1003,37 +740,65 @@ const Membership: React.FC = () => {
     }
   };
 
+  /*
+   * CHANGE STATUS
+   */
   const changeStatus = async (
     member: Member,
     status: string
   ) => {
-    setUpdating(member.id);
+    setUpdating(
+      member.id
+    );
+
+    setError("");
+    setSuccess("");
 
     try {
-      const { error } = await supabase
+      const {
+        error: updateError,
+      } = await supabase
         .from("profiles")
         .update({
           status,
-          updated_at: new Date().toISOString(),
+          updated_at:
+            new Date().toISOString(),
         })
-        .eq("id", member.id);
+        .eq(
+          "id",
+          member.id
+        );
 
-      if (error) {
-        throw error;
+      if (updateError) {
+        throw updateError;
       }
 
-      setMembers((previous) =>
-        previous.map((item) =>
-          item.id === member.id
-            ? { ...item, status }
-            : item
-        )
+      setMembers(
+        (previous) =>
+          previous.map(
+            (item) =>
+              item.id ===
+              member.id
+                ? {
+                    ...item,
+                    status,
+                  }
+                : item
+          )
       );
-    } catch (error: any) {
-      console.error("STATUS UPDATE ERROR:", error);
 
-      alert(
-        error?.message ||
+      setSuccess(
+        `${member.full_name} is now ${status}.`
+      );
+
+    } catch (statusError: any) {
+      console.error(
+        "STATUS UPDATE ERROR:",
+        statusError
+      );
+
+      setError(
+        statusError?.message ||
           "Unable to change member status."
       );
     } finally {
@@ -1041,41 +806,64 @@ const Membership: React.FC = () => {
     }
   };
 
+  /*
+   * DELETE MEMBER
+   */
   const handleDeleteMember = async (
     member: Member
   ) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete ${member.full_name}?\n\nThis action cannot be undone.`
-    );
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to delete ${member.full_name}?\n\nThis action cannot be undone.`
+      );
 
     if (!confirmed) {
       return;
     }
 
-    setDeleting(member.id);
+    setDeleting(
+      member.id
+    );
+
+    setError("");
+    setSuccess("");
 
     try {
-      const { error } = await supabase
+      const {
+        error: deleteError,
+      } = await supabase
         .from("profiles")
         .delete()
-        .eq("id", member.id);
+        .eq(
+          "id",
+          member.id
+        );
 
-      if (error) {
-        throw error;
+      if (deleteError) {
+        throw deleteError;
       }
 
-      setMembers((previous) =>
-        previous.filter(
-          (item) => item.id !== member.id
-        )
+      setMembers(
+        (previous) =>
+          previous.filter(
+            (item) =>
+              item.id !==
+              member.id
+          )
       );
 
-      alert("Member deleted successfully.");
-    } catch (error: any) {
-      console.error("DELETE MEMBER ERROR:", error);
+      setSuccess(
+        `${member.full_name} has been deleted.`
+      );
 
-      alert(
-        error?.message ||
+    } catch (deleteError: any) {
+      console.error(
+        "DELETE MEMBER ERROR:",
+        deleteError
+      );
+
+      setError(
+        deleteError?.message ||
           "Unable to delete member."
       );
     } finally {
@@ -1083,51 +871,66 @@ const Membership: React.FC = () => {
     }
   };
 
-  const filteredMembers = useMemo(() => {
-    const value = search.trim().toLowerCase();
+  /*
+   * FILTER MEMBERS
+   */
+  const filteredMembers =
+    useMemo(() => {
+      const value =
+        search
+          .trim()
+          .toLowerCase();
 
-    if (!value) {
-      return members;
-    }
+      if (!value) {
+        return members;
+      }
 
-    return members.filter((member) =>
-      [
-        member.full_name,
-        member.email,
-        member.phone,
-        member.country,
-        member.state,
-        member.lga,
-        member.city,
-        member.community,
-        member.school,
-        member.interests,
-      ].some((field) =>
-        field?.toLowerCase().includes(value)
-      )
-    );
-  }, [members, search]);
+      return members.filter(
+        (member) =>
+          [
+            member.full_name,
+            member.email,
+            member.phone,
+            member.location,
+            member.address,
+            member.school,
+            member.country,
+            member.state,
+            member.lga,
+            member.city,
+            member.interests,
+          ].some(
+            (field) =>
+              field
+                ?.toLowerCase()
+                .includes(value)
+          )
+      );
+    }, [
+      members,
+      search,
+    ]);
 
-  const activeCount = members.filter(
-    (member) => member.status === "active"
-  ).length;
+  const activeCount =
+    members.filter(
+      (member) =>
+        member.status ===
+        "active"
+    ).length;
 
-  const pendingCount = members.filter(
-    (member) => member.status === "pending"
-  ).length;
+  const pendingCount =
+    members.filter(
+      (member) =>
+        member.status ===
+        "pending"
+    ).length;
 
-  const inactiveCount = members.filter(
-    (member) => member.status === "inactive"
-  ).length;
-
-  const selectedCountry =
-    LOCATION_OPTIONS[formData.country];
-
-  const availableStates =
-    selectedCountry?.states || [];
-
-  const availableLgas =
-    selectedCountry?.lgas?.[formData.state] || [];
+  const inactiveCount =
+    members.filter(
+      (member) =>
+        member.status ===
+        "inactive"
+    ).length;
 
   const resetForm = () => {
     setShowAddForm(false);
@@ -1135,12 +938,21 @@ const Membership: React.FC = () => {
     setEditingMember(null);
     setDuplicateMember(null);
     setNameSuggestions([]);
-    setFormData(emptyForm);
+    setFormData(
+      emptyForm
+    );
   };
 
-  const renderMemberForm = (isEdit: boolean) => (
+  /*
+   * MEMBER FORM
+   */
+  const renderMemberForm = (
+    isEdit: boolean
+  ) => (
     <section className="membership-form-card">
+
       <div className="membership-form-header">
+
         <h2>
           {isEdit
             ? "Edit Member"
@@ -1152,6 +964,7 @@ const Membership: React.FC = () => {
             ? "Update this member's information."
             : "Add basic membership information. No password or account is created."}
         </p>
+
       </div>
 
       <form
@@ -1161,8 +974,11 @@ const Membership: React.FC = () => {
             : handleAddMember
         }
       >
+
         <div className="membership-form-grid">
+
           <div className="membership-field">
+
             <label htmlFor="full_name">
               Full Name
             </label>
@@ -1171,41 +987,62 @@ const Membership: React.FC = () => {
               id="full_name"
               name="full_name"
               type="text"
-              value={formData.full_name}
-              onChange={handleChange}
+              value={
+                formData.full_name
+              }
+              onChange={
+                handleChange
+              }
               placeholder="Enter full name"
               autoComplete="off"
               required
             />
 
             {!isEdit &&
-              nameSuggestions.length > 0 && (
+              nameSuggestions.length >
+                0 && (
                 <div className="membership-suggestions">
-                  <strong>Existing members</strong>
 
-                  {nameSuggestions.map((member) => (
-                    <button
-                      key={member.id}
-                      type="button"
-                      className="membership-suggestion"
-                      onClick={() =>
-                        selectExistingMember(member)
-                      }
-                    >
-                      <span>
-                        {member.full_name}
-                      </span>
+                  <strong>
+                    Existing members
+                  </strong>
 
-                      <small>
-                        {member.email}
-                      </small>
-                    </button>
-                  ))}
+                  {nameSuggestions.map(
+                    (member) => (
+                      <button
+                        key={
+                          member.id
+                        }
+                        type="button"
+                        className="membership-suggestion"
+                        onClick={() =>
+                          selectExistingMember(
+                            member
+                          )
+                        }
+                      >
+                        <span>
+                          {
+                            member.full_name
+                          }
+                        </span>
+
+                        <small>
+                          {
+                            member.email
+                          }
+                        </small>
+                      </button>
+                    )
+                  )}
+
                 </div>
               )}
+
           </div>
 
           <div className="membership-field">
+
             <label htmlFor="email">
               Email Address
             </label>
@@ -1214,27 +1051,62 @@ const Membership: React.FC = () => {
               id="email"
               name="email"
               type="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={
+                formData.email
+              }
+              onChange={
+                handleChange
+              }
               placeholder="Enter email address"
               required
             />
 
-            {duplicateMember && !isEdit && (
-              <div className="membership-duplicate-warning">
-                <strong>
-                  This member already exists
-                </strong>
+            {duplicateMember &&
+              !isEdit && (
+                <div className="membership-duplicate-warning">
 
-                <span>
-                  {duplicateMember.full_name} already
-                  has this email.
-                </span>
-              </div>
-            )}
+                  <strong>
+                    This member already exists
+                  </strong>
+
+                  <span>
+                    {
+                      duplicateMember.full_name
+                    }{" "}
+                    already has this email.
+                  </span>
+
+                </div>
+              )}
+
           </div>
 
           <div className="membership-field">
+
+            <label htmlFor="age">
+              Age
+            </label>
+
+            <input
+              id="age"
+              name="age"
+              type="number"
+              min="10"
+              max="100"
+              value={
+                formData.age
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Enter age"
+              required
+            />
+
+          </div>
+
+          <div className="membership-field">
+
             <label htmlFor="phone">
               Phone Number
             </label>
@@ -1243,13 +1115,20 @@ const Membership: React.FC = () => {
               id="phone"
               name="phone"
               type="tel"
-              value={formData.phone}
-              onChange={handleChange}
+              value={
+                formData.phone
+              }
+              onChange={
+                handleChange
+              }
               placeholder="Enter phone number"
+              required
             />
+
           </div>
 
           <div className="membership-field">
+
             <label htmlFor="country">
               Country
             </label>
@@ -1257,110 +1136,84 @@ const Membership: React.FC = () => {
             <select
               id="country"
               name="country"
-              value={formData.country}
-              onChange={handleChange}
+              value={
+                formData.country
+              }
+              onChange={
+                handleChange
+              }
               required
             >
               <option value="">
                 Select African country
               </option>
 
-              {AFRICAN_COUNTRIES.map((country) => (
-                <option
-                  key={country.cca3}
-                  value={country.name.common}
-                >
-                  {country.name.common}
-                </option>
-              ))}
+              {AFRICAN_COUNTRIES.map(
+                (country) => (
+                  <option
+                    key={
+                      country.cca2
+                    }
+                    value={
+                      country.name.common
+                    }
+                  >
+                    {
+                      country.name
+                        .common
+                    }
+                  </option>
+                )
+              )}
+
             </select>
+
           </div>
 
           <div className="membership-field">
+
             <label htmlFor="state">
-              State / Province / Region
+              State / Region
             </label>
 
-            {availableStates.length > 0 ? (
-              <select
-                id="state"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Select state / region
-                </option>
+            <input
+              id="state"
+              name="state"
+              type="text"
+              value={
+                formData.state
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Enter state or region"
+            />
 
-                {availableStates.map((state) => (
-                  <option
-                    key={state}
-                    value={state}
-                  >
-                    {state}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                id="state"
-                name="state"
-                type="text"
-                value={formData.state}
-                onChange={handleChange}
-                placeholder={
-                  formData.country
-                    ? "Enter state, province or region"
-                    : "Select country first"
-                }
-                disabled={!formData.country}
-              />
-            )}
           </div>
 
           <div className="membership-field">
+
             <label htmlFor="lga">
-              LGA / District / County
+              LGA / District
             </label>
 
-            {availableLgas.length > 0 ? (
-              <select
-                id="lga"
-                name="lga"
-                value={formData.lga}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Select LGA / district
-                </option>
+            <input
+              id="lga"
+              name="lga"
+              type="text"
+              value={
+                formData.lga
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Enter LGA or district"
+            />
 
-                {availableLgas.map((lga) => (
-                  <option
-                    key={lga}
-                    value={lga}
-                  >
-                    {lga}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                id="lga"
-                name="lga"
-                type="text"
-                value={formData.lga}
-                onChange={handleChange}
-                placeholder={
-                  formData.country
-                    ? "Enter district, county, LGA..."
-                    : "Select country first"
-                }
-                disabled={!formData.country}
-              />
-            )}
           </div>
 
           <div className="membership-field">
+
             <label htmlFor="city">
               City / Town
             </label>
@@ -1369,28 +1222,63 @@ const Membership: React.FC = () => {
               id="city"
               name="city"
               type="text"
-              value={formData.city}
-              onChange={handleChange}
+              value={
+                formData.city
+              }
+              onChange={
+                handleChange
+              }
               placeholder="Enter city or town"
             />
+
           </div>
 
           <div className="membership-field">
-            <label htmlFor="community">
-              Community / Area
+
+            <label htmlFor="location">
+              Present Location
             </label>
 
             <input
-              id="community"
-              name="community"
+              id="location"
+              name="location"
               type="text"
-              value={formData.community}
-              onChange={handleChange}
-              placeholder="Enter community or area"
+              value={
+                formData.location
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Where the member currently lives"
+              required
             />
+
           </div>
 
           <div className="membership-field">
+
+            <label htmlFor="address">
+              Residential Address
+            </label>
+
+            <input
+              id="address"
+              name="address"
+              type="text"
+              value={
+                formData.address
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Residential address"
+              required
+            />
+
+          </div>
+
+          <div className="membership-field">
+
             <label htmlFor="school">
               School
             </label>
@@ -1399,13 +1287,50 @@ const Membership: React.FC = () => {
               id="school"
               name="school"
               type="text"
-              value={formData.school}
-              onChange={handleChange}
-              placeholder="Enter school"
+              value={
+                formData.school
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="School name"
             />
+
           </div>
 
           <div className="membership-field">
+
+            <label htmlFor="status">
+              Status
+            </label>
+
+            <select
+              id="status"
+              name="status"
+              value={
+                formData.status
+              }
+              onChange={
+                handleChange
+              }
+            >
+              <option value="pending">
+                Pending
+              </option>
+
+              <option value="active">
+                Active
+              </option>
+
+              <option value="inactive">
+                Inactive
+              </option>
+            </select>
+
+          </div>
+
+          <div className="membership-field membership-field-full">
+
             <label htmlFor="interests">
               Interests
             </label>
@@ -1414,124 +1339,104 @@ const Membership: React.FC = () => {
               id="interests"
               name="interests"
               type="text"
-              value={formData.interests}
-              onChange={handleChange}
-              placeholder="Technology, Business, Writing..."
+              value={
+                formData.interests
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Technology, leadership..."
             />
+
           </div>
 
-          {isEdit && (
-            <div className="membership-field">
-              <label htmlFor="status">
-                Membership Status
-              </label>
+          <div className="membership-field membership-field-full">
 
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="pending">
-                  Pending
-                </option>
+            <label htmlFor="bio">
+              Bio
+            </label>
 
-                <option value="active">
-                  Active
-                </option>
+            <textarea
+              id="bio"
+              name="bio"
+              value={
+                formData.bio
+              }
+              onChange={
+                handleChange
+              }
+              placeholder="Short member biography..."
+              rows={4}
+            />
 
-                <option value="inactive">
-                  Inactive
-                </option>
-              </select>
-            </div>
-          )}
-        </div>
-
-        <div className="membership-field">
-          <label htmlFor="address">
-            Address
-          </label>
-
-          <input
-            id="address"
-            name="address"
-            type="text"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Enter address"
-          />
-        </div>
-
-        <div className="membership-field">
-          <label htmlFor="bio">
-            Bio
-          </label>
-
-          <textarea
-            id="bio"
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Tell us about the member..."
-            rows={4}
-          />
-        </div>
-
-        {!isEdit && (
-          <div className="membership-pending-info">
-            <strong>
-              No password is created.
-            </strong>
-
-            <p>
-              The admin only creates the membership
-              record. The member creates their own
-              account later.
-            </p>
           </div>
-        )}
+
+        </div>
 
         <div className="membership-form-actions">
+
           <button
             type="submit"
             className="membership-save-button"
-            disabled={
-              saving ||
-              (!isEdit && !!duplicateMember)
-            }
+            disabled={saving}
           >
             {saving
-              ? isEdit
-                ? "Saving Changes..."
-                : "Adding Member..."
+              ? "Saving..."
               : isEdit
-              ? "Save Changes"
+              ? "Update Member"
               : "Add Member"}
           </button>
 
           <button
             type="button"
             className="membership-cancel-button"
-            onClick={resetForm}
+            onClick={
+              resetForm
+            }
+            disabled={saving}
           >
             Cancel
           </button>
+
         </div>
+
       </form>
+
     </section>
   );
 
   return (
     <main className="membership-page">
-      <div className="membership-header">
+
+      <header className="membership-header">
+
         <div>
-          <h1>Membership</h1>
+
+          <button
+            type="button"
+            className="membership-back-button"
+            onClick={() =>
+              navigate(
+                "/admin/dashboard"
+              )
+            }
+          >
+            ← Back to Dashboard
+          </button>
+
+          <span className="membership-badge">
+            TCA ADMIN
+          </span>
+
+          <h1>
+            Membership
+          </h1>
 
           <p>
-            Manage all registered Teens Connect
-            Africa members.
+            Manage Teens Connect Africa
+            members and membership status.
           </p>
+
         </div>
 
         <button
@@ -1541,243 +1446,401 @@ const Membership: React.FC = () => {
             setShowAddForm(true);
             setShowEditForm(false);
             setEditingMember(null);
-            setFormData(emptyForm);
+            setFormData(
+              emptyForm
+            );
             setDuplicateMember(null);
             setNameSuggestions([]);
+            setError("");
+            setSuccess("");
           }}
         >
           + Add Member
         </button>
-      </div>
+
+      </header>
+
+      {error && (
+        <div className="membership-error">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="membership-success">
+          {success}
+        </div>
+      )}
 
       <div className="membership-summary">
+
         <div className="membership-summary-card">
-          <span>Total Members</span>
-          <strong>{members.length}</strong>
+          <span>
+            Total Members
+          </span>
+
+          <strong>
+            {members.length}
+          </strong>
         </div>
 
         <div className="membership-summary-card">
-          <span>Active Members</span>
-          <strong>{activeCount}</strong>
+          <span>
+            Active Members
+          </span>
+
+          <strong>
+            {activeCount}
+          </strong>
         </div>
 
         <div className="membership-summary-card">
-          <span>Pending Members</span>
-          <strong>{pendingCount}</strong>
+          <span>
+            Pending Members
+          </span>
+
+          <strong>
+            {pendingCount}
+          </strong>
         </div>
 
         <div className="membership-summary-card">
-          <span>Inactive Members</span>
-          <strong>{inactiveCount}</strong>
+          <span>
+            Inactive Members
+          </span>
+
+          <strong>
+            {inactiveCount}
+          </strong>
         </div>
+
       </div>
 
-      {showAddForm && renderMemberForm(false)}
+      {showAddForm &&
+        renderMemberForm(false)}
 
-      {showEditForm && renderMemberForm(true)}
+      {showEditForm &&
+        renderMemberForm(true)}
 
       <div className="membership-toolbar">
+
+        <div>
+          <h2>
+            Registered Members
+          </h2>
+
+          <p>
+            {filteredMembers.length} member
+            {filteredMembers.length !== 1
+              ? "s"
+              : ""}{" "}
+            found
+          </p>
+        </div>
+
         <input
           type="search"
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
+          onChange={(event) =>
+            setSearch(
+              event.target.value
+            )
           }
-          placeholder="Search members by name, email, phone, location, school..."
+          placeholder="Search name, email, phone, location, address..."
           className="membership-search"
         />
 
-        <span className="membership-count">
-          {filteredMembers.length} member
-          {filteredMembers.length === 1
-            ? ""
-            : "s"}
-        </span>
       </div>
 
       <section className="membership-list">
+
         {loading ? (
+
           <div className="membership-loading">
             Loading registered members...
           </div>
-        ) : filteredMembers.length === 0 ? (
+
+        ) : filteredMembers.length ===
+          0 ? (
+
           <div className="membership-empty">
-            <h3>No members found</h3>
+
+            <h3>
+              No members found
+            </h3>
 
             <p>
-              There are currently no members
-              matching your search.
+              {search
+                ? "Try another search."
+                : "Registered members will appear here."}
             </p>
+
           </div>
+
         ) : (
+
           <div className="membership-table-wrapper">
+
             <table className="membership-table">
+
               <thead>
+
                 <tr>
-                  <th>Member</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Location</th>
-                  <th>School</th>
-                  <th>Status</th>
-                  <th>Registered</th>
-                  <th>Actions</th>
+                  <th>
+                    Member
+                  </th>
+
+                  <th>
+                    Age
+                  </th>
+
+                  <th>
+                    Phone
+                  </th>
+
+                  <th>
+                    Present Location
+                  </th>
+
+                  <th>
+                    Residential Address
+                  </th>
+
+                  <th>
+                    School
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Registered
+                  </th>
+
+                  <th>
+                    Actions
+                  </th>
                 </tr>
+
               </thead>
 
               <tbody>
-                {filteredMembers.map((member) => (
-                  <tr key={member.id}>
-                    <td>
-                      <div className="membership-member">
-                        <div className="membership-avatar">
-                          <span>
-                            {member.full_name
-                              ?.charAt(0)
-                              .toUpperCase() || "M"}
-                          </span>
+
+                {filteredMembers.map(
+                  (member) => (
+
+                    <tr
+                      key={
+                        member.id
+                      }
+                    >
+
+                      <td>
+
+                        <div className="membership-member">
+
+                          <div className="membership-avatar">
+
+                            {member.profile_image_url ? (
+
+                              <img
+                                src={
+                                  member.profile_image_url
+                                }
+                                alt={
+                                  member.full_name
+                                }
+                              />
+
+                            ) : (
+
+                              <span>
+                                {member.full_name
+                                  ?.charAt(
+                                    0
+                                  )
+                                  .toUpperCase() ||
+                                  "M"}
+                              </span>
+
+                            )}
+
+                          </div>
+
+                          <div>
+
+                            <strong>
+                              {
+                                member.full_name
+                              }
+                            </strong>
+
+                            <small>
+                              {
+                                member.email
+                              }
+                            </small>
+
+                          </div>
+
                         </div>
 
-                        <div>
-                          <strong>
-                            {member.full_name}
-                          </strong>
+                      </td>
 
-                          <small>
-                            {member.role}
-                          </small>
-                        </div>
-                      </div>
-                    </td>
+                      <td>
+                        {member.age ||
+                          "Not provided"}
+                      </td>
 
-                    <td>{member.email}</td>
+                      <td>
+                        {member.phone ||
+                          "Not provided"}
+                      </td>
 
-                    <td>
-                      {member.phone ||
-                        "Not provided"}
-                    </td>
+                      <td>
+                        {member.location ||
+                          "Not provided"}
+                      </td>
 
-                    <td>
-                      {[
-                        member.community,
-                        member.city,
-                        member.lga,
-                        member.state,
-                        member.country,
-                      ]
-                        .filter(Boolean)
-                        .join(", ") ||
-                        member.location ||
-                        "Not provided"}
-                    </td>
+                      <td>
+                        {member.address ||
+                          "Not provided"}
+                      </td>
 
-                    <td>
-                      {member.school ||
-                        "Not provided"}
-                    </td>
+                      <td>
+                        {member.school ||
+                          "Not provided"}
+                      </td>
 
-                    <td>
-                      <span
-                        className={`membership-status ${
-                          member.status === "active"
-                            ? "active"
-                            : member.status ===
-                              "pending"
-                            ? "pending"
-                            : "inactive"
-                        }`}
-                      >
-                        {member.status}
-                      </span>
-                    </td>
+                      <td>
 
-                    <td>
-                      {new Date(
-                        member.created_at
-                      ).toLocaleDateString()}
-                    </td>
-
-                    <td>
-                      <div className="membership-actions">
-                        <button
-                          type="button"
-                          className="membership-edit-button"
-                          onClick={() =>
-                            openEditMember(member)
-                          }
+                        <span
+                          className={`membership-status ${
+                            member.status ===
+                            "active"
+                              ? "active"
+                              : member.status ===
+                                "pending"
+                              ? "pending"
+                              : "inactive"
+                          }`}
                         >
-                          Edit
-                        </button>
+                          {member.status}
+                        </span>
 
-                        {member.status !==
-                          "active" && (
+                      </td>
+
+                      <td>
+                        {new Date(
+                          member.created_at
+                        ).toLocaleDateString()}
+                      </td>
+
+                      <td>
+
+                        <div className="membership-actions">
+
                           <button
                             type="button"
-                            className="membership-activate-button"
-                            disabled={
-                              updating ===
-                              member.id
-                            }
+                            className="membership-edit-button"
                             onClick={() =>
-                              changeStatus(
-                                member,
-                                "active"
+                              openEditMember(
+                                member
                               )
                             }
                           >
-                            {updating === member.id
-                              ? "..."
-                              : "Activate"}
+                            Edit
                           </button>
-                        )}
 
-                        {member.status ===
-                          "active" && (
+                          {member.status !==
+                            "active" && (
+
+                            <button
+                              type="button"
+                              className="membership-activate-button"
+                              disabled={
+                                updating ===
+                                member.id
+                              }
+                              onClick={() =>
+                                changeStatus(
+                                  member,
+                                  "active"
+                                )
+                              }
+                            >
+                              {updating ===
+                              member.id
+                                ? "..."
+                                : "Activate"}
+                            </button>
+
+                          )}
+
+                          {member.status ===
+                            "active" && (
+
+                            <button
+                              type="button"
+                              className="membership-deactivate-button"
+                              disabled={
+                                updating ===
+                                member.id
+                              }
+                              onClick={() =>
+                                changeStatus(
+                                  member,
+                                  "inactive"
+                                )
+                              }
+                            >
+                              {updating ===
+                              member.id
+                                ? "..."
+                                : "Deactivate"}
+                            </button>
+
+                          )}
+
                           <button
                             type="button"
-                            className="membership-deactivate-button"
+                            className="membership-delete-button"
                             disabled={
-                              updating ===
+                              deleting ===
                               member.id
                             }
                             onClick={() =>
-                              changeStatus(
-                                member,
-                                "inactive"
+                              handleDeleteMember(
+                                member
                               )
                             }
                           >
-                            {updating === member.id
-                              ? "..."
-                              : "Deactivate"}
+                            {deleting ===
+                            member.id
+                              ? "Deleting..."
+                              : "Delete"}
                           </button>
-                        )}
 
-                        <button
-                          type="button"
-                          className="membership-delete-button"
-                          disabled={
-                            deleting === member.id
-                          }
-                          onClick={() =>
-                            handleDeleteMember(
-                              member
-                            )
-                          }
-                        >
-                          {deleting === member.id
-                            ? "Deleting..."
-                            : "Delete"}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                        </div>
+
+                      </td>
+
+                    </tr>
+
+                  )
+                )}
+
               </tbody>
+
             </table>
+
           </div>
+
         )}
+
       </section>
+
     </main>
   );
 };
