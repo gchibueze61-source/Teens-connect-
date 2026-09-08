@@ -169,7 +169,25 @@ const AdminDashboard: React.FC = () => {
         </div>
 
       </section>
+{/* TEEN GROWTH & REVIEWS */}
+<div className="dashboard-card">
+  <span>06</span>
 
+  <h2>Teen Growth & Reviews</h2>
+
+  <p>
+    Review teen records, achievements, feedback and progress.
+  </p>
+
+  <button
+    type="button"
+    onClick={() =>
+      navigate("/admin/teen-records")
+    }
+  >
+    Manage Teen Growth
+  </button>
+</div>
     </main>
   );
 };

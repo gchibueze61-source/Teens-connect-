@@ -1,0 +1,659 @@
+.admin-teen-records-page {
+  min-height: 100vh;
+  padding: 40px;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+.admin-teen-records-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.admin-teen-back-button {
+  display: block;
+  margin-bottom: 18px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #07234b;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-teen-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #07234b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.admin-teen-records-header h1 {
+  margin: 12px 0 8px;
+  color: #07234b;
+  font-size: 34px;
+  line-height: 1.15;
+}
+
+.admin-teen-records-header p {
+  max-width: 720px;
+  margin: 0;
+  color: #657084;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.admin-teen-refresh-button {
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid #d9e0eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #07234b;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.admin-teen-refresh-button:hover {
+  border-color: #22c55e;
+  transform: translateY(-2px);
+}
+
+.admin-teen-refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.admin-teen-message {
+  margin-bottom: 20px;
+  padding: 15px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.admin-teen-message.error {
+  background: #fff1f1;
+  color: #b42318;
+  border: 1px solid #ffd0d0;
+}
+
+.admin-teen-message.success {
+  background: #ecfdf3;
+  color: #087443;
+  border: 1px solid #b7ebca;
+}
+
+.admin-teen-summary {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.admin-teen-summary-card {
+  min-height: 110px;
+  padding: 20px;
+  border: 1px solid #e5eaf1;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(7, 35, 75, 0.05);
+}
+
+.admin-teen-summary-card span {
+  display: block;
+  margin-bottom: 12px;
+  color: #687386;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-teen-summary-card strong {
+  color: #07234b;
+  font-size: 28px;
+}
+
+.admin-teen-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 10px;
+  border: 1px solid #e5eaf1;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.admin-teen-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-teen-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #667085;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-teen-tabs button.active {
+  background: #07234b;
+  color: #ffffff;
+}
+
+.admin-teen-tabs button span {
+  min-width: 21px;
+  height: 21px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #ffffff;
+  font-size: 11px;
+  text-align: center;
+}
+
+.admin-teen-search {
+  width: min(380px, 100%);
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #dce2eb;
+  border-radius: 9px;
+  outline: none;
+  color: #172033;
+  background: #ffffff;
+}
+
+.admin-teen-search:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.admin-teen-content {
+  padding: 28px;
+  border: 1px solid #e5eaf1;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(7, 35, 75, 0.05);
+}
+
+.admin-teen-section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admin-teen-section-heading h2 {
+  margin: 0 0 6px;
+  color: #07234b;
+  font-size: 24px;
+}
+
+.admin-teen-section-heading p {
+  margin: 0;
+  color: #697386;
+}
+
+.admin-teen-section-heading > strong {
+  color: #07234b;
+  white-space: nowrap;
+}
+
+.admin-teen-record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-teen-record-card {
+  padding: 20px;
+  border: 1px solid #e5eaf1;
+  border-radius: 14px;
+  background: #fbfcfe;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.admin-teen-record-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(7, 35, 75, 0.08);
+}
+
+.admin-teen-record-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.admin-teen-person {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.admin-teen-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #07234b;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.admin-teen-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-teen-person strong,
+.admin-teen-person small {
+  display: block;
+}
+
+.admin-teen-person strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.admin-teen-person small {
+  margin-top: 3px;
+  color: #7b8494;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-teen-status {
+  display: inline-flex;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.admin-teen-status.pending {
+  background: #fff7df;
+  color: #956c00;
+}
+
+.admin-teen-status.approved {
+  background: #eafaf0;
+  color: #087443;
+}
+
+.admin-teen-status.rejected {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.admin-teen-record-meta {
+  display: flex;
+  gap: 10px;
+  margin: 17px 0 10px;
+}
+
+.admin-teen-record-meta span {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #eef2f7;
+  color: #536174;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.admin-teen-record-card h3 {
+  margin: 0 0 14px;
+  color: #07234b;
+  font-size: 19px;
+}
+
+.admin-teen-preview {
+  padding: 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #edf0f4;
+}
+
+.admin-teen-preview strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #536174;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-teen-preview p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #4c586a;
+  font-size: 14px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.admin-teen-record-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 16px;
+}
+
+.admin-teen-record-footer span {
+  color: #087443;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-teen-record-footer button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 8px;
+  background: #07234b;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.admin-teen-record-footer button:hover {
+  background: #0c3470;
+  transform: translateY(-2px);
+}
+
+.admin-teen-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #697386;
+}
+
+.admin-teen-empty h3 {
+  margin: 0 0 8px;
+  color: #07234b;
+}
+
+.admin-teen-empty p {
+  margin: 0;
+}
+
+.admin-teen-review-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  background: rgba(7, 35, 75, 0.55);
+  backdrop-filter: blur(5px);
+}
+
+.admin-teen-review-modal {
+  width: min(900px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+}
+
+.admin-teen-review-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.admin-teen-review-header span {
+  color: #22a957;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.admin-teen-review-header h2 {
+  margin: 7px 0 0;
+  color: #07234b;
+  font-size: 23px;
+}
+
+.admin-teen-close-button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f4f8;
+  color: #07234b;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.admin-teen-full-submission {
+  display: grid;
+  gap: 14px;
+  padding: 25px;
+}
+
+.admin-teen-submission-block {
+  padding: 16px;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  background: #fafbfd;
+}
+
+.admin-teen-submission-block h4 {
+  margin: 0 0 8px;
+  color: #536174;
+  font-size: 13px;
+}
+
+.admin-teen-submission-block p {
+  margin: 0;
+  color: #263246;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.admin-teen-review-form {
+  padding: 25px;
+  border-top: 1px solid #edf0f4;
+  background: #f9fafc;
+}
+
+.admin-teen-review-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.admin-teen-review-form label {
+  display: block;
+  margin-bottom: 7px;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-teen-review-form select,
+.admin-teen-review-form input,
+.admin-teen-review-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9e0e9;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+}
+
+.admin-teen-review-form select,
+.admin-teen-review-form input {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.admin-teen-review-form textarea {
+  padding: 13px;
+  resize: vertical;
+}
+
+.admin-teen-review-form select:focus,
+.admin-teen-review-form input:focus,
+.admin-teen-review-form textarea:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.admin-teen-review-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.admin-teen-cancel-button,
+.admin-teen-save-button {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-teen-cancel-button {
+  border: 1px solid #d9e0e9;
+  background: #ffffff;
+  color: #344054;
+}
+
+.admin-teen-save-button {
+  border: 1px solid #22c55e;
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.admin-teen-save-button:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+
+.admin-teen-cancel-button:disabled,
+.admin-teen-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1200px) {
+  .admin-teen-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-teen-records-page {
+    padding: 25px 18px;
+  }
+
+  .admin-teen-records-header {
+    flex-direction: column;
+  }
+
+  .admin-teen-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-teen-search {
+    width: 100%;
+  }
+
+  .admin-teen-record-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-teen-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-teen-summary-card {
+    min-height: 95px;
+    padding: 15px;
+  }
+
+  .admin-teen-summary-card strong {
+    font-size: 23px;
+  }
+
+  .admin-teen-tabs {
+    width: 100%;
+  }
+
+  .admin-teen-tabs button {
+    flex: 1;
+    justify-content: center;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .admin-teen-content {
+    padding: 18px;
+  }
+
+  .admin-teen-section-heading {
+    flex-direction: column;
+  }
+
+  .admin-teen-review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-teen-review-actions {
+    flex-direction: column-reverse;
+  }
+
+  .admin-teen-cancel-button,
+  .admin-teen-save-button {
+    width: 100%;
+  }
+}

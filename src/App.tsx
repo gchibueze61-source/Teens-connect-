@@ -12,8 +12,8 @@ import Events from "./pages/Events/Events";
 import Blog from "./pages/Blog/Blog";
 import Gallery from "./pages/Gallery/Gallery";
 import Membership from "./pages/Membership/Membership";
-
-
+import AdminTeenRecords from "./pages/AdminTeenRecords/AdminTeenRecords";
+import TeenRecords from "./pages/Admin/TeenRecords/TeenRecords";
 
 function App() {
   return (
@@ -38,7 +38,10 @@ function App() {
           path="/admin/login"
           element={<AdminLogin />}
         />
-
+<Route
+  path="/admin/teen-records"
+  element={<TeenRecords />}
+/>
         <Route
           path="/admin/dashboard"
           element={<AdminDashboard />}
@@ -63,7 +66,10 @@ function App() {
           path="/admin/gallery"
           element={<Gallery />}
         />
-
+<Route
+  path="/admin/teen-records"
+  element={<AdminTeenRecords />}
+/>
       </Routes>
     </BrowserRouter>
   );
