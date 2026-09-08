@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Founders.css";
+import foundersImage from "./bobdaddy 2 1435 (2).jpg";
 
 const Founders = () => {
   const navigate = useNavigate();
@@ -49,10 +50,10 @@ const Founders = () => {
           ========================= */}
           <div className="founders-main-image">
 
-            <img
-              src="src/pages/Founders/bobdaddy 2 1435 (2).jpg"
-              alt="Anne Obize and Merit Kamah"
-            />
+           <img
+  src={foundersImage}
+  alt="Anne Obize and Merit Kamah"
+/>
 
           </div>
 

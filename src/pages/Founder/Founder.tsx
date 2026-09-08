@@ -1,5 +1,6 @@
 import "./Founder.css";
 import { useNavigate } from "react-router-dom";
+import founderImage from "./ChatGPT Image Sep 7, 2026, 05_24_34 PM (1).png";
 const Founder = () => {
   const navigate = useNavigate();
   return (
@@ -58,10 +59,10 @@ const Founder = () => {
           </div>
 
           <div className="founder-hero-image">
-            <img
-              src="src/pages/Founder/ChatGPT Image Sep 7, 2026, 05_24_34 PM (1).png"
-              alt="Anne Obize"
-            />
+           <img
+  src={founderImage}
+  alt="Anne Obize"
+/>
 
             <div className="founder-image-label">
               <strong>Founder</strong>

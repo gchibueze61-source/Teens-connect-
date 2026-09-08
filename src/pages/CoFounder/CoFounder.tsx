@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./CoFounder.css";
+import coFounderImage from "./ChatGPT Image Sep 7, 2026, 05_24_52 PM (1).png";
 
 const CoFounder = () => {
   const navigate = useNavigate();
@@ -60,10 +61,10 @@ const CoFounder = () => {
           </div>
 
           <div className="cofounder-hero-image">
-            <img
-              src="src/pages/CoFounder/ChatGPT Image Sep 7, 2026, 05_24_52 PM (1).png"
-              alt="Merit Kamah"
-            />
+           <img
+  src={coFounderImage}
+  alt="Merit Kamah"
+/>
 
             <div className="cofounder-image-label">
               <strong>Co-Founder</strong>
