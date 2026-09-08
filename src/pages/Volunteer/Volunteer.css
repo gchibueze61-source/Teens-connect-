@@ -1,0 +1,961 @@
+/* =========================
+   VOLUNTEER PAGE
+========================= */
+
+.volunteer-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #07234b;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.volunteer-container {
+  width: min(92%, 1400px);
+  margin: 0 auto;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.volunteer-hero {
+  min-height: 78vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 30%,
+      rgba(34, 197, 94, 0.16),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(255, 255, 255, 0.08),
+      transparent 32%
+    ),
+    #07234b;
+}
+
+
+.volunteer-hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  border: 1px solid rgba(34, 197, 94, 0.18);
+
+  border-radius: 50%;
+
+  top: -200px;
+  right: -100px;
+}
+
+
+.volunteer-hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 50%;
+
+  bottom: -160px;
+  left: -100px;
+}
+
+
+.volunteer-hero-content {
+  position: relative;
+  z-index: 2;
+
+  text-align: center;
+
+  padding: 7rem 0;
+}
+
+
+.volunteer-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 1.5rem;
+
+  padding: 0.6rem 1.2rem;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #22c55e;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+
+.volunteer-hero h1 {
+  max-width: 900px;
+
+  margin: 0 auto 1.5rem;
+
+  color: #ffffff;
+
+  font-size: clamp(2.7rem, 6vw, 5rem);
+
+  line-height: 1.08;
+}
+
+
+.volunteer-hero h1 span {
+  color: #22c55e;
+}
+
+
+.volunteer-hero p {
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  color: #eeeeee;
+
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+
+  line-height: 1.8;
+}
+
+
+.volunteer-hero-buttons {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+
+  margin-top: 2.2rem;
+
+  flex-wrap: wrap;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.volunteer-page .primary-btn,
+.volunteer-page .secondary-btn {
+  display: inline-block;
+
+  padding: 0.95rem 2rem;
+
+  border-radius: 0.6rem;
+
+  text-decoration: none;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+.volunteer-page .primary-btn {
+  background: #22c55e;
+
+  color: #ffffff;
+}
+
+
+.volunteer-page .primary-btn:hover {
+  background: #16a34a;
+
+  transform: translateY(-3px);
+}
+
+
+.volunteer-page .secondary-btn {
+  background: transparent;
+
+  color: #ffffff;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+
+.volunteer-page .secondary-btn:hover {
+  background: #ffffff;
+
+  color: #07234b;
+
+  transform: translateY(-3px);
+}
+
+
+/* =========================
+   SECTION HEADINGS
+========================= */
+
+.volunteer-section-heading {
+  margin-bottom: 3rem;
+}
+
+
+.volunteer-section-heading span,
+.volunteer-information-box > div > span,
+.volunteer-safety-card > span,
+.volunteer-apply-content > span {
+  display: block;
+
+  margin-bottom: 0.8rem;
+
+  color: #22c55e;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+
+.volunteer-section-heading h2 {
+  margin: 0;
+
+  max-width: 800px;
+
+  color: #07234b;
+
+  font-size: clamp(2rem, 4vw, 3.3rem);
+
+  line-height: 1.15;
+}
+
+
+.volunteer-section-heading p {
+  max-width: 700px;
+
+  margin-top: 1rem;
+
+  color: #dce5ef;
+
+  line-height: 1.8;
+}
+
+
+.volunteer-section-heading.light h2 {
+  color: #ffffff;
+}
+
+
+/* =========================
+   INTRO
+========================= */
+
+.volunteer-intro {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #ffffff;
+}
+
+
+.volunteer-intro-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.3fr)
+    minmax(320px, 0.7fr);
+
+  gap: 4rem;
+
+  align-items: center;
+}
+
+
+.volunteer-intro-text p {
+  margin-bottom: 1.3rem;
+
+  color: #555555;
+
+  font-size: 1.05rem;
+
+  line-height: 1.9;
+}
+
+
+.volunteer-impact-card {
+  padding: 2.5rem;
+
+  border-radius: 1.5rem;
+
+  background: #07234b;
+
+  box-shadow:
+    0 20px 50px rgba(7, 35, 75, 0.14);
+}
+
+
+.volunteer-impact-card span {
+  color: #22c55e;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.3px;
+}
+
+
+.volunteer-impact-card h3 {
+  margin: 1rem 0;
+
+  color: #ffffff;
+
+  font-size: 1.7rem;
+
+  line-height: 1.35;
+}
+
+
+.volunteer-impact-card p {
+  margin: 0;
+
+  color: #dce5ef;
+
+  line-height: 1.8;
+}
+
+
+/* =========================
+   OPPORTUNITIES
+========================= */
+
+.volunteer-opportunities {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #07234b;
+}
+
+
+.volunteer-opportunities-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 1.5rem;
+}
+
+
+.volunteer-opportunity-card {
+  min-height: 260px;
+
+  padding: 2rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 1.2rem;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease;
+}
+
+
+.volunteer-opportunity-card:hover {
+  transform: translateY(-7px);
+
+  background: rgba(255, 255, 255, 0.09);
+
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+
+.volunteer-opportunity-card > span {
+  color: #22c55e;
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+}
+
+
+.volunteer-opportunity-card h3 {
+  margin: 1.2rem 0 0.8rem;
+
+  color: #ffffff;
+
+  font-size: 1.3rem;
+}
+
+
+.volunteer-opportunity-card p {
+  margin: 0;
+
+  color: #d7e0ea;
+
+  line-height: 1.75;
+}
+
+
+/* =========================
+   COMMUNITY
+========================= */
+
+.volunteer-community {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #f6f8fb;
+}
+
+
+.volunteer-community-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(320px, 0.8fr);
+
+  gap: 4rem;
+
+  align-items: center;
+}
+
+
+.volunteer-community-content > span {
+  color: #22c55e;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+
+.volunteer-community-content h2 {
+  margin: 1rem 0 1.2rem;
+
+  color: #07234b;
+
+  font-size: clamp(2rem, 4vw, 3.2rem);
+
+  line-height: 1.15;
+}
+
+
+.volunteer-community-content p {
+  color: #555555;
+
+  font-size: 1.05rem;
+
+  line-height: 1.85;
+}
+
+
+.volunteer-location-card {
+  padding: 2rem;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 1.3rem;
+
+  box-shadow:
+    0 15px 40px rgba(7, 35, 75, 0.08);
+}
+
+
+.location-item {
+  padding: 1.2rem 0;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+
+.location-item:last-child {
+  border-bottom: none;
+}
+
+
+.location-item strong {
+  display: block;
+
+  margin-bottom: 0.3rem;
+
+  color: #07234b;
+
+  font-size: 1rem;
+}
+
+
+.location-item span {
+  color: #6b7280;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   WHO CAN VOLUNTEER
+========================= */
+
+.volunteer-who {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #ffffff;
+}
+
+
+.volunteer-who-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1.5rem;
+}
+
+
+.volunteer-who-card {
+  padding: 2rem;
+
+  border-radius: 1.2rem;
+
+  border: 1px solid #e5e7eb;
+
+  background: #ffffff;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+.volunteer-who-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(7, 35, 75, 0.1);
+}
+
+
+.volunteer-who-card h3 {
+  margin-bottom: 0.8rem;
+
+  color: #07234b;
+
+  font-size: 1.25rem;
+}
+
+
+.volunteer-who-card p {
+  margin: 0;
+
+  color: #666666;
+
+  line-height: 1.75;
+}
+
+
+/* =========================
+   INFORMATION
+========================= */
+
+.volunteer-information {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #f6f8fb;
+}
+
+
+.volunteer-information-box {
+  padding: clamp(2rem, 5vw, 4rem);
+
+  border-radius: 1.5rem;
+
+  background: #07234b;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 3rem;
+}
+
+
+.volunteer-information-box h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(2rem, 4vw, 3rem);
+
+  line-height: 1.2;
+}
+
+
+.volunteer-information-box > p {
+  margin: 0;
+
+  color: #dce5ef;
+
+  line-height: 1.85;
+}
+
+
+.volunteer-information-list {
+  grid-column: 1 / -1;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+
+.volunteer-information-list > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.8rem;
+
+  padding: 1rem;
+
+  border-radius: 0.8rem;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+
+.volunteer-information-list span {
+  color: #22c55e;
+
+  font-weight: 700;
+}
+
+
+.volunteer-information-list p {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 0.95rem;
+}
+
+
+/* =========================
+   JOURNEY
+========================= */
+
+.volunteer-journey {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background: #07234b;
+}
+
+
+.volunteer-journey-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+
+.volunteer-journey-card {
+  padding: 2rem 1.5rem;
+
+  border-radius: 1.2rem;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.volunteer-journey-card > span {
+  color: #22c55e;
+
+  font-weight: 700;
+}
+
+
+.volunteer-journey-card h3 {
+  margin: 1rem 0 0.7rem;
+
+  color: #ffffff;
+}
+
+
+.volunteer-journey-card p {
+  margin: 0;
+
+  color: #d7e0ea;
+
+  line-height: 1.7;
+}
+
+
+/* =========================
+   SAFETY
+========================= */
+
+.volunteer-safety {
+  padding: 5rem 0;
+
+  background: #ffffff;
+}
+
+
+.volunteer-safety-card {
+  max-width: 950px;
+
+  margin: 0 auto;
+
+  padding: clamp(2rem, 5vw, 4rem);
+
+  text-align: center;
+
+  border-radius: 1.5rem;
+
+  background: #f6f8fb;
+
+  border: 1px solid #e5e7eb;
+}
+
+
+.volunteer-safety-card h2 {
+  margin: 1rem auto;
+
+  color: #07234b;
+
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+
+  line-height: 1.2;
+}
+
+
+.volunteer-safety-card p {
+  max-width: 750px;
+
+  margin: 0 auto;
+
+  color: #5b6470;
+
+  line-height: 1.8;
+}
+
+
+/* =========================
+   APPLY CTA
+========================= */
+
+.volunteer-apply {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+
+  background:
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(34, 197, 94, 0.18),
+      transparent 30%
+    ),
+    #07234b;
+}
+
+
+.volunteer-apply-content {
+  text-align: center;
+}
+
+
+.volunteer-apply-content h2 {
+  max-width: 850px;
+
+  margin: 0 auto 1rem;
+
+  color: #ffffff;
+
+  font-size: clamp(2.2rem, 5vw, 4rem);
+
+  line-height: 1.1;
+}
+
+
+.volunteer-apply-content p {
+  max-width: 650px;
+
+  margin: 0 auto;
+
+  color: #dce5ef;
+
+  font-size: 1.05rem;
+
+  line-height: 1.8;
+}
+
+
+.volunteer-apply-content .primary-btn {
+  margin-top: 2rem;
+}
+
+
+/* =========================
+   TABLETS
+========================= */
+
+@media (max-width: 1100px) {
+  .volunteer-opportunities-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .volunteer-who-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .volunteer-journey-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .volunteer-information-list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================
+   SMALL TABLETS
+========================= */
+
+@media (max-width: 850px) {
+  .volunteer-intro-grid,
+  .volunteer-community-grid,
+  .volunteer-information-box {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-information-list {
+    grid-column: auto;
+  }
+
+  .volunteer-journey-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================
+   PHONES
+========================= */
+
+@media (max-width: 600px) {
+  .volunteer-container {
+    width: 94%;
+  }
+
+  .volunteer-hero {
+    min-height: auto;
+  }
+
+  .volunteer-hero-content {
+    padding: 6rem 0;
+  }
+
+  .volunteer-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .volunteer-hero-buttons {
+    flex-direction: column;
+  }
+
+  .volunteer-hero-buttons a {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .volunteer-intro-grid,
+  .volunteer-community-grid,
+  .volunteer-information-box {
+    gap: 2rem;
+  }
+
+  .volunteer-opportunities-grid,
+  .volunteer-who-grid,
+  .volunteer-journey-grid,
+  .volunteer-information-list {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-opportunity-card {
+    min-height: auto;
+  }
+
+  .volunteer-information-list {
+    grid-column: auto;
+  }
+
+  .volunteer-page .primary-btn,
+  .volunteer-page .secondary-btn {
+    text-align: center;
+  }
+}
+.return-home-button {
+  background: #0ea5a4;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  margin: 1rem 0 0 1rem;
+}
+
+.return-home-button:hover {
+  background: #0f766e;
+  transform: translateY(-1px);
+}

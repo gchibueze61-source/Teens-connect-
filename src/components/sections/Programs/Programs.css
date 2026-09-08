@@ -141,7 +141,7 @@
 }
 
 .status.open{
-    background:#16a34a;
+    background:#0ea5a4;
 }
 
 .status.ongoing{
@@ -164,13 +164,13 @@
     background:#0ea5a4;
     color:#ffffff;
     border:none;
-    padding:.75rem 1.4rem;
-    border-radius:.6rem;
+    padding:.3rem .6rem;
+    border-radius:.35rem;
     cursor:pointer;
     transition:.3s;
     font-weight:600;
+    font-size:.8rem;
 }
-
 .status-row button:hover{
     background:#0f766e;
 }

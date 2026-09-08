@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer: React.FC = () => {
@@ -26,6 +27,8 @@ const Footer: React.FC = () => {
             <a href="#events">Events</a>
             <a href="#testimonials">Testimonials</a>
             <a href="#contact">Contact</a>
+
+            <Link to="/donate">Donate</Link>
           </div>
 
           <div className="footer-meeting">
@@ -45,6 +48,10 @@ const Footer: React.FC = () => {
             Built to empower the next generation.
           </p>
         </div>
+
+        <p className="footer-courtesy">
+          Courtesy: Obize Gospel
+        </p>
 
       </div>
     </footer>

@@ -1,0 +1,607 @@
+
+/* =========================
+   FOUNDER PAGE
+========================= */
+
+.founder-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+  color: #07234b;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.founder-container {
+  width: min(92%, 1400px);
+  margin: 0 auto;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.founder-hero {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: #07234b;
+  color: #fff;
+}
+
+.founder-hero::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  border-radius: 50%;
+  top: -220px;
+  right: -150px;
+}
+
+.founder-hero::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  bottom: -180px;
+  left: -120px;
+}
+
+.founder-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 5rem;
+  padding: 7rem 0;
+}
+
+
+/* =========================
+   HERO CONTENT
+========================= */
+
+.founder-hero-content {
+  animation: founderContentIn 1s ease both;
+}
+
+.founder-eyebrow {
+  display: inline-block;
+  background: #ffffff20;
+  color: #22c55e;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.5rem;
+}
+
+.founder-hero h1 {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1.02;
+  margin: 0 0 1rem;
+  max-width: 10ch;
+}
+
+.founder-hero h1 span {
+  display: block;
+  color: #22c55e;
+}
+
+.founder-hero-title {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.founder-hero-text {
+  max-width: 42rem;
+  color: #eeeeee;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+
+/* =========================
+   HERO BUTTONS
+========================= */
+
+.founder-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.founder-hero-buttons .primary-btn,
+.founder-hero-buttons .secondary-btn,
+.founder-connect .primary-btn {
+  display: inline-block;
+  padding: 0.95rem 2rem;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.founder-hero-buttons .primary-btn,
+.founder-connect .primary-btn {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+}
+
+.founder-hero-buttons .secondary-btn {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.founder-hero-buttons .primary-btn:hover,
+.founder-hero-buttons .secondary-btn:hover,
+.founder-connect .primary-btn:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.founder-hero-image {
+  height: 560px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #0b376f, #07234b);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: founderImageIn 1s ease 0.15s both;
+}
+
+.founder-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.founder-image-label {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.9rem;
+  background: #07234bd9;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.founder-image-label strong {
+  color: #22c55e;
+}
+
+.founder-image-label span {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+
+/* =========================
+   ABOUT
+========================= */
+
+.founder-about {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background: #fff;
+}
+
+.founder-section-heading {
+  margin-bottom: 3rem;
+}
+
+.founder-section-heading span,
+.founder-highlight-card span,
+.founder-role-box span,
+.vision-content span,
+.message-card span,
+.founder-connect > span {
+  display: block;
+  color: #22c55e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.8rem;
+}
+
+.founder-section-heading h2 {
+  color: #07234b;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.founder-about-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.founder-about-text p {
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  margin-bottom: 1.3rem;
+}
+
+.founder-highlight-card {
+  padding: 2.5rem;
+  border-radius: 1.3rem;
+  background: #f5f8fb;
+  border: 1px solid #e5e7eb;
+}
+
+.founder-highlight-card h3 {
+  color: #07234b;
+  font-size: 1.7rem;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.founder-highlight-card p {
+  color: #555;
+  line-height: 1.8;
+}
+
+
+/* =========================
+   JOURNEY
+========================= */
+
+.founder-journey {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background: #07234b;
+}
+
+.founder-section-heading.light h2 {
+  color: #fff;
+}
+
+.founder-journey-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.journey-card {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  background: #ffffff12;
+  border: 1px solid #ffffff14;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.journey-card:hover {
+  transform: translateY(-5px);
+  background: #ffffff1c;
+}
+
+.journey-number {
+  flex-shrink: 0;
+  color: #22c55e;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.journey-card h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 0.7rem;
+}
+
+.journey-card p {
+  color: #d8dee8;
+  line-height: 1.7;
+  margin: 0;
+}
+
+
+/* =========================
+   ROLE
+========================= */
+
+.founder-role-section {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background: #fff;
+}
+
+.founder-role-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: clamp(2rem, 5vw, 4rem);
+  border-radius: 1.5rem;
+  background: #f5f8fb;
+  border: 1px solid #e5e7eb;
+}
+
+.founder-role-box h2 {
+  color: #07234b;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.founder-role-box p {
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+
+/* =========================
+   VISION
+========================= */
+
+.founder-vision {
+  padding: clamp(5rem, 9vw, 9rem) 0;
+  background: #f5f8fb;
+}
+
+.vision-content {
+  max-width: 850px;
+}
+
+.vision-content h2 {
+  color: #07234b;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.vision-content p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 700px;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.founder-message {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background: #fff;
+}
+
+.message-card {
+  max-width: 950px;
+  margin: 0 auto;
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 5rem);
+  border-radius: 1.5rem;
+  background: #07234b;
+  color: #fff;
+  box-shadow: 0 20px 50px rgba(7, 35, 75, 0.15);
+}
+
+.message-card h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.message-card p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #e5e7eb;
+  line-height: 1.9;
+}
+
+.message-line {
+  width: 60px;
+  height: 3px;
+  margin: 2rem auto 1.2rem;
+  background: #22c55e;
+  border-radius: 999px;
+}
+
+.message-card strong {
+  display: block;
+  color: #22c55e;
+  margin-bottom: 0.3rem;
+}
+
+.message-card small {
+  color: #d8dee8;
+}
+
+
+/* =========================
+   CONNECT
+========================= */
+
+.founder-connect {
+  padding: clamp(5rem, 8vw, 7rem) 0;
+  background: #07234b;
+  text-align: center;
+  color: #fff;
+}
+
+.founder-connect h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: 1rem;
+}
+
+.founder-connect p {
+  color: #d8dee8;
+  margin-bottom: 2rem;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes founderContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes founderImageIn {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================
+   TABLETS
+========================= */
+
+@media (max-width: 900px) {
+  .founder-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .founder-hero-image {
+    height: 500px;
+  }
+
+  .founder-about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .founder-role-box {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .founder-journey-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================
+   PHONES
+========================= */
+
+@media (max-width: 600px) {
+  .founder-container {
+    width: 94%;
+  }
+
+  .founder-hero-grid {
+    padding: 6rem 0;
+  }
+
+  .founder-hero h1 {
+    max-width: 100%;
+  }
+
+  .founder-hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .founder-hero-buttons .primary-btn,
+  .founder-hero-buttons .secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .founder-hero-image {
+    height: 420px;
+  }
+
+  .founder-image-label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .founder-about,
+  .founder-journey,
+  .founder-role-section,
+  .founder-message {
+    padding: 4.5rem 0;
+  }
+
+  .founder-highlight-card,
+  .journey-card {
+    padding: 1.5rem;
+  }
+
+  .founder-role-box {
+    padding: 2rem 1.5rem;
+  }
+}
+
+
+/* =========================
+   LARGE DESKTOP
+========================= */
+
+@media (min-width: 1440px) {
+  .founder-container {
+    width: min(88%, 1500px);
+  }
+}
+.return-home-button {
+  background: #0ea5a4;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  margin: 1rem 0 0 1rem;
+}
+
+.return-home-button:hover {
+  background: #0f766e;
+  transform: translateY(-1px);
+}

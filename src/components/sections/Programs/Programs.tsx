@@ -68,6 +68,13 @@ export default function Programs() {
           <div className="section-header">
             <h2>Our Programs</h2>
             <p>Loading our latest programs...</p>
+
+            <a
+              href="/volunteer"
+              className="primary-btn programs-volunteer-btn"
+            >
+              Volunteer With Us
+            </a>
           </div>
         </div>
       </section>
@@ -81,6 +88,13 @@ export default function Programs() {
           <div className="section-header">
             <h2>Our Programs</h2>
             <p>{error}</p>
+
+            <a
+              href="/volunteer"
+              className="primary-btn programs-volunteer-btn"
+            >
+              Volunteer With Us
+            </a>
           </div>
         </div>
       </section>
@@ -98,6 +112,13 @@ export default function Programs() {
             Empowering African teenagers through education,
             technology, leadership and mentorship.
           </p>
+
+          <a
+            href="/volunteer"
+            className="primary-btn programs-volunteer-btn"
+          >
+            Volunteer With Us
+          </a>
         </div>
 
         {programs.length === 0 ? (

@@ -7,6 +7,7 @@ const navigationLinks = [
   { name: "Events", href: "#events" },
   { name: "Testimonials", href: "#testimonials" },
   { name: "Gallery", href: "#gallery" },
+  { name: "Volunteer", href: "/volunteer" },
   { name: "Contact", href: "#contact" },
 ];
 

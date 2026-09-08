@@ -12,12 +12,18 @@ import Programs from "./components/sections/Programs";
 import GalleryPage from "./pages/Gallery/GalleryPage";
 import GalleryDetails from "./pages/Gallery/GalleryDetails";
 
+import Founders from "./pages/Founders/Founders";
+import Founder from "./pages/Founder/Founder";
+import CoFounder from "./pages/CoFounder/CoFounder";
+
+import Volunteer from "./pages/Volunteer/Volunteer";
+import Donation from "./pages/Donation/Donation";
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
 
       {/* =========================
-          PUBLIC HOMEPAGE
+          MAIN WEBSITE
       ========================= */}
       <Route
         path="/"
@@ -25,7 +31,7 @@ const AppRoutes: React.FC = () => {
       />
 
       {/* =========================
-          USER AUTHENTICATION
+          MEMBERSHIP
       ========================= */}
       <Route
         path="/register"
@@ -37,9 +43,6 @@ const AppRoutes: React.FC = () => {
         element={<Login />}
       />
 
-      {/* =========================
-          MEMBER PORTAL
-      ========================= */}
       <Route
         path="/member-portal"
         element={<MemberPortal />}
@@ -64,6 +67,32 @@ const AppRoutes: React.FC = () => {
       <Route
         path="/gallery/:id"
         element={<GalleryDetails />}
+      />
+
+      {/* =========================
+          FOUNDERS
+      ========================= */}
+      <Route
+        path="/founders"
+        element={<Founders />}
+      />
+
+      <Route
+        path="/founder"
+        element={<Founder />}
+      />
+
+      <Route
+        path="/co-founder"
+        element={<CoFounder />}
+      />
+<Route path="/donate" element={<Donation />} />
+      {/* =========================
+          VOLUNTEER
+      ========================= */}
+      <Route
+        path="/volunteer"
+        element={<Volunteer />}
       />
 
     </Routes>

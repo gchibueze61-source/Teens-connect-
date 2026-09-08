@@ -1,0 +1,104 @@
+﻿/* ===== GLOBAL MOBILE RESPONSIVE LAYER ===== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img, video, svg, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+iframe {
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  /* Prevent oversized desktop containers */
+  .container,
+  .section,
+  .wrapper,
+  .content,
+  main,
+  section {
+    max-width: 100%;
+  }
+
+  /* Responsive grids */
+  [class*="grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Responsive flex layouts */
+  [class*="flex"] {
+    flex-wrap: wrap;
+  }
+
+  /* Prevent fixed-width elements from breaking the screen */
+  [style*="width"],
+  [style*="min-width"] {
+    max-width: 100%;
+  }
+
+  /* Tables */
+  table {
+    max-width: 100%;
+  }
+
+  /* Forms */
+  input,
+  select,
+  textarea {
+    width: 100%;
+  }
+
+  /* Large headings */
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+  }
+
+  /* Navigation */
+  nav {
+    max-width: 100%;
+  }
+
+  /* Product/card images */
+  img {
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Two-column layout still works on small phones */
+  [class*="grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  /* Reduce excessive desktop spacing */
+  section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Keep buttons usable */
+  button {
+    max-width: 100%;
+  }
+}

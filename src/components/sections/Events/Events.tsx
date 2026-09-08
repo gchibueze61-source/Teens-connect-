@@ -474,8 +474,9 @@ export default function Events() {
 
                       <span className="event-status">
                         {event.featured
-                          ? "Featured"
-                          : event.status}
+  ? "Featured"
+  : "Published"}
+                        
                       </span>
 
                       <h3>
@@ -508,12 +509,6 @@ export default function Events() {
                           }
                         />
                       )}
-
-                      <button
-                        type="button"
-                      >
-                        View Details
-                      </button>
 
                     </div>
                   );

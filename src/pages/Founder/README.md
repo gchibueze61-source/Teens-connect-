@@ -1,3 +1,0 @@
-# Founder
-
-Placeholder folder.

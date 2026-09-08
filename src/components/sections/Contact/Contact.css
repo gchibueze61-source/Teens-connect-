@@ -453,20 +453,38 @@
 @media (min-width: 1920px) {
 
     .contact-container {
-        width: min(86%, 1500px);
+        width: min(88%, 1600px);
     }
 
     .contact-grid {
         gap: 6rem;
     }
-}
-.contact-location-link {
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
+
+    .contact-item {
+        padding: 1.75rem;
+    }
+
+    .contact-form {
+        padding: 3.5rem;
+    }
 }
 
-.contact-location-link:hover {
-  color: #0f766e;
-  text-decoration: underline;
+.contact-location-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding: 0.65rem 1rem;
+  background: #0ea5a4;
+  color: #ffffff;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.contact-location-button:hover {
+  background: #0f766e;
+  transform: translateY(-2px);
 }

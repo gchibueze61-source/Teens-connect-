@@ -121,16 +121,19 @@ ${message}
               </div>
 
               <div>
-                <h3>Our Location</h3>
+                <h3> Our Location</h3>
 
-                <a
-                  href="https://maps.app.goo.gl/tkAdJB4gF4t8qyyg8?g_st=ac"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-location-link"
-                >
-                  Abuja, Nigeria
-                </a>
+               <a
+  href="https://maps.app.goo.gl/tkAdJB4gF4t8qyyg8?g_st=ac"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="contact-location-button"
+>
+  <FaLocationDot />
+  Click to View Our Location
+</a>
+
+<p>Abuja, Nigeria</p>
               </div>
             </div>
 
@@ -271,3 +274,4 @@ ${message}
     </section>
   );
 }
+

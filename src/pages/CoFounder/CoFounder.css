@@ -1,0 +1,626 @@
+.cofounder-page {
+  background: #fff;
+  color: #07234b;
+  overflow: hidden;
+}
+
+.cofounder-container {
+  width: min(92%, 1200px);
+  margin: 0 auto;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.cofounder-hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 85% 20%, #22c55e20, transparent 28%),
+    radial-gradient(circle at 10% 90%, #22c55e12, transparent 25%),
+    #07234b;
+  color: #fff;
+}
+
+.cofounder-hero::before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border: 1px solid #ffffff18;
+  border-radius: 50%;
+  right: -120px;
+  top: -120px;
+}
+
+.cofounder-hero::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1px solid #22c55e25;
+  border-radius: 50%;
+  left: -80px;
+  bottom: -80px;
+}
+
+.cofounder-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 5rem;
+  align-items: center;
+  padding: 7rem 0;
+}
+
+.cofounder-hero-content {
+  animation: cofounderFadeUp 0.9s ease both;
+}
+
+.cofounder-eyebrow {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: #ffffff18;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.cofounder-hero h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.cofounder-hero h1 span {
+  display: block;
+  margin-top: 0.5rem;
+  color: #22c55e;
+  font-size: 0.55em;
+  letter-spacing: -0.02em;
+}
+
+.cofounder-hero-title {
+  max-width: 700px;
+  margin-bottom: 1.5rem;
+  color: #dbe7f5;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+.cofounder-hero-text {
+  max-width: 650px;
+  margin-bottom: 2.5rem;
+  color: #eeeeee;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.cofounder-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cofounder-hero-buttons .primary-btn,
+.cofounder-hero-buttons .secondary-btn,
+.cofounder-connect .primary-btn {
+  display: inline-block;
+  padding: 0.95rem 2rem;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.cofounder-hero-buttons .primary-btn,
+.cofounder-connect .primary-btn {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+}
+
+.cofounder-hero-buttons .secondary-btn {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.cofounder-hero-buttons .primary-btn:hover,
+.cofounder-hero-buttons .secondary-btn:hover,
+.cofounder-connect .primary-btn:hover {
+  transform: translateY(-3px);
+}
+
+.cofounder-hero-buttons .primary-btn:hover,
+.cofounder-connect .primary-btn:hover {
+  background: #16a34a;
+}
+
+.cofounder-hero-image {
+  position: relative;
+  max-width: 470px;
+  width: 100%;
+  margin-left: auto;
+  animation: cofounderImageIn 1s ease 0.15s both;
+}
+
+.cofounder-hero-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 2rem;
+  border: 8px solid #ffffff12;
+  box-shadow: 0 30px 70px #00000045;
+}
+
+.cofounder-image-label {
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.3rem;
+  border-radius: 1rem;
+  background: #07234be8;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 35px #00000035;
+}
+
+.cofounder-image-label strong {
+  color: #22c55e;
+  font-size: 0.95rem;
+}
+
+.cofounder-image-label span {
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+/* =========================
+   ABOUT
+========================= */
+
+.cofounder-about {
+  padding: 7rem 0;
+  background: #fff;
+}
+
+.cofounder-section-heading {
+  margin-bottom: 3rem;
+}
+
+.cofounder-section-heading span,
+.cofounder-role-box span,
+.vision-content span,
+.cofounder-message-card span,
+.cofounder-connect > .cofounder-container > span {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: #22c55e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.cofounder-section-heading h2 {
+  margin: 0;
+  color: #07234b;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  line-height: 1.15;
+}
+
+.cofounder-about-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.cofounder-about-text p {
+  margin: 0 0 1.4rem;
+  color: #4b5563;
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.cofounder-highlight-card {
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  background: #07234b;
+  color: #fff;
+  box-shadow: 0 20px 50px #07234b20;
+}
+
+.cofounder-highlight-card span {
+  color: #22c55e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.cofounder-highlight-card h3 {
+  margin: 1rem 0;
+  font-size: 1.8rem;
+  line-height: 1.3;
+}
+
+.cofounder-highlight-card p {
+  margin: 0;
+  color: #dbe7f5;
+  line-height: 1.8;
+}
+
+/* =========================
+   JOURNEY
+========================= */
+
+.cofounder-journey {
+  padding: 7rem 0;
+  background: #07234b;
+  color: #fff;
+}
+
+.cofounder-section-heading.light h2 {
+  color: #fff;
+}
+
+.cofounder-journey-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.cofounder-journey-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
+  border: 1px solid #ffffff12;
+  border-radius: 1.25rem;
+  background: #ffffff0d;
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.cofounder-journey-card:hover {
+  transform: translateY(-6px);
+  background: #ffffff16;
+}
+
+.cofounder-journey-number {
+  color: #22c55e;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.cofounder-journey-card h3 {
+  margin: 0 0 0.7rem;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.cofounder-journey-card p {
+  margin: 0;
+  color: #dbe7f5;
+  line-height: 1.75;
+}
+
+/* =========================
+   ROLE
+========================= */
+
+.cofounder-role-section {
+  padding: 6rem 0;
+  background: #f8fafc;
+}
+
+.cofounder-role-box {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem;
+  border-radius: 2rem;
+  background: #fff;
+  box-shadow: 0 20px 60px #07234b12;
+}
+
+.cofounder-role-box h2 {
+  margin: 0;
+  color: #07234b;
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  line-height: 1.2;
+}
+
+.cofounder-role-box p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+/* =========================
+   VISION
+========================= */
+
+.cofounder-vision {
+  padding: 8rem 0;
+  background:
+    radial-gradient(circle at 80% 50%, #22c55e16, transparent 30%),
+    #eef5f0;
+}
+
+.vision-content {
+  max-width: 850px;
+}
+
+.vision-content h2 {
+  margin: 0 0 1.5rem;
+  color: #07234b;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+  line-height: 1.15;
+}
+
+.vision-content p {
+  max-width: 700px;
+  margin: 0;
+  color: #4b5563;
+  font-size: 1.1rem;
+  line-height: 1.85;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.cofounder-message {
+  padding: 7rem 0;
+  background: #fff;
+}
+
+.cofounder-message-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem;
+  border-radius: 2rem;
+  background: #07234b;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 25px 70px #07234b25;
+}
+
+.cofounder-message-card h2 {
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.2;
+}
+
+.cofounder-message-card p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #dbe7f5;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.cofounder-message-line {
+  width: 60px;
+  height: 3px;
+  margin: 2rem auto 1rem;
+  background: #22c55e;
+  border-radius: 999px;
+}
+
+.cofounder-message-card strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.cofounder-message-card small {
+  display: block;
+  margin-top: 0.3rem;
+  color: #9fb2c9;
+}
+
+/* =========================
+   CONNECT
+========================= */
+
+.cofounder-connect {
+  padding: 6rem 0;
+  background: #22c55e;
+  color: #fff;
+  text-align: center;
+}
+
+.cofounder-connect > .cofounder-container > span {
+  color: #07234b;
+}
+
+.cofounder-connect h2 {
+  margin: 0 0 1rem;
+  color: #07234b;
+  font-size: clamp(2.3rem, 5vw, 4rem);
+}
+
+.cofounder-connect p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: #16365e;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.cofounder-connect .primary-btn {
+  background: #07234b;
+  color: #fff;
+}
+
+.cofounder-connect .primary-btn:hover {
+  background: #031832;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes cofounderFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cofounderImageIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .cofounder-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .cofounder-hero {
+    min-height: auto;
+  }
+
+  .cofounder-hero-image {
+    margin: 0 auto;
+    max-width: 430px;
+  }
+
+  .cofounder-about-grid,
+  .cofounder-role-box {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .cofounder-journey-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+  .cofounder-container {
+    width: 94%;
+  }
+
+  .cofounder-hero-grid {
+    padding: 5rem 0;
+  }
+
+  .cofounder-hero h1 {
+    font-size: 3rem;
+  }
+
+  .cofounder-hero-buttons {
+    flex-direction: column;
+  }
+
+  .cofounder-hero-buttons .primary-btn,
+  .cofounder-hero-buttons .secondary-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .cofounder-about,
+  .cofounder-journey,
+  .cofounder-message {
+    padding: 5rem 0;
+  }
+
+  .cofounder-role-section {
+    padding: 4rem 0;
+  }
+
+  .cofounder-role-box,
+  .cofounder-message-card {
+    padding: 2rem;
+  }
+
+  .cofounder-highlight-card {
+    padding: 2rem;
+  }
+
+  .cofounder-vision {
+    padding: 5rem 0;
+  }
+
+  .cofounder-journey-card {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .cofounder-image-label {
+    left: 15px;
+    bottom: 15px;
+  }
+}
+
+/* =========================
+   LARGE DESKTOP
+========================= */
+
+@media (min-width: 1440px) {
+  .cofounder-container {
+    width: min(88%, 1400px);
+  }
+}
+.return-home-button {
+  background: #0ea5a4;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  margin: 1rem 0 0 1rem;
+}
+
+.return-home-button:hover {
+  background: #0f766e;
+  transform: translateY(-1px);
+}

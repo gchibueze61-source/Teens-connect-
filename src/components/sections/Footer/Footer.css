@@ -113,3 +113,28 @@
         width: min(86%, 1500px);
     }
 }
+.footer-courtesy {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.footer-links a[href="/donate"] {
+  display: inline-block;
+  background: #0ea5a4;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  transition: 0.3s ease;
+}
+
+.footer-links a[href="/donate"]:hover {
+  background: #0f766e;
+  transform: translateY(-1px);
+}
