@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabase";
 import "./Blog.css";
 
@@ -19,25 +20,44 @@ type BlogPost = {
 };
 
 function Blog() {
+  const navigate = useNavigate();
+
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPost, setSelectedPost] =
-    useState<BlogPost | null>(null);
 
   useEffect(() => {
-    const loadPublishedPosts = async () => {
+    const loadHomepagePosts = async () => {
       setLoading(true);
 
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("*")
+        .select(`
+          id,
+          title,
+          slug,
+          excerpt,
+          content,
+          category,
+          author,
+          image_url,
+          status,
+          featured,
+          homepage,
+          created_at,
+          updated_at
+        `)
         .eq("status", "published")
+        .eq("homepage", true)
+        .order("featured", {
+          ascending: false,
+        })
         .order("created_at", {
           ascending: false,
-        });
+        })
+        .limit(3);
 
       if (error) {
-        console.error("PUBLIC BLOG ERROR:", error);
+        console.error("PUBLIC HOMEPAGE BLOG ERROR:", error);
         setBlogPosts([]);
       } else {
         setBlogPosts((data || []) as BlogPost[]);
@@ -46,162 +66,17 @@ function Blog() {
       setLoading(false);
     };
 
-    loadPublishedPosts();
+    loadHomepagePosts();
   }, []);
 
-  const handleReadMore = (post: BlogPost) => {
-    setSelectedPost(post);
-
-    // Move to the beginning of the article
-    setTimeout(() => {
-      document
-        .getElementById("blog-article")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 50);
-  };
-
-  const handleBack = () => {
-    setSelectedPost(null);
-
-    setTimeout(() => {
-      document
-        .getElementById("blog")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 50);
-  };
-
-  /*
-   * ==============================
-   * FULL ARTICLE
-   * ==============================
-   */
-
-  if (selectedPost) {
-    return (
-      <section
-        className="blog blog-article-view"
-        id="blog-article"
-      >
-        <div className="container">
-
-          <button
-            type="button"
-            className="blog-back-button"
-            onClick={handleBack}
-          >
-            ← Back to Articles
-          </button>
-
-          <article className="full-blog-article">
-
-            {selectedPost.image_url && (
-              <div className="full-blog-image-wrapper">
-                <img
-                  src={selectedPost.image_url}
-                  alt={selectedPost.title}
-                  className="full-blog-image"
-                />
-              </div>
-            )}
-
-            <div className="full-blog-content">
-
-              <div className="full-blog-meta">
-
-                {selectedPost.category && (
-                  <span className="blog-category">
-                    {selectedPost.category}
-                  </span>
-                )}
-
-                <span className="full-blog-date">
-                  {new Date(
-                    selectedPost.created_at
-                  ).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-
-              </div>
-
-              <h1>{selectedPost.title}</h1>
-
-              <div className="full-blog-author">
-                By{" "}
-                {selectedPost.author ||
-                  "Teens Connect Africa"}
-              </div>
-
-              {selectedPost.excerpt && (
-                <p className="full-blog-excerpt">
-                  {selectedPost.excerpt}
-                </p>
-              )}
-
-              {/* FULL CONTENT FROM SUPABASE */}
-
-              <div className="full-blog-body">
-                {selectedPost.content
-                  .split(/\r?\n/)
-                  .map((line, index) => {
-                    const trimmedLine = line.trim();
-
-                    if (!trimmedLine) {
-                      return (
-                        <div
-                          key={index}
-                          className="article-space"
-                        />
-                      );
-                    }
-
-                    return (
-                      <p key={index}>
-                        {trimmedLine}
-                      </p>
-                    );
-                  })}
-              </div>
-
-              <button
-                type="button"
-                className="blog-back-bottom-button"
-                onClick={handleBack}
-              >
-                ← Back to Articles
-              </button>
-
-            </div>
-
-          </article>
-
-        </div>
-      </section>
-    );
-  }
-
-  /*
-   * ==============================
-   * BLOG LIST
-   * ==============================
-   */
-
   return (
-    <section
-      className="blog"
-      id="blog"
-    >
+    <section className="blog" id="blog">
       <div className="container">
 
         <div className="section-header">
+          <span className="blog-eyebrow">
+            FROM OUR BLOG
+          </span>
 
           <h2>Latest Articles</h2>
 
@@ -210,78 +85,97 @@ function Blog() {
             knowledge to help teenagers grow in
             leadership, technology and purpose.
           </p>
-
         </div>
 
         {loading ? (
           <div className="blog-loading">
-            Loading articles...
+            <div className="blog-loader"></div>
+            <p>Loading articles...</p>
           </div>
         ) : blogPosts.length === 0 ? (
           <div className="blog-empty">
-            <p>No published articles yet.</p>
+            <h3>No articles yet</h3>
+            <p>
+              Check back soon for new articles from
+              Teens Connect Africa.
+            </p>
           </div>
         ) : (
-          <div className="blog-grid">
-
-            {blogPosts.map((post) => (
-              <article
-                className="blog-card"
-                key={post.id}
-              >
-
-                {post.image_url ? (
-                  <img
-                    src={post.image_url}
-                    alt={post.title}
-                    className="blog-image"
-                  />
-                ) : (
-                  <div className="blog-image-placeholder">
-                    No image
-                  </div>
-                )}
-
-                <div className="blog-content">
-
-                  {post.category && (
-                    <span className="blog-category">
-                      {post.category}
-                    </span>
+          <>
+            <div className="blog-grid">
+              {blogPosts.map((post) => (
+                <article
+                  className="blog-card"
+                  key={post.id}
+                >
+                  {post.image_url ? (
+                    <div className="blog-image-wrapper">
+                      <img
+                        src={post.image_url}
+                        alt={post.title}
+                        className="blog-image"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div className="blog-image-placeholder">
+                      <span>Teens Connect Africa</span>
+                    </div>
                   )}
 
-                  <h3>{post.title}</h3>
+                  <div className="blog-content">
 
-                  <small>
-                    {new Date(
-                      post.created_at
-                    ).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </small>
+                    <div className="blog-meta">
+                      {post.category && (
+                        <span className="blog-category">
+                          {post.category}
+                        </span>
+                      )}
 
-                  <p>
-                    {post.excerpt ||
-                      "Read this article to learn more."}
-                  </p>
+                      <span className="blog-date">
+                        {new Date(
+                          post.created_at
+                        ).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleReadMore(post)
-                    }
-                  >
-                    Read More
-                  </button>
+                    <h3>{post.title}</h3>
 
-                </div>
+                    <p>
+                      {post.excerpt ||
+                        "Read this article to learn more."}
+                    </p>
 
-              </article>
-            ))}
+                    <button
+                      type="button"
+                      className="blog-read-button"
+                      onClick={() =>
+                        navigate(`/blog/${post.slug}`)
+                      }
+                    >
+                      Read Article
+                      <span>→</span>
+                    </button>
 
-          </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="blog-view-all">
+              <button
+                type="button"
+                onClick={() => navigate("/blog")}
+              >
+                View All Articles
+                <span>→</span>
+              </button>
+            </div>
+          </>
         )}
 
       </div>

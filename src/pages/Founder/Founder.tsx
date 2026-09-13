@@ -1,17 +1,54 @@
-import "./Founder.css";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Founder.css";
 import founderImage from "./ChatGPT Image Sep 7, 2026, 05_24_34 PM (1).png";
+
 const Founder = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>(
+      ".founder-page .reveal"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => {
+        element.classList.add("revealed");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main className="founder-page">
-<button
+
+      <button
         type="button"
         className="return-home-button"
         onClick={() => navigate("/")}
       >
         ← Back to Home
       </button>
+
       {/* =========================
           FOUNDER HERO
       ========================= */}
@@ -19,27 +56,29 @@ const Founder = () => {
         <div className="founder-container founder-hero-grid">
 
           <div className="founder-hero-content">
-            <span className="founder-eyebrow">
+
+            <span className="founder-eyebrow reveal">
               FOUNDER • TEENS CONNECT AFRICA
             </span>
 
-            <h1>
+            <h1 className="reveal reveal-delay-1">
               Anne Obize
               <span>MacAnne</span>
             </h1>
 
-            <p className="founder-hero-title">
+            <p className="founder-hero-title reveal reveal-delay-2">
               Corporate MC • Executive Communication Coach • Personal
               Development Strategist
             </p>
 
-            <p className="founder-hero-text">
+            <p className="founder-hero-text reveal reveal-delay-3">
               A passionate communicator and personal development strategist
               committed to helping people discover their voice, communicate
               with confidence, and grow into stronger leaders.
             </p>
 
-            <div className="founder-hero-buttons">
+            <div className="founder-hero-buttons reveal reveal-delay-4">
+
               <a
                 href="https://www.linkedin.com/in/anne-obize"
                 target="_blank"
@@ -55,14 +94,15 @@ const Founder = () => {
               >
                 Meet Our Founders
               </a>
+
             </div>
           </div>
 
-          <div className="founder-hero-image">
-           <img
-  src={founderImage}
-  alt="Anne Obize"
-/>
+          <div className="founder-hero-image reveal reveal-right">
+            <img
+              src={founderImage}
+              alt="Anne Obize"
+            />
 
             <div className="founder-image-label">
               <strong>Founder</strong>
@@ -79,14 +119,15 @@ const Founder = () => {
       <section className="founder-about">
         <div className="founder-container">
 
-          <div className="founder-section-heading">
+          <div className="founder-section-heading reveal">
             <span>ABOUT HER</span>
             <h2>Meet Anne</h2>
           </div>
 
           <div className="founder-about-grid">
 
-            <div className="founder-about-text">
+            <div className="founder-about-text reveal reveal-left">
+
               <p>
                 Anne Obize, also known as MacAnne, is a professional
                 communicator, corporate event host, executive communication
@@ -105,9 +146,11 @@ const Founder = () => {
                 their voice, communicate effectively, develop confidence, and
                 grow into stronger leaders.
               </p>
+
             </div>
 
-            <div className="founder-highlight-card">
+            <div className="founder-highlight-card reveal reveal-right">
+
               <span>HER APPROACH</span>
 
               <h3>
@@ -119,6 +162,7 @@ const Founder = () => {
                 purposeful engagement, Anne helps people build the confidence
                 and skills needed to make a meaningful difference.
               </p>
+
             </div>
 
           </div>
@@ -131,14 +175,14 @@ const Founder = () => {
       <section className="founder-journey">
         <div className="founder-container">
 
-          <div className="founder-section-heading light">
+          <div className="founder-section-heading light reveal">
             <span>PROFESSIONAL JOURNEY</span>
             <h2>Experience & Leadership</h2>
           </div>
 
           <div className="founder-journey-grid">
 
-            <div className="journey-card">
+            <div className="journey-card reveal reveal-left">
               <div className="journey-number">01</div>
 
               <div>
@@ -151,7 +195,7 @@ const Founder = () => {
               </div>
             </div>
 
-            <div className="journey-card">
+            <div className="journey-card reveal reveal-right">
               <div className="journey-number">02</div>
 
               <div>
@@ -164,7 +208,7 @@ const Founder = () => {
               </div>
             </div>
 
-            <div className="journey-card">
+            <div className="journey-card reveal reveal-left reveal-delay-1">
               <div className="journey-number">03</div>
 
               <div>
@@ -177,7 +221,7 @@ const Founder = () => {
               </div>
             </div>
 
-            <div className="journey-card">
+            <div className="journey-card reveal reveal-right reveal-delay-1">
               <div className="journey-number">04</div>
 
               <div>
@@ -200,7 +244,7 @@ const Founder = () => {
       <section className="founder-role-section">
         <div className="founder-container">
 
-          <div className="founder-role-box">
+          <div className="founder-role-box reveal">
 
             <div>
               <span>HER ROLE AT TCA</span>
@@ -228,7 +272,8 @@ const Founder = () => {
       <section className="founder-vision">
         <div className="founder-container">
 
-          <div className="vision-content">
+          <div className="vision-content reveal">
+
             <span>HER VISION</span>
 
             <h2>
@@ -242,6 +287,7 @@ const Founder = () => {
               She believes that developing individuals can contribute to
               stronger communities and a better future.
             </p>
+
           </div>
 
         </div>
@@ -253,7 +299,8 @@ const Founder = () => {
       <section className="founder-message">
         <div className="founder-container">
 
-          <div className="message-card">
+          <div className="message-card reveal reveal-scale">
+
             <span>A MESSAGE TO YOUNG PEOPLE</span>
 
             <h2>
@@ -276,6 +323,7 @@ const Founder = () => {
             <small>
               Founder, Teens Connect Africa
             </small>
+
           </div>
 
         </div>
@@ -287,25 +335,29 @@ const Founder = () => {
       <section className="founder-connect">
         <div className="founder-container">
 
-          <span>CONNECT</span>
+          <span className="reveal">
+            CONNECT
+          </span>
 
-          <h2>
+          <h2 className="reveal reveal-delay-1">
             Follow the journey.
           </h2>
 
-          <p>
+          <p className="reveal reveal-delay-2">
             Learn more about Anne's professional journey, communication work,
             and personal development initiatives.
           </p>
 
-          <a
-            href="https://www.linkedin.com/in/anne-obize"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="primary-btn"
-          >
-            Visit LinkedIn
-          </a>
+          <div className="reveal reveal-delay-3">
+            <a
+              href="https://www.linkedin.com/in/anne-obize"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="primary-btn"
+            >
+              Visit LinkedIn
+            </a>
+          </div>
 
         </div>
       </section>

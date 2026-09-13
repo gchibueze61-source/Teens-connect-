@@ -7,10 +7,17 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import MemberPortal from "./pages/MemberPortal/MemberPortal";
 
-import Programs from "./components/sections/Programs";
+import ProgramsPage from "./pages/Programs/ProgramsPage";
+import ProgramDetails from "./pages/Programs/ProgramDetails";
+
+import EventsPage from "./pages/Events/EventsPage";
+import EventDetails from "./pages/Events/EventDetails";
 
 import GalleryPage from "./pages/Gallery/GalleryPage";
 import GalleryDetails from "./pages/Gallery/GalleryDetails";
+
+import BlogPage from "./pages/Blog/BlogPage";
+import BlogDetails from "./pages/Blog/BlogDetails";
 
 import Founders from "./pages/Founders/Founders";
 import Founder from "./pages/Founder/Founder";
@@ -18,47 +25,54 @@ import CoFounder from "./pages/CoFounder/CoFounder";
 
 import Volunteer from "./pages/Volunteer/Volunteer";
 import Donation from "./pages/Donation/Donation";
+
+import AboutPage from "./pages/About/AboutPage";
+
+import ContactPage from "./pages/Contact/ContactPage";
+
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
 
-      {/* =========================
-          MAIN WEBSITE
-      ========================= */}
+      {/* HOME */}
       <Route
         path="/"
         element={<App />}
       />
 
-      {/* =========================
-          MEMBERSHIP
-      ========================= */}
+
+      {/* ABOUT */}
       <Route
-        path="/register"
-        element={<Register />}
+        path="/about"
+        element={<AboutPage />}
       />
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
 
-      <Route
-        path="/member-portal"
-        element={<MemberPortal />}
-      />
-
-      {/* =========================
-          PROGRAMS
-      ========================= */}
+      {/* PROGRAMS */}
       <Route
         path="/programs"
-        element={<Programs />}
+        element={<ProgramsPage />}
       />
 
-      {/* =========================
-          GALLERY
-      ========================= */}
+      <Route
+        path="/programs/:id"
+        element={<ProgramDetails />}
+      />
+
+
+      {/* EVENTS */}
+      <Route
+        path="/events"
+        element={<EventsPage />}
+      />
+
+      <Route
+        path="/events/:id"
+        element={<EventDetails />}
+      />
+
+
+      {/* GALLERY */}
       <Route
         path="/gallery"
         element={<GalleryPage />}
@@ -69,9 +83,34 @@ const AppRoutes: React.FC = () => {
         element={<GalleryDetails />}
       />
 
-      {/* =========================
-          FOUNDERS
-      ========================= */}
+
+      {/* BLOG */}
+      <Route
+        path="/blog"
+        element={<BlogPage />}
+      />
+
+      <Route
+        path="/blog/:slug"
+        element={<BlogDetails />}
+      />
+
+
+      {/* CONTACT */}
+      <Route
+        path="/contact"
+        element={<ContactPage />}
+      />
+
+
+      {/* GET INVOLVED */}
+      <Route
+        path="/volunteer"
+        element={<Volunteer />}
+      />
+
+
+      {/* FOUNDERS */}
       <Route
         path="/founders"
         element={<Founders />}
@@ -86,17 +125,36 @@ const AppRoutes: React.FC = () => {
         path="/co-founder"
         element={<CoFounder />}
       />
-<Route path="/donate" element={<Donation />} />
-      {/* =========================
-          VOLUNTEER
-      ========================= */}
+
+
+      {/* AUTHENTICATION */}
       <Route
-        path="/volunteer"
-        element={<Volunteer />}
+        path="/register"
+        element={<Register />}
+      />
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+
+
+      {/* MEMBER PORTAL */}
+      <Route
+        path="/member-portal"
+        element={<MemberPortal />}
+      />
+
+
+      {/* DONATION */}
+      <Route
+        path="/donate"
+        element={<Donation />}
       />
 
     </Routes>
   );
 };
+
 
 export default AppRoutes;

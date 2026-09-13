@@ -1,53 +1,56 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import NavLinks from "./Navlinks";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onLogin: () => void;
+  onJoin: () => void;
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onClose,
+  onLogin,
+  onJoin,
 }) => {
-  const navigate = useNavigate();
-
-  const handleJoinNow = () => {
-    onClose();
-    navigate("/register");
-  };
-
-  const handleLogin = () => {
-    onClose();
-    navigate("/login");
-  };
-
   return (
-    <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
+    <div
+      className={`mobile-menu ${
+        isOpen ? "open" : ""
+      }`}
+      aria-hidden={!isOpen}
+    >
+      <div className="mobile-menu-inner">
 
-      <NavLinks />
-
-      <div className="mobile-actions">
-
-        <button
-          type="button"
-          className="login-btn"
-          onClick={handleLogin}
+        <nav
+          className="mobile-nav"
+          aria-label="Mobile navigation"
         >
-          Login
-        </button>
+          <NavLinks onNavigate={onClose} />
+        </nav>
 
-        <button
-          type="button"
-          className="join-btn"
-          onClick={handleJoinNow}
-        >
-          Join Now
-        </button>
+        <div className="mobile-actions">
+
+          <button
+            type="button"
+            className="mobile-login-btn"
+            onClick={onLogin}
+          >
+            Login
+          </button>
+
+          <button
+            type="button"
+            className="mobile-join-btn"
+            onClick={onJoin}
+          >
+            Join Community
+          </button>
+
+        </div>
 
       </div>
-
     </div>
   );
 };

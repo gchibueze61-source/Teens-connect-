@@ -1,556 +1,665 @@
+/* =========================================================
+   CO-FOUNDER PAGE
+========================================================= */
+
 .cofounder-page {
-  background: #fff;
-  color: #07234b;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #0f172a;
   overflow: hidden;
 }
 
 .cofounder-container {
-  width: min(92%, 1200px);
+  width: min(92%, 1280px);
   margin: 0 auto;
 }
 
-/* =========================
+/* =========================================================
+   BACK HOME
+========================================================= */
+
+.cofounder-page .return-home-button {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  padding: 11px 18px;
+  border: 1px solid rgba(15, 118, 110, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f766e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.cofounder-page .return-home-button:hover {
+  transform: translateY(-3px);
+  background: #ffffff;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.13);
+}
+
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .cofounder-hero {
   position: relative;
-  min-height: 88vh;
-  display: flex;
-  align-items: center;
+  padding: 145px 0 100px;
   background:
-    radial-gradient(circle at 85% 20%, #22c55e20, transparent 28%),
-    radial-gradient(circle at 10% 90%, #22c55e12, transparent 25%),
-    #07234b;
-  color: #fff;
-}
-
-.cofounder-hero::before {
-  content: "";
-  position: absolute;
-  width: 360px;
-  height: 360px;
-  border: 1px solid #ffffff18;
-  border-radius: 50%;
-  right: -120px;
-  top: -120px;
-}
-
-.cofounder-hero::after {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border: 1px solid #22c55e25;
-  border-radius: 50%;
-  left: -80px;
-  bottom: -80px;
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(20, 184, 166, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #f8fafc 0%,
+      #ffffff 60%,
+      #f0fdfa 100%
+    );
 }
 
 .cofounder-hero-grid {
-  position: relative;
-  z-index: 2;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  gap: 5rem;
   align-items: center;
-  padding: 7rem 0;
+  gap: 80px;
 }
 
 .cofounder-hero-content {
-  animation: cofounderFadeUp 0.9s ease both;
+  position: relative;
+  z-index: 2;
+}
+
+.cofounder-eyebrow,
+.cofounder-section-heading span,
+.cofounder-highlight-card span,
+.cofounder-role-box span,
+.vision-content span,
+.cofounder-message-card span,
+.cofounder-connect
+  > .cofounder-container
+  > span {
+  display: block;
+  color: #0f766e;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
 }
 
 .cofounder-eyebrow {
-  display: inline-block;
-  margin-bottom: 1.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  background: #ffffff18;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  margin-bottom: 18px;
 }
 
 .cofounder-hero h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(3rem, 6vw, 5.5rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  margin-bottom: 22px;
+  color: #0f172a;
+  font-size: clamp(3.1rem, 6vw, 5.7rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
 }
 
 .cofounder-hero h1 span {
   display: block;
-  margin-top: 0.5rem;
-  color: #22c55e;
-  font-size: 0.55em;
-  letter-spacing: -0.02em;
+  margin-top: 10px;
+  color: #0f766e;
 }
 
 .cofounder-hero-title {
-  max-width: 700px;
-  margin-bottom: 1.5rem;
-  color: #dbe7f5;
-  font-size: clamp(1rem, 1.8vw, 1.3rem);
-  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: 22px;
+  color: #0f766e;
   font-weight: 600;
+  line-height: 1.7;
 }
 
 .cofounder-hero-text {
   max-width: 650px;
-  margin-bottom: 2.5rem;
-  color: #eeeeee;
-  font-size: 1.05rem;
-  line-height: 1.8;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.9;
 }
 
 .cofounder-hero-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 13px;
+  margin-top: 32px;
 }
 
-.cofounder-hero-buttons .primary-btn,
-.cofounder-hero-buttons .secondary-btn,
-.cofounder-connect .primary-btn {
-  display: inline-block;
-  padding: 0.95rem 2rem;
-  border-radius: 0.6rem;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.3s ease;
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.cofounder-page .primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.cofounder-hero-buttons .primary-btn,
-.cofounder-connect .primary-btn {
-  background: #22c55e;
-  color: #fff;
-  border: none;
-}
-
-.cofounder-hero-buttons .secondary-btn {
-  background: transparent;
-  color: #fff;
-  border: 2px solid #fff;
-}
-
-.cofounder-hero-buttons .primary-btn:hover,
-.cofounder-hero-buttons .secondary-btn:hover,
-.cofounder-connect .primary-btn:hover {
+.cofounder-page .primary-btn:hover {
   transform: translateY(-3px);
+  background: #115e59;
+  box-shadow: 0 12px 25px rgba(15, 118, 110, 0.2);
 }
 
-.cofounder-hero-buttons .primary-btn:hover,
-.cofounder-connect .primary-btn:hover {
-  background: #16a34a;
+.cofounder-page .secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: transparent;
+  color: #0f172a;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease;
 }
+
+.cofounder-page .secondary-btn:hover {
+  transform: translateY(-3px);
+  border-color: #0f766e;
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
 
 .cofounder-hero-image {
   position: relative;
-  max-width: 470px;
-  width: 100%;
-  margin-left: auto;
-  animation: cofounderImageIn 1s ease 0.15s both;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.15);
+}
+
+.cofounder-hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 55%,
+    rgba(15, 23, 42, 0.2)
+  );
+  pointer-events: none;
 }
 
 .cofounder-hero-image img {
-  display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 2rem;
-  border: 8px solid #ffffff12;
-  box-shadow: 0 30px 70px #00000045;
+  transition: transform 0.8s ease;
+}
+
+.cofounder-hero-image:hover img {
+  transform: scale(1.035);
 }
 
 .cofounder-image-label {
   position: absolute;
-  left: 25px;
-  bottom: 25px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 1rem 1.3rem;
-  border-radius: 1rem;
-  background: #07234be8;
+  gap: 3px;
+  padding: 17px 19px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  background: rgba(15, 23, 42, 0.76);
+  color: #ffffff;
   backdrop-filter: blur(10px);
-  box-shadow: 0 12px 35px #00000035;
 }
 
 .cofounder-image-label strong {
-  color: #22c55e;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .cofounder-image-label span {
-  color: #fff;
-  font-size: 0.85rem;
+  color: #cbd5e1;
+  font-size: 0.75rem;
 }
 
-/* =========================
+/* =========================================================
    ABOUT
-========================= */
+========================================================= */
 
 .cofounder-about {
-  padding: 7rem 0;
-  background: #fff;
+  padding: 105px 0;
+  background: #ffffff;
 }
 
 .cofounder-section-heading {
-  margin-bottom: 3rem;
-}
-
-.cofounder-section-heading span,
-.cofounder-role-box span,
-.vision-content span,
-.cofounder-message-card span,
-.cofounder-connect > .cofounder-container > span {
-  display: block;
-  margin-bottom: 0.7rem;
-  color: #22c55e;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  margin-bottom: 45px;
 }
 
 .cofounder-section-heading h2 {
-  margin: 0;
-  color: #07234b;
+  margin-top: 10px;
+  color: #0f172a;
   font-size: clamp(2rem, 4vw, 3.3rem);
-  line-height: 1.15;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
 }
 
 .cofounder-about-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 4rem;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 70px;
   align-items: start;
 }
 
 .cofounder-about-text p {
-  margin: 0 0 1.4rem;
-  color: #4b5563;
-  font-size: 1.05rem;
-  line-height: 1.9;
+  margin-bottom: 20px;
+  color: #64748b;
+  line-height: 1.95;
 }
 
 .cofounder-highlight-card {
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  background: #07234b;
-  color: #fff;
-  box-shadow: 0 20px 50px #07234b20;
+  padding: 40px;
+  border: 1px solid rgba(20, 184, 166, 0.14);
+  border-radius: 24px;
+  background: #f0fdfa;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.cofounder-highlight-card span {
-  color: #22c55e;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+.cofounder-highlight-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(15, 118, 110, 0.1);
 }
 
 .cofounder-highlight-card h3 {
-  margin: 1rem 0;
-  font-size: 1.8rem;
+  margin: 16px 0;
+  color: #0f172a;
+  font-size: 1.65rem;
   line-height: 1.3;
+  letter-spacing: -0.025em;
 }
 
 .cofounder-highlight-card p {
-  margin: 0;
-  color: #dbe7f5;
-  line-height: 1.8;
+  color: #64748b;
+  line-height: 1.85;
 }
 
-/* =========================
-   JOURNEY
-========================= */
+/* =========================================================
+   PROFESSIONAL JOURNEY
+========================================================= */
 
 .cofounder-journey {
-  padding: 7rem 0;
-  background: #07234b;
-  color: #fff;
+  padding: 105px 0;
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.cofounder-section-heading.light span {
+  color: #5eead4;
 }
 
 .cofounder-section-heading.light h2 {
-  color: #fff;
+  color: #ffffff;
 }
 
 .cofounder-journey-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .cofounder-journey-card {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.5rem;
-  padding: 2rem;
-  border: 1px solid #ffffff12;
-  border-radius: 1.25rem;
-  background: #ffffff0d;
-  backdrop-filter: blur(8px);
+  grid-template-columns: 60px 1fr;
+  gap: 25px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.035);
   transition:
-    transform 0.3s ease,
-    background 0.3s ease;
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .cofounder-journey-card:hover {
   transform: translateY(-6px);
-  background: #ffffff16;
+  border-color: rgba(94, 234, 212, 0.35);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
 .cofounder-journey-number {
-  color: #22c55e;
-  font-size: 1.2rem;
+  color: #5eead4;
+  font-size: 1rem;
   font-weight: 800;
 }
 
 .cofounder-journey-card h3 {
-  margin: 0 0 0.7rem;
-  color: #fff;
-  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 1.1rem;
 }
 
 .cofounder-journey-card p {
-  margin: 0;
-  color: #dbe7f5;
-  line-height: 1.75;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.8;
 }
 
-/* =========================
-   ROLE
-========================= */
+/* =========================================================
+   ROLE AT TCA
+========================================================= */
 
 .cofounder-role-section {
-  padding: 6rem 0;
-  background: #f8fafc;
+  padding: 105px 0;
+  background: #ffffff;
 }
 
 .cofounder-role-box {
   display: grid;
-  grid-template-columns: 1fr 0.9fr;
-  gap: 4rem;
-  align-items: center;
-  padding: 4rem;
-  border-radius: 2rem;
-  background: #fff;
-  box-shadow: 0 20px 60px #07234b12;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 70px;
+  padding: 60px;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  background: #f8fafc;
 }
 
 .cofounder-role-box h2 {
-  margin: 0;
-  color: #07234b;
-  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  margin-top: 15px;
+  color: #0f172a;
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
   line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
 .cofounder-role-box p {
-  margin: 0;
-  color: #4b5563;
-  font-size: 1.05rem;
-  line-height: 1.85;
+  align-self: center;
+  color: #64748b;
+  line-height: 1.9;
 }
 
-/* =========================
+/* =========================================================
    VISION
-========================= */
+========================================================= */
 
 .cofounder-vision {
-  padding: 8rem 0;
-  background:
-    radial-gradient(circle at 80% 50%, #22c55e16, transparent 30%),
-    #eef5f0;
+  padding: 120px 0;
+  background: #0f766e;
+  color: #ffffff;
 }
 
-.vision-content {
-  max-width: 850px;
+.cofounder-vision .vision-content {
+  max-width: 950px;
 }
 
-.vision-content h2 {
-  margin: 0 0 1.5rem;
-  color: #07234b;
-  font-size: clamp(2.3rem, 5vw, 4.2rem);
-  line-height: 1.15;
+.cofounder-vision .vision-content span {
+  color: #99f6e4;
 }
 
-.vision-content p {
-  max-width: 700px;
-  margin: 0;
-  color: #4b5563;
-  font-size: 1.1rem;
-  line-height: 1.85;
+.cofounder-vision .vision-content h2 {
+  margin: 20px 0;
+  color: #ffffff;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.05em;
 }
 
-/* =========================
+.cofounder-vision .vision-content p {
+  max-width: 720px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.9;
+}
+
+/* =========================================================
    MESSAGE
-========================= */
+========================================================= */
 
 .cofounder-message {
-  padding: 7rem 0;
-  background: #fff;
+  padding: 105px 0;
+  background: #ffffff;
 }
 
 .cofounder-message-card {
   max-width: 900px;
-  margin: 0 auto;
-  padding: 4rem;
-  border-radius: 2rem;
-  background: #07234b;
-  color: #fff;
+  margin: auto;
+  padding: 60px;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  background: #f8fafc;
   text-align: center;
-  box-shadow: 0 25px 70px #07234b25;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.cofounder-message-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.08);
 }
 
 .cofounder-message-card h2 {
-  max-width: 700px;
-  margin: 0 auto 1.5rem;
-  color: #fff;
+  max-width: 750px;
+  margin: 20px auto;
+  color: #0f172a;
   font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
 }
 
 .cofounder-message-card p {
-  max-width: 700px;
-  margin: 0 auto;
-  color: #dbe7f5;
-  font-size: 1.05rem;
-  line-height: 1.85;
+  max-width: 680px;
+  margin: auto;
+  color: #64748b;
+  line-height: 1.9;
 }
 
 .cofounder-message-line {
-  width: 60px;
+  width: 55px;
   height: 3px;
-  margin: 2rem auto 1rem;
-  background: #22c55e;
-  border-radius: 999px;
+  margin: 30px auto 20px;
+  background: #14b8a6;
+}
+
+.cofounder-message-card strong,
+.cofounder-message-card small {
+  display: block;
 }
 
 .cofounder-message-card strong {
-  display: block;
-  color: #fff;
+  color: #0f172a;
   font-size: 1rem;
 }
 
 .cofounder-message-card small {
-  display: block;
-  margin-top: 0.3rem;
-  color: #9fb2c9;
+  margin-top: 4px;
+  color: #64748b;
 }
 
-/* =========================
+/* =========================================================
    CONNECT
-========================= */
+========================================================= */
 
 .cofounder-connect {
-  padding: 6rem 0;
-  background: #22c55e;
-  color: #fff;
+  padding: 105px 0;
+  background: #f0fdfa;
   text-align: center;
 }
 
-.cofounder-connect > .cofounder-container > span {
-  color: #07234b;
-}
-
 .cofounder-connect h2 {
-  margin: 0 0 1rem;
-  color: #07234b;
-  font-size: clamp(2.3rem, 5vw, 4rem);
+  margin: 12px 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  letter-spacing: -0.045em;
 }
 
 .cofounder-connect p {
   max-width: 600px;
-  margin: 0 auto 2rem;
-  color: #16365e;
-  font-size: 1.05rem;
-  line-height: 1.7;
+  margin: 0 auto;
+  color: #64748b;
+  line-height: 1.8;
 }
 
 .cofounder-connect .primary-btn {
-  background: #07234b;
-  color: #fff;
+  margin-top: 28px;
 }
 
-.cofounder-connect .primary-btn:hover {
-  background: #031832;
+/* =========================================================
+   SCROLL REVEAL SYSTEM
+========================================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(45px);
+  transition:
+    opacity 0.85s ease,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes cofounderFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes cofounderImageIn {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.reveal-left {
+  transform: translateX(-55px);
 }
 
-/* =========================
+.reveal-right {
+  transform: translateX(55px);
+}
+
+.reveal-left.revealed,
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  transform: scale(0.92);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+/* =========================================================
    TABLET
-========================= */
+========================================================= */
 
 @media (max-width: 900px) {
-  .cofounder-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .cofounder-hero {
-    min-height: auto;
-  }
-
-  .cofounder-hero-image {
-    margin: 0 auto;
-    max-width: 430px;
-  }
-
+  .cofounder-hero-grid,
   .cofounder-about-grid,
   .cofounder-role-box {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+  }
+
+  .cofounder-hero-grid {
+    gap: 50px;
+  }
+
+  .cofounder-hero-image {
+    max-width: 650px;
+    margin: auto;
+  }
+
+  .cofounder-about-grid {
+    gap: 35px;
+  }
+
+  .cofounder-role-box {
+    gap: 30px;
+    padding: 40px;
   }
 
   .cofounder-journey-grid {
     grid-template-columns: 1fr;
   }
+
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(45px);
+  }
+
+  .reveal-left.revealed,
+  .reveal-right.revealed {
+    transform: translateY(0);
+  }
 }
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media (max-width: 600px) {
   .cofounder-container {
-    width: 94%;
+    width: 92%;
   }
 
-  .cofounder-hero-grid {
-    padding: 5rem 0;
+  .cofounder-page .return-home-button {
+    top: 15px;
+    left: 15px;
+    padding: 9px 14px;
+    font-size: 0.76rem;
+  }
+
+  .cofounder-hero {
+    padding: 120px 0 75px;
   }
 
   .cofounder-hero h1 {
     font-size: 3rem;
+  }
+
+  .cofounder-hero-title {
+    font-size: 0.9rem;
+  }
+
+  .cofounder-hero-text {
+    font-size: 0.9rem;
   }
 
   .cofounder-hero-buttons {
@@ -560,67 +669,66 @@
   .cofounder-hero-buttons .primary-btn,
   .cofounder-hero-buttons .secondary-btn {
     width: 100%;
-    text-align: center;
-    box-sizing: border-box;
+  }
+
+  .cofounder-hero-image {
+    border-radius: 20px;
   }
 
   .cofounder-about,
   .cofounder-journey,
+  .cofounder-role-section,
   .cofounder-message {
-    padding: 5rem 0;
+    padding: 75px 0;
   }
 
-  .cofounder-role-section {
-    padding: 4rem 0;
-  }
-
-  .cofounder-role-box,
-  .cofounder-message-card {
-    padding: 2rem;
-  }
-
-  .cofounder-highlight-card {
-    padding: 2rem;
-  }
-
-  .cofounder-vision {
-    padding: 5rem 0;
+  .cofounder-highlight-card,
+  .cofounder-message-card,
+  .cofounder-role-box {
+    padding: 28px 23px;
+    border-radius: 20px;
   }
 
   .cofounder-journey-card {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
+    grid-template-columns: 45px 1fr;
+    gap: 15px;
+    padding: 24px;
   }
 
-  .cofounder-image-label {
-    left: 15px;
-    bottom: 15px;
+  .cofounder-vision {
+    padding: 80px 0;
+  }
+
+  .cofounder-vision .vision-content h2 {
+    font-size: 2.3rem;
+  }
+
+  .cofounder-connect {
+    padding: 75px 0;
+  }
+
+  .cofounder-connect .primary-btn {
+    width: 100%;
   }
 }
 
-/* =========================
-   LARGE DESKTOP
-========================= */
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
-@media (min-width: 1440px) {
-  .cofounder-container {
-    width: min(88%, 1400px);
+@media (prefers-reduced-motion: reduce) {
+  .cofounder-page *,
+  .cofounder-page *::before,
+  .cofounder-page *::after {
+    animation: none !important;
+    transition: none !important;
   }
-}
-.return-home-button {
-  background: #0ea5a4;
-  color: #ffffff;
-  border: none;
-  padding: 0.5rem 0.9rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: 0.3s ease;
-  margin: 1rem 0 0 1rem;
-}
 
-.return-home-button:hover {
-  background: #0f766e;
-  transform: translateY(-1px);
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

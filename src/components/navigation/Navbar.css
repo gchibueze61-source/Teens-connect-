@@ -1,199 +1,477 @@
-/* ===========================
-   GLOBAL RESET
-=========================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-/* ===========================
+/* =========================================
    NAVBAR
-=========================== */
+========================================= */
 
-.navbar{
-    position:sticky;
-    top:0;
-    left:0;
-    width:100%;
-    background:#ffffff;
-    box-shadow:0 2px 12px rgba(0,0,0,.08);
-    z-index:999;
+.navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  z-index: 1000;
+
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
-.navbar-container{
-    width:min(92%,1400px);
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:1rem 0;
+.navbar:hover {
+  border-bottom-color: rgba(20, 184, 166, 0.12);
 }
 
-/* ===========================
+.navbar.menu-open {
+  box-shadow: none;
+}
+
+.navbar-container {
+  width: min(92%, 1400px);
+  min-height: 78px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* =========================================
    LOGO
-=========================== */
+========================================= */
 
-.logo-image{
-    width:auto;
-    height:clamp(2.8rem,6vw,3.8rem);
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
-/* ===========================
+.logo:hover {
+  transform: translateY(-1px);
+}
+
+.logo:active {
+  transform: scale(0.98);
+}
+
+.logo-image {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  box-shadow:
+    0 4px 14px rgba(15, 118, 110, 0.15);
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.logo:hover .logo-image {
+  transform: scale(1.06) rotate(2deg);
+
+  box-shadow:
+    0 7px 20px rgba(15, 118, 110, 0.22);
+}
+
+.logo-text {
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  transition:
+    color 0.25s ease;
+}
+
+.logo:hover .logo-text {
+  color: #0f766e;
+}
+
+/* =========================================
    DESKTOP NAV
-=========================== */
+========================================= */
 
-.desktop-nav{
-    display:flex;
-    align-items:center;
-    gap:clamp(1rem,2vw,2rem);
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(0.8rem, 1.5vw, 1.5rem);
+
+  flex: 1;
 }
 
-.nav-link{
-    text-decoration:none;
-    font-size:clamp(.95rem,1vw,1rem);
-    font-weight:600;
-    color:#1f2937;
-    transition:.3s;
-    white-space:nowrap;
+.nav-link {
+  position: relative;
+
+  padding: 0.45rem 0.1rem;
+
+  color: #475569;
+
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.nav-link:hover{
-    color:#16a34a;
+/* Animated underline */
+
+.nav-link::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 0;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: #14b8a6;
+
+  transition:
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ===========================
-   ACTION BUTTONS
-=========================== */
-
-.navbar-actions{
-    display:flex;
-    align-items:center;
-    gap:1rem;
+.nav-link:hover {
+  color: #0f766e;
+  transform: translateY(-1px);
 }
 
-.login-btn{
-
-    padding:.7rem 1.2rem;
-    background:none;
-    border:2px solid #16a34a;
-    border-radius:.6rem;
-    cursor:pointer;
-    font-weight:600;
-    transition:.3s;
-
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
 }
 
-.join-btn{
+.nav-link.active {
+  color: #0f766e;
+}
 
-    padding:.75rem 1.3rem;
-    background:#16a34a;
-    color:white;
-    border:none;
-    border-radius:.6rem;
-    cursor:pointer;
-    font-weight:600;
-    transition:.3s;
+/* Subtle active glow */
 
+.nav-link.active::before {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+
+  width: 70%;
+  height: 7px;
+
+  transform: translateX(-50%);
+
+  background: rgba(20, 184, 166, 0.08);
+
+  filter: blur(5px);
+
+  pointer-events: none;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.login-btn,
+.join-btn {
+  position: relative;
+
+  border-radius: 10px;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  padding: 0.7rem 1rem;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Shimmer layer */
+
+.login-btn::before,
+.join-btn::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 80%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.6s ease;
+
+  pointer-events: none;
+}
+
+.login-btn:hover::before,
+.join-btn:hover::before {
+  left: 140%;
+}
+
+.login-btn {
+  color: #0f766e;
+  background: transparent;
+  border: 1px solid #14b8a6;
+}
+
+.join-btn {
+  color: #ffffff;
+  background: #14b8a6;
+  border: 1px solid #14b8a6;
+
+  box-shadow:
+    0 8px 20px rgba(20, 184, 166, 0.18);
 }
 
 .login-btn:hover,
-.join-btn:hover{
-
-    opacity:.9;
-
+.join-btn:hover {
+  transform: translateY(-3px);
 }
 
-/* ===========================
+.login-btn:active,
+.join-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.login-btn:hover {
+  background: #f0fdfa;
+
+  box-shadow:
+    0 8px 18px rgba(20, 184, 166, 0.1);
+}
+
+.join-btn:hover {
+  background: #0f766e;
+  border-color: #0f766e;
+
+  box-shadow:
+    0 12px 28px rgba(15, 118, 110, 0.25);
+}
+
+/* =========================================
    HAMBURGER
-=========================== */
+========================================= */
 
-.hamburger{
+.hamburger {
+  display: none;
 
-    display:none;
-    background:none;
-    border:none;
-    font-size:2rem;
-    cursor:pointer;
+  width: 44px;
+  height: 44px;
 
+  padding: 9px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #f0fdfa;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+  gap: 5px;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* ===========================
-   MOBILE
-=========================== */
+.hamburger:hover {
+  background: #ccfbf1;
 
-@media (max-width:768px){
+  box-shadow:
+    0 6px 16px rgba(20, 184, 166, 0.12);
 
-.navbar-container{
-
-width:94%;
-padding:1rem 0;
-
+  transform: translateY(-1px);
 }
 
-.desktop-nav{
-
-display:none;
-
+.hamburger:active {
+  transform: scale(0.94);
 }
 
-.navbar-actions{
+.hamburger span {
+  display: block;
 
-display:none;
+  width: 22px;
+  height: 2px;
 
+  border-radius: 999px;
+
+  background: #0f766e;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    width 0.25s ease;
 }
 
-.hamburger{
-
-display:block;
-
+.hamburger:hover span:nth-child(1),
+.hamburger:hover span:nth-child(3) {
+  width: 24px;
 }
 
-.logo-image{
-
-height:3rem;
-
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
 }
 
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
 }
 
-/* ===========================
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =========================================
    TABLET
-=========================== */
+========================================= */
 
-@media (min-width:769px) and (max-width:1024px){
+@media (max-width: 1100px) {
+  .navbar-container {
+    gap: 1rem;
+  }
 
-.navbar-container{
+  .desktop-nav {
+    gap: 0.8rem;
+  }
 
-width:92%;
+  .nav-link {
+    font-size: 0.8rem;
+  }
 
+  .logo-text {
+    display: none;
+  }
+
+  .login-btn,
+  .join-btn {
+    padding: 0.65rem 0.8rem;
+  }
 }
 
-.desktop-nav{
+/* =========================================
+   MOBILE
+========================================= */
 
-gap:1.2rem;
+@media (max-width: 900px) {
+  .navbar-container {
+    width: 94%;
+    min-height: 70px;
+  }
 
+  .desktop-nav,
+  .navbar-actions {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .logo-image {
+    width: 48px;
+    height: 48px;
+  }
 }
 
-.nav-link{
+/* =========================================
+   SMALL MOBILE
+========================================= */
 
-font-size:.95rem;
+@media (max-width: 480px) {
+  .navbar-container {
+    width: 92%;
+    min-height: 66px;
+  }
 
+  .logo-image {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hamburger {
+    width: 42px;
+    height: 42px;
+  }
 }
 
-}
-
-/* ===========================
+/* =========================================
    LARGE DESKTOP
-=========================== */
+========================================= */
 
-@media (min-width:1440px){
+@media (min-width: 1440px) {
+  .navbar-container {
+    width: min(88%, 1500px);
+  }
 
-.navbar-container{
-
-width:min(88%,1500px);
-
+  .desktop-nav {
+    gap: 1.7rem;
+  }
 }
 
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .logo,
+  .logo-image,
+  .logo-text,
+  .nav-link,
+  .nav-link::after,
+  .login-btn,
+  .join-btn,
+  .login-btn::before,
+  .join-btn::before,
+  .hamburger,
+  .hamburger span {
+    transition: none !important;
+  }
+
+  .logo:hover,
+  .logo:hover .logo-image,
+  .nav-link:hover,
+  .login-btn:hover,
+  .join-btn:hover,
+  .hamburger:hover {
+    transform: none;
+  }
 }

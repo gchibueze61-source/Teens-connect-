@@ -1,9 +1,42 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Founders.css";
 import foundersImage from "./bobdaddy 2 1435 (2).jpg";
 
 const Founders = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>(
+      ".founders-page .reveal"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => {
+        element.classList.add("revealed");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main className="founders-page">
@@ -22,19 +55,26 @@ const Founders = () => {
       <section className="founders-hero">
         <div className="founders-container">
 
-          <p className="founders-eyebrow">
+          <p className="founders-eyebrow reveal">
             THE PEOPLE BEHIND TCA
           </p>
 
-          <h1>
+          <h1 className="reveal reveal-delay-1">
             Meet Our Founders
           </h1>
 
-          <p className="founders-intro">
+          <p className="founders-intro reveal reveal-delay-2">
             Get to know the people whose vision, leadership, and commitment
             continue to shape Teens Connect Africa and its mission to empower
             young people across Africa.
           </p>
+
+          <div className="founders-hero-action reveal reveal-delay-3">
+            <Link to="/founder" className="founders-cta-button">
+              Get to Know Our Founders
+              <span>→</span>
+            </Link>
+          </div>
 
         </div>
       </section>
@@ -45,27 +85,19 @@ const Founders = () => {
       <section className="founders-section">
         <div className="founders-container">
 
-          {/* =========================
-              SHARED FOUNDERS IMAGE
-          ========================= */}
-          <div className="founders-main-image">
-
-           <img
-  src={foundersImage}
-  alt="Anne Obize and Merit Kamah"
-/>
-
+          {/* SHARED IMAGE */}
+          <div className="founders-main-image reveal reveal-scale">
+            <img
+              src={foundersImage}
+              alt="Anne Obize and Merit Kamah"
+            />
           </div>
 
-          {/* =========================
-              FOUNDERS GRID
-          ========================= */}
+          {/* FOUNDERS GRID */}
           <div className="founders-grid">
 
-            {/* =========================
-                ANNE OBIZE
-            ========================= */}
-            <article className="founder-card">
+            {/* ANNE */}
+            <article className="founder-card reveal reveal-left">
 
               <div className="founder-content">
 
@@ -112,10 +144,8 @@ const Founders = () => {
 
             </article>
 
-            {/* =========================
-                MERIT KAMAH
-            ========================= */}
-            <article className="founder-card">
+            {/* MERIT */}
+            <article className="founder-card reveal reveal-right">
 
               <div className="founder-content">
 

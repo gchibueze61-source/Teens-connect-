@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import Logo from "./Logo";
 import NavLinks from "./Navlinks";
@@ -8,24 +8,50 @@ import MobileMenu from "./MobileMenu";
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   const handleJoinNow = () => {
-    setMenuOpen(false);
+    closeMenu();
     navigate("/register");
   };
 
   const handleLogin = () => {
-    setMenuOpen(false);
+    closeMenu();
     navigate("/login");
   };
 
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen
+      ? "hidden"
+      : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <header className="navbar">
+    <header
+      className={`navbar ${
+        menuOpen ? "menu-open" : ""
+      }`}
+    >
       <div className="navbar-container">
 
         <Logo />
 
-        <nav className="desktop-nav">
+        <nav
+          className="desktop-nav"
+          aria-label="Main navigation"
+        >
           <NavLinks />
         </nav>
 
@@ -44,26 +70,38 @@ const Navbar: React.FC = () => {
             className="join-btn"
             onClick={handleJoinNow}
           >
-            Join Now
+            Join Community
           </button>
 
         </div>
 
         <button
           type="button"
-          className={`hamburger ${menuOpen ? "active" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle Navigation"
+          className={`hamburger ${
+            menuOpen ? "active" : ""
+          }`}
+          onClick={() =>
+            setMenuOpen((previous) => !previous)
+          }
+          aria-label={
+            menuOpen
+              ? "Close navigation"
+              : "Open navigation"
+          }
           aria-expanded={menuOpen}
         >
-          ☰
+          <span />
+          <span />
+          <span />
         </button>
 
       </div>
 
       <MobileMenu
         isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
+        onClose={closeMenu}
+        onLogin={handleLogin}
+        onJoin={handleJoinNow}
       />
 
     </header>

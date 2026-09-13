@@ -1,104 +1,250 @@
+/* =========================================
+   GALLERY DETAILS
+   ========================================= */
+
 .gallery-details {
   min-height: 100vh;
-  padding: 6rem clamp(1rem, 5vw, 5rem);
-  background: #f8fafc;
+  padding: 120px 0 100px;
+  background: #ffffff;
+  color: #0f172a;
 }
 
+/* =========================================
+   HEADER
+   ========================================= */
+
 .gallery-details-header {
-  width: min(900px, 100%);
-  margin: 0 auto 3rem;
+  width: min(92%, 1100px);
+  margin: 0 auto 65px;
   text-align: center;
 }
 
 .gallery-details-back {
-  margin-bottom: 2rem;
-  padding: .7rem 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: .6rem;
-  background: #fff;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 34px;
+  padding: 11px 20px;
+  border: 1px solid #dbe4ea;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f766e;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gallery-details-back:hover {
+  transform: translateY(-2px);
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.08);
 }
 
 .gallery-details-header > span {
   display: block;
-  margin-bottom: .5rem;
+  margin-bottom: 14px;
   color: #0f766e;
-  font-size: .75rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
 .gallery-details-header h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 18px;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  color: #0f172a;
 }
 
 .gallery-details-header p {
-  margin: 0;
+  max-width: 720px;
+  margin: 0 auto;
   color: #64748b;
+  font-size: 1rem;
   line-height: 1.8;
 }
 
-.gallery-details-grid {
-  width: min(1300px, 100%);
-  margin: auto;
+/* =========================================
+   PHOTO GRID
+   ========================================= */
 
+.gallery-details-grid {
+  width: min(92%, 1400px);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: .8rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .gallery-details-image {
-  aspect-ratio: 1 / 1;
+  position: relative;
   overflow: hidden;
-  border-radius: .8rem;
-  background: #e2e8f0;
+  min-height: 320px;
+  border-radius: 16px;
+  background: #f1f5f9;
 }
 
 .gallery-details-image img {
   width: 100%;
   height: 100%;
-  display: block;
+  min-height: 320px;
   object-fit: cover;
-  transition: transform .3s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gallery-details-image:hover img {
-  transform: scale(1.04);
+  transform: scale(1.045);
 }
 
-.gallery-details-loading,
+/* =========================================
+   LOADING
+   ========================================= */
+
+.gallery-details-loading {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* =========================================
+   EMPTY / NOT FOUND
+   ========================================= */
+
 .gallery-details-empty {
-  padding: 6rem 1rem;
+  width: min(92%, 600px);
+  min-height: 50vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 25px;
   text-align: center;
 }
 
+.gallery-details-empty h2 {
+  margin-bottom: 20px;
+  color: #0f172a;
+  font-size: 1.6rem;
+}
+
 .gallery-details-empty button {
-  margin-top: 1rem;
-  padding: .8rem 1.2rem;
+  padding: 12px 22px;
   border: none;
-  border-radius: .6rem;
-  background: #0ea5a4;
-  color: #fff;
-  cursor: pointer;
+  border-radius: 10px;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 600;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-@media (max-width: 800px) {
-  .gallery-details-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.gallery-details-empty button:hover {
+  transform: translateY(-2px);
+  background: #115e59;
+  box-shadow: 0 10px 25px rgba(15, 118, 110, 0.18);
 }
 
-@media (max-width: 500px) {
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 950px) {
   .gallery-details {
-    padding: 4rem 1rem;
+    padding-top: 105px;
   }
 
   .gallery-details-grid {
-    gap: .5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gallery-details-image,
+  .gallery-details-image img {
+    min-height: 300px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+  .gallery-details {
+    padding: 95px 0 70px;
+  }
+
+  .gallery-details-header {
+    margin-bottom: 45px;
+  }
+
+  .gallery-details-back {
+    margin-bottom: 27px;
+    padding: 10px 17px;
+    font-size: 0.82rem;
+  }
+
+  .gallery-details-header h1 {
+    font-size: 2.45rem;
+  }
+
+  .gallery-details-header p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .gallery-details-grid {
+    width: 92%;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .gallery-details-image,
+  .gallery-details-image img {
+    min-height: 280px;
   }
 
   .gallery-details-image {
-    border-radius: .5rem;
+    border-radius: 14px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 400px) {
+  .gallery-details-header h1 {
+    font-size: 2.15rem;
+  }
+
+  .gallery-details-image,
+  .gallery-details-image img {
+    min-height: 235px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-details-image img,
+  .gallery-details-back,
+  .gallery-details-empty button {
+    transition: none;
   }
 }

@@ -1,57 +1,92 @@
-
+import { useNavigate } from "react-router-dom";
 import "./About.css";
 
 const About = () => {
+  const navigate = useNavigate();
+
   return (
-    <section id="about" className="about">
-      <div className="container">
-        <div className="section-header">
-          <h2>About Teens Connect Africa</h2>
+    <section className="about" id="about">
+      <div className="about-container">
 
-          <p>
-            Teens Connect Africa, registered as Teens Connect Initiative, is a
-            non-profit organization founded in September 2020 and dedicated to
-            empowering young people in Africa by connecting them to mentorship,
-            resources, and opportunities that enable them to grow, develop their
-            talents, and become productive members of society. We contribute to
-            the global Sustainable Development Goals, including SDG 4, 5, and 8,
-            which promote quality education, gender equality, decent work,
-            economic growth, and partnerships for the goals.
+        <div className="about-content">
+
+          <div className="about-label">
+            ABOUT TEENS CONNECT AFRICA
+          </div>
+
+          <h2>
+            Connecting teenagers to
+            <span> opportunities that matter.</span>
+          </h2>
+
+          <p className="about-intro">
+            Teens Connect Africa, registered as Teens Connect
+            Initiative, is a non-profit organization dedicated
+            to empowering teenagers by connecting them to
+            mentorship, resources and opportunities to grow,
+            develop their talents and become productive
+            members of society.
           </p>
 
-          <a href="/founders" className="founders-button">
-            Get to Know Our Founders
-          </a>
-        </div>
-      </div>
+          <div className="about-buttons">
+  <button
+    type="button"
+    className="about-button"
+    onClick={() => navigate("/about")}
+  >
+    Discover Our Story <span>→</span>
+  </button>
 
-      <div className="about-grid">
-        <div className="about-card">
-          <h3>Our Mission</h3>
-          <p>
-            To connect teenagers to mentorship, resources, and opportunities to
-            grow, develop, unleash their potential, and fulfill their purpose.
-          </p>
-        </div>
-
-        <div className="about-card">
-          <h3>Our Vision</h3>
-          <p>
-            An Africa where teenagers have access to opportunities to develop
-            their talents and become productive members of society, contributing
-            to the global goals and driving sustainable development.
-          </p>
+  <button
+    type="button"
+    className="about-button about-button-outline"
+    onClick={() => navigate("/founders")}
+  >
+    Get to Know Our Founders <span>→</span>
+  </button>
+</div>
         </div>
 
-        <div className="about-card">
-          <h3>Our Impact</h3>
-          <p>
-            Through online and physical programs, we have connected with
-            teenagers in Lagos and Abuja, starting with the Zuba community. We
-            have given teenagers access to mentors, scholarships, career
-            guidance, and a supportive community.
-          </p>
+        <div className="about-highlights">
+
+          <div className="about-highlight">
+            <span className="about-number">01</span>
+
+            <div>
+              <h3>Mentorship</h3>
+              <p>
+                Helping teenagers learn from people
+                with experience and guidance.
+              </p>
+            </div>
+          </div>
+
+          <div className="about-highlight">
+            <span className="about-number">02</span>
+
+            <div>
+              <h3>Skills</h3>
+              <p>
+                Creating opportunities to develop
+                practical and digital skills.
+              </p>
+            </div>
+          </div>
+
+          <div className="about-highlight">
+            <span className="about-number">03</span>
+
+            <div>
+              <h3>Opportunities</h3>
+              <p>
+                Connecting teenagers with resources,
+                partnerships and opportunities to grow.
+              </p>
+            </div>
+          </div>
+
         </div>
+
       </div>
     </section>
   );

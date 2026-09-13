@@ -1,27 +1,64 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const navigationLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Programs", href: "#programs" },
-  { name: "Events", href: "#events" },
-  { name: "Testimonials", href: "#testimonials" },
-  { name: "Gallery", href: "#gallery" },
-  { name: "Volunteer", href: "/volunteer" },
-  { name: "Contact", href: "#contact" },
+  {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "About",
+    path: "/about",
+  },
+  {
+    name: "Programs",
+    path: "/programs",
+  },
+  {
+    name: "Events",
+    path: "/events",
+  },
+  {
+    name: "Gallery",
+    path: "/gallery",
+  },
+  {
+    name: "Blog",
+    path: "/blog",
+  },
+  {
+    name: "Get Involved",
+    path: "/volunteer",
+  },
+  {
+    name: "Contact",
+    path: "/contact",
+  },
 ];
 
-const NavLinks: React.FC = () => {
+interface NavLinksProps {
+  onNavigate?: () => void;
+}
+
+const NavLinks: React.FC<NavLinksProps> = ({
+  onNavigate,
+}) => {
   return (
     <>
       {navigationLinks.map((link) => (
-        <a
+        <NavLink
           key={link.name}
-          href={link.href}
-          className="nav-link"
+          to={link.path}
+          end={link.path === "/"}
+          className={({ isActive }) =>
+            `nav-link ${
+              isActive ? "active" : ""
+            }`
+          }
+          onClick={onNavigate}
         >
           {link.name}
-        </a>
+        </NavLink>
       ))}
     </>
   );

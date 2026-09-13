@@ -1,12 +1,47 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CoFounder.css";
 import coFounderImage from "./ChatGPT Image Sep 7, 2026, 05_24_52 PM (1).png";
 
 const CoFounder = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>(
+      ".cofounder-page .reveal"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => {
+        element.classList.add("revealed");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main className="cofounder-page">
- <button
+
+      <button
         type="button"
         className="return-home-button"
         onClick={() => navigate("/")}
@@ -14,34 +49,36 @@ const CoFounder = () => {
         ← Back to Home
       </button>
 
-      {/* =========================       
+      {/* =========================
           CO-FOUNDER HERO
       ========================= */}
       <section className="cofounder-hero">
         <div className="cofounder-container cofounder-hero-grid">
 
           <div className="cofounder-hero-content">
-            <span className="cofounder-eyebrow">
+
+            <span className="cofounder-eyebrow reveal">
               CO-FOUNDER • TEENS CONNECT AFRICA
             </span>
 
-            <h1>
+            <h1 className="reveal reveal-delay-1">
               Merit Kamah
               <span>Née Olumba</span>
             </h1>
 
-            <p className="cofounder-hero-title">
+            <p className="cofounder-hero-title reveal reveal-delay-2">
               Impact Filmmaker • Project Manager • Child Advocate
             </p>
 
-            <p className="cofounder-hero-text">
+            <p className="cofounder-hero-text reveal reveal-delay-3">
               An impact filmmaker, project manager, and advocate passionate
               about storytelling, purposeful projects, social impact, and
               creating meaningful opportunities for young people and
               communities.
             </p>
 
-            <div className="cofounder-hero-buttons">
+            <div className="cofounder-hero-buttons reveal reveal-delay-4">
+
               <a
                 href="https://www.linkedin.com/in/merit-kamah-née-olumba-790660218"
                 target="_blank"
@@ -57,14 +94,15 @@ const CoFounder = () => {
               >
                 Meet Our Founders
               </a>
+
             </div>
           </div>
 
-          <div className="cofounder-hero-image">
-           <img
-  src={coFounderImage}
-  alt="Merit Kamah"
-/>
+          <div className="cofounder-hero-image reveal reveal-right">
+            <img
+              src={coFounderImage}
+              alt="Merit Kamah"
+            />
 
             <div className="cofounder-image-label">
               <strong>Co-Founder</strong>
@@ -81,14 +119,15 @@ const CoFounder = () => {
       <section className="cofounder-about">
         <div className="cofounder-container">
 
-          <div className="cofounder-section-heading">
+          <div className="cofounder-section-heading reveal">
             <span>ABOUT HER</span>
             <h2>Meet Merit</h2>
           </div>
 
           <div className="cofounder-about-grid">
 
-            <div className="cofounder-about-text">
+            <div className="cofounder-about-text reveal reveal-left">
+
               <p>
                 Merit Kamah is an impact filmmaker, project manager, and
                 advocate with experience in storytelling, project development,
@@ -107,9 +146,11 @@ const CoFounder = () => {
                 women, girls, and communities, using her skills and experience
                 to support projects that promote positive social change.
               </p>
+
             </div>
 
-            <div className="cofounder-highlight-card">
+            <div className="cofounder-highlight-card reveal reveal-right">
+
               <span>HER APPROACH</span>
 
               <h3>
@@ -122,6 +163,7 @@ const CoFounder = () => {
                 collaboration, Merit contributes to initiatives designed to
                 create positive change and meaningful opportunities.
               </p>
+
             </div>
 
           </div>
@@ -134,14 +176,14 @@ const CoFounder = () => {
       <section className="cofounder-journey">
         <div className="cofounder-container">
 
-          <div className="cofounder-section-heading light">
+          <div className="cofounder-section-heading light reveal">
             <span>PROFESSIONAL JOURNEY</span>
             <h2>Experience & Leadership</h2>
           </div>
 
           <div className="cofounder-journey-grid">
 
-            <div className="cofounder-journey-card">
+            <div className="cofounder-journey-card reveal reveal-left">
               <div className="cofounder-journey-number">
                 01
               </div>
@@ -156,7 +198,7 @@ const CoFounder = () => {
               </div>
             </div>
 
-            <div className="cofounder-journey-card">
+            <div className="cofounder-journey-card reveal reveal-right">
               <div className="cofounder-journey-number">
                 02
               </div>
@@ -172,7 +214,7 @@ const CoFounder = () => {
               </div>
             </div>
 
-            <div className="cofounder-journey-card">
+            <div className="cofounder-journey-card reveal reveal-left reveal-delay-1">
               <div className="cofounder-journey-number">
                 03
               </div>
@@ -188,7 +230,7 @@ const CoFounder = () => {
               </div>
             </div>
 
-            <div className="cofounder-journey-card">
+            <div className="cofounder-journey-card reveal reveal-right reveal-delay-1">
               <div className="cofounder-journey-number">
                 04
               </div>
@@ -214,7 +256,7 @@ const CoFounder = () => {
       <section className="cofounder-role-section">
         <div className="cofounder-container">
 
-          <div className="cofounder-role-box">
+          <div className="cofounder-role-box reveal">
 
             <div>
               <span>HER ROLE AT TCA</span>
@@ -242,7 +284,8 @@ const CoFounder = () => {
       <section className="cofounder-vision">
         <div className="cofounder-container">
 
-          <div className="vision-content">
+          <div className="vision-content reveal">
+
             <span>HER VISION</span>
 
             <h2>
@@ -256,6 +299,7 @@ const CoFounder = () => {
               communities they need to develop their potential and contribute
               meaningfully to society.
             </p>
+
           </div>
 
         </div>
@@ -267,7 +311,8 @@ const CoFounder = () => {
       <section className="cofounder-message">
         <div className="cofounder-container">
 
-          <div className="cofounder-message-card">
+          <div className="cofounder-message-card reveal reveal-scale">
+
             <span>A MESSAGE TO YOUNG PEOPLE</span>
 
             <h2>
@@ -290,6 +335,7 @@ const CoFounder = () => {
             <small>
               Co-Founder, Teens Connect Africa
             </small>
+
           </div>
 
         </div>
@@ -301,25 +347,29 @@ const CoFounder = () => {
       <section className="cofounder-connect">
         <div className="cofounder-container">
 
-          <span>CONNECT</span>
+          <span className="reveal">
+            CONNECT
+          </span>
 
-          <h2>
+          <h2 className="reveal reveal-delay-1">
             Follow the journey.
           </h2>
 
-          <p>
+          <p className="reveal reveal-delay-2">
             Learn more about Merit's professional journey, filmmaking,
             project work, advocacy, and social impact initiatives.
           </p>
 
-          <a
-            href="https://www.linkedin.com/in/merit-kamah-née-olumba-790660218"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="primary-btn"
-          >
-            Visit LinkedIn
-          </a>
+          <div className="reveal reveal-delay-3">
+            <a
+              href="https://www.linkedin.com/in/merit-kamah-née-olumba-790660218"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="primary-btn"
+            >
+              Visit LinkedIn
+            </a>
+          </div>
 
         </div>
       </section>
