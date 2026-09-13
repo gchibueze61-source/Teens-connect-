@@ -56,11 +56,17 @@ function getThirdSunday(
 function getNextThirdSunday(
   currentDate: Date
 ): Date {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const year =
+    currentDate.getFullYear();
+
+  const month =
+    currentDate.getMonth();
 
   const thisMonthSunday =
-    getThirdSunday(year, month);
+    getThirdSunday(
+      year,
+      month
+    );
 
   if (
     thisMonthSunday.getTime() >
@@ -281,6 +287,67 @@ export default function Events() {
   ] = useState("");
 
   /*
+   * Scroll reveal animation.
+   */
+  useEffect(() => {
+    if (
+      typeof IntersectionObserver ===
+      "undefined"
+    ) {
+      document
+        .querySelectorAll(
+          ".events .event-reveal"
+        )
+        .forEach((element) => {
+          element.classList.add(
+            "event-revealed"
+          );
+        });
+
+      return;
+    }
+
+    const elements =
+      document.querySelectorAll(
+        ".events .event-reveal"
+      );
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach(
+            (entry) => {
+              if (
+                entry.isIntersecting
+              ) {
+                entry.target.classList.add(
+                  "event-revealed"
+                );
+
+                observer.unobserve(
+                  entry.target
+                );
+              }
+            }
+          );
+        },
+        {
+          threshold: 0.12,
+          rootMargin:
+            "0px 0px -50px 0px",
+        }
+      );
+
+    elements.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [events]);
+
+  /*
    * Load published homepage events
    * from Supabase.
    */
@@ -408,7 +475,10 @@ export default function Events() {
     >
       <div className="container">
 
-        <div className="section-header">
+        <div className="section-header event-reveal">
+          <span className="events-eyebrow">
+            STAY CONNECTED
+          </span>
 
           <h2>
             Upcoming Events
@@ -419,27 +489,29 @@ export default function Events() {
             programs, meetings and
             celebrations.
           </p>
-
         </div>
 
         {loading && (
-          <div>
-            Loading events...
+          <div className="events-state event-reveal">
+            <span className="events-loader" />
+            <p>Loading events...</p>
           </div>
         )}
 
         {!loading &&
           error && (
-            <div>
-              {error}
+            <div className="events-state events-error event-reveal">
+              <p>{error}</p>
             </div>
           )}
 
         {!loading &&
           !error &&
           displayEvents.length === 0 && (
-            <div>
-              No upcoming events at the moment.
+            <div className="events-state event-reveal">
+              <p>
+                No upcoming events at the moment.
+              </p>
             </div>
           )}
 
@@ -450,7 +522,7 @@ export default function Events() {
             <div className="events-grid">
 
               {displayEvents.map(
-                (event) => {
+                (event, index) => {
 
                   const formattedDate =
                     event.actualDate.toLocaleDateString(
@@ -468,15 +540,17 @@ export default function Events() {
 
                   return (
                     <div
-                      className="event-card"
+                      className={`event-card event-reveal event-delay-${Math.min(
+                        index + 1,
+                        4
+                      )}`}
                       key={event.id}
                     >
 
                       <span className="event-status">
                         {event.featured
-  ? "Featured"
-  : "Published"}
-                        
+                          ? "Featured"
+                          : "Published"}
                       </span>
 
                       <h3>

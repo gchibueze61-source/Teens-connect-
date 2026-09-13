@@ -1,420 +1,677 @@
-/* =========================================================
-   TCA EVENTS SECTION
-   ========================================================= */
+/* =========================================
+   EVENTS SECTION
+========================================= */
 
 .events {
   position: relative;
-  width: 100%;
-  padding: 6rem 0;
-  background: #f8fafc;
+
+  padding:
+    100px
+    0;
+
+  background: #ffffff;
+
   overflow: hidden;
 }
+
+
+/* =========================================
+   BACKGROUND DETAIL
+========================================= */
 
 .events::before {
   content: "";
+
   position: absolute;
-  width: 380px;
-  height: 380px;
+
+  width: 420px;
+  height: 420px;
+
   top: -220px;
   right: -180px;
+
   border-radius: 50%;
-  background: rgba(20, 184, 166, 0.06);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(20, 184, 166, 0.08),
+      transparent 70%
+    );
+
   pointer-events: none;
 }
 
-.events::after {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  bottom: -190px;
-  left: -170px;
-  border-radius: 50%;
-  background: rgba(37, 99, 235, 0.035);
-  pointer-events: none;
-}
 
-.events .container {
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================================================
+/* =========================================
    SECTION HEADER
-   ========================================================= */
+========================================= */
 
-.section-header {
-  width: min(100%, 720px);
-  margin: 0 auto 3rem;
+.events .section-header {
+  position: relative;
+
+  max-width: 700px;
+
+  margin:
+    0 auto
+    55px;
+
   text-align: center;
 }
 
-.section-header h2 {
-  margin: 0;
+.events-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: #0f766e;
+
+  font-size: 0.72rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+}
+
+.events .section-header h2 {
+  margin: 0 0 14px;
+
   color: #0f172a;
-  font-size: clamp(2rem, 4vw, 3rem);
+
+  font-size: clamp(
+    2rem,
+    4vw,
+    3rem
+  );
+
   line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.04em;
+
+  letter-spacing: -0.035em;
 }
 
-.section-header h2::after {
-  content: "";
-  display: block;
-  width: 48px;
-  height: 3px;
-  margin: 1rem auto 1.15rem;
-  background: #14b8a6;
-  border-radius: 999px;
-}
+.events .section-header p {
+  max-width: 600px;
 
-.section-header p {
-  max-width: 620px;
   margin: 0 auto;
+
   color: #64748b;
-  font-size: 1rem;
+
+  font-size: 0.95rem;
+
   line-height: 1.8;
 }
 
-/* =========================================================
-   EVENTS GRID
-   ========================================================= */
+
+/* =========================================
+   GRID
+========================================= */
 
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-  width: min(100%, 1100px);
-  margin: 0 auto;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 24px;
 }
 
-/* =========================================================
+
+/* =========================================
    EVENT CARD
-   ========================================================= */
+========================================= */
 
 .event-card {
   position: relative;
-  padding: 2rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 300px;
+
+  padding: 28px;
+
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+
+  border:
+    1px solid
+    #e2e8f0;
+
   border-radius: 20px;
-  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+
+  box-shadow:
+    0 8px 28px
+    rgba(15, 23, 42, 0.055);
+
   overflow: hidden;
+
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    transform 0.4s
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
 }
 
 .event-card::before {
   content: "";
+
   position: absolute;
+
   top: 0;
   left: 0;
+
   width: 100%;
-  height: 4px;
-  background: #14b8a6;
-  transform: scaleX(0);
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #14b8a6,
+      #0f766e,
+      #2563eb
+    );
+
+  transform:
+    scaleX(0);
+
   transform-origin: left;
-  transition: transform 0.35s ease;
+
+  transition:
+    transform 0.45s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    );
 }
 
 .event-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(20, 184, 166, 0.35);
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+  transform:
+    translateY(-8px);
+
+  border-color:
+    rgba(20, 184, 166, 0.25);
+
+  box-shadow:
+    0 22px 50px
+    rgba(15, 23, 42, 0.1);
 }
 
 .event-card:hover::before {
-  transform: scaleX(1);
+  transform:
+    scaleX(1);
 }
 
-/* =========================================================
+
+/* =========================================
    STATUS
-   ========================================================= */
+========================================= */
 
 .event-status {
+  align-self: flex-start;
+
   display: inline-flex;
+
   align-items: center;
-  min-height: 29px;
-  padding: 0.35rem 0.75rem;
-  margin-bottom: 1.15rem;
-  border: 1px solid rgba(20, 184, 166, 0.16);
+
+  min-height: 28px;
+
+  margin-bottom: 18px;
+
+  padding:
+    5px
+    11px;
+
   border-radius: 999px;
+
   background: #f0fdfa;
+
   color: #0f766e;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+
+  font-size: 0.68rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+
   text-transform: uppercase;
 }
 
-/* =========================================================
+
+/* =========================================
    TITLE
-   ========================================================= */
+========================================= */
 
 .event-card h3 {
-  margin: 0 0 0.85rem;
+  margin: 0 0 12px;
+
   color: #0f172a;
-  font-size: 1.35rem;
+
+  font-size: 1.25rem;
+
   line-height: 1.35;
-  font-weight: 700;
+
   letter-spacing: -0.02em;
+
+  transition:
+    color 0.3s ease;
 }
 
-/* =========================================================
+.event-card:hover h3 {
+  color: #0f766e;
+}
+
+
+/* =========================================
    DESCRIPTION
-   ========================================================= */
+========================================= */
 
 .event-card > p {
-  margin: 0 0 1.5rem;
+  margin: 0;
+
   color: #64748b;
-  font-size: 0.92rem;
+
+  font-size: 0.86rem;
+
   line-height: 1.75;
 }
 
-/* =========================================================
-   EVENT INFORMATION
-   ========================================================= */
+
+/* =========================================
+   EVENT INFO
+========================================= */
 
 .event-info {
   display: flex;
+
   flex-direction: column;
-  gap: 0.55rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+
+  gap: 8px;
+
+  margin-top: auto;
+
+  padding-top: 24px;
+
+  color: #334155;
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
 }
 
 .event-info span {
-  display: block;
-  color: #475569;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  font-weight: 500;
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
 }
 
-/* =========================================================
+.event-info span::before {
+  content: "";
+
+  flex: 0 0 auto;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #14b8a6;
+}
+
+
+/* =========================================
    COUNTDOWN
-   ========================================================= */
+========================================= */
 
 .event-countdown {
-  margin-top: 1.6rem;
-  padding: 1.25rem;
-  background: #0f172a;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+  margin-top: 24px;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    #e2e8f0;
 }
 
 .countdown-title {
-  margin: 0 0 1rem;
-  color: #94a3b8;
-  font-size: 0.7rem;
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-align: center;
+  margin: 0 0 12px;
+
+  color: #0f172a;
+
+  font-size: 0.72rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
   text-transform: uppercase;
 }
 
 .countdown-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.55rem;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 8px;
 }
 
 .countdown-box {
-  min-width: 0;
-  padding: 0.8rem 0.4rem;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 65px;
+
+  padding: 8px 4px;
+
+  border:
+    1px solid
+    #dbe4ec;
+
   border-radius: 10px;
-  text-align: center;
+
+  background: #f8fafc;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.countdown-box:hover {
+  transform:
+    translateY(-3px);
+
+  background: #f0fdfa;
+
+  border-color:
+    #99f6e4;
 }
 
 .countdown-box strong {
-  display: block;
-  color: #ffffff;
-  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  color: #0f172a;
+
+  font-size: 1.05rem;
+
   line-height: 1;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
 
 .countdown-box span {
-  display: block;
-  margin-top: 0.45rem;
-  color: #94a3b8;
-  font-size: 0.6rem;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
+  margin-top: 5px;
 
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-.events-loading {
-  min-height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.8rem;
   color: #64748b;
-  text-align: center;
+
+  font-size: 0.58rem;
+
+  font-weight: 600;
 }
+
+
+/* =========================================
+   LOADING / EMPTY STATES
+========================================= */
+
+.events-state {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 180px;
+
+  padding: 30px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius: 18px;
+
+  background: #f8fafc;
+
+  color: #64748b;
+
+  text-align: center;
+
+  font-size: 0.88rem;
+}
+
+.events-state p {
+  margin: 0;
+}
+
+.events-error {
+  color: #b91c1c;
+
+  background: #fef2f2;
+
+  border-color: #fecaca;
+}
+
+
+/* =========================================
+   LOADER
+========================================= */
 
 .events-loader {
-  width: 34px;
-  height: 34px;
-  border: 3px solid #ccfbf1;
-  border-top-color: #14b8a6;
+  width: 28px;
+  height: 28px;
+
+  margin-bottom: 12px;
+
+  border:
+    3px solid
+    #d1fae5;
+
+  border-top-color:
+    #0f766e;
+
   border-radius: 50%;
-  animation: events-spin 0.8s linear infinite;
+
+  animation:
+    eventsSpin
+    0.8s
+    linear
+    infinite;
 }
 
-@keyframes events-spin {
+
+/* =========================================
+   SCROLL REVEAL
+========================================= */
+
+.event-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(42px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
+}
+
+.event-revealed {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================
+   REVEAL DELAYS
+========================================= */
+
+.event-delay-1 {
+  transition-delay: 0.05s;
+}
+
+.event-delay-2 {
+  transition-delay: 0.15s;
+}
+
+.event-delay-3 {
+  transition-delay: 0.25s;
+}
+
+.event-delay-4 {
+  transition-delay: 0.35s;
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes eventsSpin {
   to {
-    transform: rotate(360deg);
+    transform:
+      rotate(360deg);
   }
 }
 
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
 
-.events-empty {
-  width: min(100%, 700px);
-  margin: 0 auto;
-  padding: 3rem 2rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.05);
-  text-align: center;
-}
+/* =========================================
+   TABLET
+========================================= */
 
-.events-empty p {
-  margin: 0;
-  color: #64748b;
-}
-
-/* =========================================================
-   RESPONSIVE TABLET
-   ========================================================= */
-
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .events {
-    padding: 5rem 0;
+    padding:
+      80px
+      0;
+  }
+
+  .events-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 680px) {
+  .events {
+    padding:
+      70px
+      0;
+  }
+
+  .events .section-header {
+    margin-bottom: 40px;
+  }
+
+  .events .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .events .section-header p {
+    font-size: 0.86rem;
   }
 
   .events-grid {
     grid-template-columns: 1fr;
-    width: min(100%, 700px);
-  }
 
-  .section-header {
-    margin-bottom: 2.5rem;
-  }
-}
-
-/* =========================================================
-   RESPONSIVE MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-  .events {
-    padding: 4rem 0;
-  }
-
-  .section-header {
-    margin-bottom: 2rem;
-  }
-
-  .section-header h2 {
-    font-size: 2rem;
-  }
-
-  .section-header p {
-    font-size: 0.9rem;
-    line-height: 1.7;
+    gap: 18px;
   }
 
   .event-card {
-    padding: 1.4rem;
-    border-radius: 16px;
+    min-height: auto;
+
+    padding: 23px;
+
+    border-radius: 17px;
   }
 
   .event-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.12rem;
   }
 
   .event-card > p {
-    font-size: 0.86rem;
-  }
-
-  .event-countdown {
-    padding: 1rem;
-    border-radius: 14px;
-  }
-
-  .countdown-grid {
-    gap: 0.4rem;
-  }
-
-  .countdown-box {
-    padding: 0.7rem 0.25rem;
-  }
-
-  .countdown-box strong {
-    font-size: 1.15rem;
-  }
-
-  .countdown-box span {
-    font-size: 0.52rem;
+    font-size: 0.82rem;
   }
 }
 
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
 
-@media (max-width: 380px) {
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 400px) {
   .events {
-    padding: 3.5rem 0;
+    padding:
+      60px
+      0;
   }
 
   .event-card {
-    padding: 1.15rem;
+    padding: 20px;
   }
 
   .countdown-grid {
-    gap: 0.25rem;
+    gap: 5px;
   }
 
   .countdown-box {
-    padding: 0.65rem 0.15rem;
+    min-height: 58px;
   }
 
   .countdown-box strong {
-    font-size: 1rem;
-  }
-
-  .countdown-box span {
-    font-size: 0.48rem;
+    font-size: 0.95rem;
   }
 }
 
-/* =========================================================
+
+/* =========================================
    REDUCED MOTION
-   ========================================================= */
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .event-card,
-  .event-card::before {
+  .event-reveal {
+    opacity: 1;
+
+    transform: none;
+
     transition: none;
+  }
+
+  .event-card,
+  .countdown-box {
+    transition: none;
+  }
+
+  .event-card:hover,
+  .countdown-box:hover {
+    transform: none;
   }
 
   .events-loader {

@@ -21,40 +21,50 @@ type Program = {
 function Programs() {
   const navigate = useNavigate();
 
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [programs, setPrograms] =
+    useState<Program[]>([]);
 
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  /*
+   * Load published homepage programs
+   * from Supabase.
+   */
   useEffect(() => {
     const loadPrograms = async () => {
       setLoading(true);
       setError("");
 
-      const { data, error } = await supabase
-        .from("programs")
-        .select(`
-          id,
-          title,
-          description,
-          category,
-          image_url,
-          status,
-          duration,
-          age_range,
-          featured,
-          homepage,
-          registration_deadline,
-          created_at
-        `)
-        .eq("status", "published")
-        .eq("homepage", true)
-        .order("featured", {
-          ascending: false,
-        })
-        .order("created_at", {
-          ascending: false,
-        })
-        .limit(3);
+      const { data, error } =
+        await supabase
+          .from("programs")
+          .select(`
+            id,
+            title,
+            description,
+            category,
+            image_url,
+            status,
+            duration,
+            age_range,
+            featured,
+            homepage,
+            registration_deadline,
+            created_at
+          `)
+          .eq("status", "published")
+          .eq("homepage", true)
+          .order("featured", {
+            ascending: false,
+          })
+          .order("created_at", {
+            ascending: false,
+          })
+          .limit(3);
 
       if (error) {
         console.error(
@@ -63,6 +73,7 @@ function Programs() {
         );
 
         setPrograms([]);
+
         setError(
           "We couldn't load our programs right now."
         );
@@ -78,6 +89,61 @@ function Programs() {
     loadPrograms();
   }, []);
 
+  /*
+   * Scroll reveal animation.
+   */
+  useEffect(() => {
+    const elements =
+      document.querySelectorAll(
+        ".programs .program-reveal"
+      );
+
+    if (
+      typeof IntersectionObserver ===
+      "undefined"
+    ) {
+      elements.forEach((element) => {
+        element.classList.add(
+          "program-revealed"
+        );
+      });
+
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (
+              entry.isIntersecting
+            ) {
+              entry.target.classList.add(
+                "program-revealed"
+              );
+
+              observer.unobserve(
+                entry.target
+              );
+            }
+          });
+        },
+        {
+          threshold: 0.12,
+          rootMargin:
+            "0px 0px -60px 0px",
+        }
+      );
+
+    elements.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [programs]);
+
   const formatDeadline = (
     deadline: string | null
   ) => {
@@ -85,7 +151,9 @@ function Programs() {
       return null;
     }
 
-    return new Date(deadline).toLocaleDateString(
+    return new Date(
+      deadline
+    ).toLocaleDateString(
       "en-US",
       {
         year: "numeric",
@@ -106,7 +174,7 @@ function Programs() {
             HEADER
         ================================= */}
 
-        <div className="programs-heading">
+        <div className="programs-heading program-reveal">
 
           <div>
             <span className="programs-label">
@@ -115,7 +183,10 @@ function Programs() {
 
             <h2>
               Programs designed to
-              <span> help teenagers thrive.</span>
+              <span>
+                {" "}
+                help teenagers thrive.
+              </span>
             </h2>
           </div>
 
@@ -132,7 +203,7 @@ function Programs() {
         ================================= */}
 
         {loading && (
-          <div className="programs-state">
+          <div className="programs-state program-reveal">
             <div className="programs-spinner" />
 
             <p>
@@ -145,13 +216,14 @@ function Programs() {
             ERROR
         ================================= */}
 
-        {!loading && error && (
-          <div className="programs-state">
-            <p>
-              {error}
-            </p>
-          </div>
-        )}
+        {!loading &&
+          error && (
+            <div className="programs-state program-reveal">
+              <p>
+                {error}
+              </p>
+            </div>
+          )}
 
         {/* =================================
             EMPTY
@@ -160,7 +232,7 @@ function Programs() {
         {!loading &&
           !error &&
           programs.length === 0 && (
-            <div className="programs-state">
+            <div className="programs-state program-reveal">
 
               <h3>
                 Programs coming soon
@@ -183,96 +255,115 @@ function Programs() {
           programs.length > 0 && (
             <div className="programs-grid">
 
-              {programs.map((program) => (
-                <article
-                  className="program-card"
-                  key={program.id}
-                >
+              {programs.map(
+                (program, index) => (
+                  <article
+                    className={`program-card program-reveal program-delay-${Math.min(
+                      index + 1,
+                      4
+                    )}`}
+                    key={program.id}
+                  >
 
-                  {/* IMAGE */}
+                    {/* IMAGE */}
 
-                  <div className="program-image-wrapper">
+                    <div className="program-image-wrapper">
 
-                    {program.image_url ? (
-                      <img
-                        src={program.image_url}
-                        alt={program.title}
-                        className="program-image"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <div className="program-image-placeholder">
-                        Teens Connect Africa
-                      </div>
-                    )}
-
-                    {program.category && (
-                      <span className="program-category">
-                        {program.category}
-                      </span>
-                    )}
-
-                  </div>
-
-                  {/* CONTENT */}
-
-                  <div className="program-content">
-
-                    <h3>
-                      {program.title}
-                    </h3>
-
-                    {program.description && (
-                      <p>
-                        {program.description}
-                      </p>
-                    )}
-
-                    <div className="program-meta">
-
-                      {program.duration && (
-                        <span>
-                          {program.duration}
-                        </span>
+                      {program.image_url ? (
+                        <img
+                          src={
+                            program.image_url
+                          }
+                          alt={
+                            program.title
+                          }
+                          className="program-image"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <div className="program-image-placeholder">
+                          Teens Connect Africa
+                        </div>
                       )}
 
-                      {program.age_range && (
-                        <span>
-                          {program.age_range}
+                      {program.category && (
+                        <span className="program-category">
+                          {program.category}
                         </span>
                       )}
 
                     </div>
 
-                    {program.registration_deadline && (
-                      <div className="program-deadline">
-                        Registration closes{" "}
-                        <strong>
-                          {formatDeadline(
-                            program.registration_deadline
-                          )}
-                        </strong>
+                    {/* CONTENT */}
+
+                    <div className="program-content">
+
+                      <h3>
+                        {program.title}
+                      </h3>
+
+                      {program.description && (
+                        <p>
+                          {
+                            program.description
+                          }
+                        </p>
+                      )}
+
+                      <div className="program-meta">
+
+                        {program.duration && (
+                          <span>
+                            {
+                              program.duration
+                            }
+                          </span>
+                        )}
+
+                        {program.age_range && (
+                          <span>
+                            {
+                              program.age_range
+                            }
+                          </span>
+                        )}
+
                       </div>
-                    )}
 
-                    <button
-                      type="button"
-                      className="program-learn-more"
-                      onClick={() =>
-                        navigate(
-                          `/programs/${program.id}`
-                        )
-                      }
-                    >
-                      Learn More
-                      <span>→</span>
-                    </button>
+                      {program.registration_deadline && (
+                        <div className="program-deadline">
+                          Registration closes{" "}
+                          <strong>
+                            {
+                              formatDeadline(
+                                program.registration_deadline
+                              )
+                            }
+                          </strong>
+                        </div>
+                      )}
 
-                  </div>
+                      <button
+                        type="button"
+                        className="program-learn-more"
+                        onClick={() =>
+                          navigate(
+                            `/programs/${program.id}`
+                          )
+                        }
+                      >
+                        Learn More
+                        <span>
+                          →
+                        </span>
+                      </button>
 
-                </article>
-              ))}
+                    </div>
+
+                  </article>
+                )
+              )}
 
             </div>
           )}
@@ -281,17 +372,21 @@ function Programs() {
             VIEW ALL
         ================================= */}
 
-        <div className="programs-footer">
+        <div className="programs-footer program-reveal">
 
           <button
             type="button"
             className="programs-view-all"
             onClick={() =>
-              navigate("/programs")
+              navigate(
+                "/programs"
+              )
             }
           >
             View All Programs
-            <span>→</span>
+            <span>
+              →
+            </span>
           </button>
 
         </div>

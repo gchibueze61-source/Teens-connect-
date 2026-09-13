@@ -1,11 +1,31 @@
 /* =========================================================
    TEENS CONNECT AFRICA
    MEMBER PORTAL
+   CLEAN • PROFESSIONAL • RESPONSIVE
 ========================================================= */
 
 .member-portal {
+  --portal-navy: #07234b;
+  --portal-navy-light: #0b3b72;
+  --portal-green: #16a34a;
+  --portal-green-dark: #15803d;
+  --portal-green-light: #ecfdf5;
+  --portal-text: #334155;
+  --portal-muted: #64748b;
+  --portal-soft: #f8fafc;
+  --portal-border: #e2e8f0;
+  --portal-white: #ffffff;
+
   min-height: 100vh;
-  background: #f8fafc;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc 0%,
+      #ffffff 42%,
+      #f8fafc 100%
+    );
+
   color: #0f172a;
 }
 
@@ -19,16 +39,24 @@
   top: 0;
   z-index: 50;
 
-  background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.94);
 
-  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 4px 20px rgba(7, 35, 75, 0.035);
+
+  animation: portalHeaderIn 0.65s ease both;
 }
 
 .member-header-inner {
   width: min(1200px, 92%);
   min-height: 76px;
-  margin: auto;
+
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
@@ -37,9 +65,15 @@
   gap: 1rem;
 }
 
+
+/* =========================================================
+   BRAND
+========================================================= */
+
 .member-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+
   gap: 0.75rem;
 
   padding: 0;
@@ -47,12 +81,22 @@
   border: none;
   background: transparent;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: 1rem;
   font-weight: 800;
 
   cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.member-brand:hover {
+  color: var(--portal-green-dark);
+
+  transform: translateY(-1px);
 }
 
 .member-brand img {
@@ -62,12 +106,34 @@
   border-radius: 50%;
 
   object-fit: cover;
+
   display: block;
 
   border: 2px solid #22c55e;
+
+  box-shadow:
+    0 5px 16px rgba(34, 197, 94, 0.16);
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
 }
 
+.member-brand:hover img {
+  transform: scale(1.05) rotate(2deg);
+
+  box-shadow:
+    0 8px 22px rgba(34, 197, 94, 0.22);
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
 .member-logout {
+  position: relative;
+
   padding: 0.7rem 1.1rem;
 
   border: 1px solid #dbe3ec;
@@ -84,17 +150,25 @@
     background 0.25s ease,
     border-color 0.25s ease,
     color 0.25s ease,
-    transform 0.25s ease;
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .member-logout:hover {
   background: #f8fafc;
+
   border-color: #cbd5e1;
-  color: #07234b;
+
+  color: var(--portal-navy);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(7, 35, 75, 0.07);
 }
 
 .member-logout:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 
 
@@ -108,6 +182,7 @@
 
 .member-container {
   width: min(1100px, 100%);
+
   margin: auto;
 }
 
@@ -124,30 +199,37 @@
   gap: 2rem;
 
   margin-bottom: 2rem;
+
+  animation:
+    portalFadeUp 0.8s 0.08s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
 }
 
 .member-welcome-label {
   display: inline-block;
 
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 
-  color: #16a34a;
+  color: var(--portal-green);
 
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
 
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
+
   text-transform: uppercase;
 }
 
 .member-welcome h1 {
   margin: 0 0 0.5rem;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+
+  line-height: 1.12;
+
+  letter-spacing: -0.04em;
 }
 
 .member-welcome p {
@@ -155,19 +237,22 @@
 
   margin: 0;
 
-  color: #64748b;
+  color: var(--portal-muted);
 
   line-height: 1.7;
+
+  font-size: 0.92rem;
 }
 
 
 /* =========================================================
-   ACTIVE BADGE
+   STATUS BADGE
 ========================================================= */
 
 .active-badge {
   display: inline-flex;
   align-items: center;
+
   gap: 0.55rem;
 
   flex-shrink: 0;
@@ -175,18 +260,35 @@
   padding: 0.7rem 1rem;
 
   border: 1px solid #bbf7d0;
+
   border-radius: 999px;
 
-  background: #dcfce7;
+  background: #f0fdf4;
+
   color: #166534;
 
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 800;
+
+  letter-spacing: 0.02em;
+
+  animation:
+    portalFadeIn 0.7s 0.25s ease both;
+}
+
+.pending-badge {
+  border-color: #fde68a;
+
+  background: #fffbeb;
+
+  color: #92400e;
 }
 
 .active-dot {
-  width: 9px;
-  height: 9px;
+  position: relative;
+
+  width: 8px;
+  height: 8px;
 
   flex-shrink: 0;
 
@@ -194,7 +296,71 @@
 
   background: #22c55e;
 
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.1);
+}
+
+.active-dot::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -4px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(34, 197, 94, 0.35);
+
+  animation: statusPulse 2s infinite;
+}
+
+
+/* =========================================================
+   LOCATION / STATUS MESSAGE
+========================================================= */
+
+.member-location-summary {
+  margin-bottom: 1.5rem;
+
+  padding: 1.15rem 1.3rem;
+
+  border: 1px solid #dbe4ef;
+
+  border-radius: 0.85rem;
+
+  background: #ffffff;
+
+  color: var(--portal-muted);
+
+  box-shadow:
+    0 7px 24px rgba(7, 35, 75, 0.035);
+
+  animation:
+    portalFadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.member-location-summary span {
+  display: block;
+
+  margin-bottom: 0.35rem;
+
+  color: var(--portal-green);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.member-location-summary strong {
+  color: #475569;
+
+  font-size: 0.86rem;
+
+  line-height: 1.65;
 }
 
 
@@ -209,11 +375,28 @@
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--portal-border);
+
   border-radius: 1.25rem;
 
   box-shadow:
-    0 15px 40px rgba(7, 35, 75, 0.06);
+    0 14px 40px rgba(7, 35, 75, 0.055);
+
+  animation:
+    portalFadeUp 0.8s 0.18s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.member-profile-card:hover {
+  border-color: #d5dee9;
+
+  box-shadow:
+    0 20px 48px rgba(7, 35, 75, 0.075);
 }
 
 .member-profile-top {
@@ -224,8 +407,13 @@
 
   padding-bottom: 1.75rem;
 
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--portal-border);
 }
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
 
 .member-avatar {
   width: 90px;
@@ -240,13 +428,33 @@
   justify-content: center;
 
   border: 3px solid #bbf7d0;
+
   border-radius: 50%;
 
   background: #ecfdf5;
-  color: #15803d;
+
+  color: var(--portal-green-dark);
 
   font-size: 2rem;
   font-weight: 800;
+
+  box-shadow:
+    0 8px 24px rgba(34, 197, 94, 0.1);
+
+  animation:
+    avatarIn 0.9s 0.35s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.member-profile-card:hover .member-avatar {
+  transform: translateY(-2px) scale(1.02);
+
+  box-shadow:
+    0 12px 28px rgba(34, 197, 94, 0.15);
 }
 
 .member-avatar img {
@@ -258,6 +466,11 @@
   display: block;
 }
 
+
+/* =========================================================
+   PROFILE NAME
+========================================================= */
+
 .member-profile-name {
   min-width: 0;
 }
@@ -265,111 +478,300 @@
 .member-profile-name h2 {
   margin: 0 0 0.3rem;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: 1.4rem;
+
+  letter-spacing: -0.02em;
 
   word-break: break-word;
 }
 
 .member-profile-name p {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.65rem;
 
-  color: #64748b;
+  color: var(--portal-muted);
+
+  font-size: 0.86rem;
 
   word-break: break-word;
 }
 
 .member-role {
-  display: inline-block;
+  display: inline-flex;
 
   padding: 0.35rem 0.7rem;
 
   border-radius: 999px;
 
   background: #f1f5f9;
+
   color: #475569;
 
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
 }
 
 
 /* =========================================================
-   MEMBER DETAILS
+   PROFILE DETAILS
 ========================================================= */
 
 .member-details {
   display: grid;
 
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
   gap: 1.5rem;
 
   padding-top: 1.75rem;
 }
 
-.member-detail {
-  display: flex;
-  flex-direction: column;
-
-  gap: 0.4rem;
-
+.member-details > div {
   min-width: 0;
+
+  padding: 0.2rem 0;
+
+  animation:
+    detailFadeIn 0.6s ease both;
 }
 
-.member-detail span {
+.member-details > div:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.member-details > div:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.member-details > div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.member-details > div:nth-child(4) {
+  animation-delay: 0.25s;
+}
+
+.member-details > div:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.member-details > div:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.member-details > div:nth-child(7) {
+  animation-delay: 0.4s;
+}
+
+.member-details > div:nth-child(8) {
+  animation-delay: 0.45s;
+}
+
+.member-details > div:nth-child(9) {
+  animation-delay: 0.5s;
+}
+
+.member-details > div > span {
+  display: block;
+
+  margin-bottom: 0.4rem;
+
   color: #94a3b8;
 
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
 
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+
+  letter-spacing: 0.07em;
 }
 
-.member-detail strong {
-  color: #334155;
+.member-details > div > strong {
+  display: block;
 
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: var(--portal-text);
+
+  font-size: 0.86rem;
+
+  line-height: 1.55;
 
   overflow-wrap: anywhere;
 }
 
+.member-detail-full {
+  grid-column: span 2;
+}
+
 
 /* =========================================================
-   SECTION HEADINGS
+   EDIT FORM
 ========================================================= */
 
-.member-section-heading {
-  margin-bottom: 1.4rem;
+.member-profile-card form {
+  animation:
+    formReveal 0.55s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
 }
 
-.member-section-heading h2 {
-  margin: 0 0 0.35rem;
+.member-field {
+  display: flex;
 
-  color: #07234b;
+  flex-direction: column;
 
-  font-size: 1.5rem;
-  letter-spacing: -0.02em;
+  gap: 0.45rem;
+
+  margin-bottom: 1rem;
 }
 
-.member-section-heading p {
-  margin: 0;
+.member-field label {
+  color: #334155;
 
-  color: #64748b;
+  font-size: 0.78rem;
+
+  font-weight: 800;
+}
+
+.member-field input,
+.member-field textarea,
+.member-field select {
+  width: 100%;
+
+  padding: 0.85rem 0.95rem;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 0.7rem;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font: inherit;
+
+  font-size: 0.88rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.member-field textarea {
+  resize: vertical;
 
   line-height: 1.6;
 }
 
+.member-field input::placeholder,
+.member-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.member-field input:hover,
+.member-field textarea:hover,
+.member-field select:hover {
+  border-color: #cbd5e1;
+}
+
+.member-field input:focus,
+.member-field textarea:focus,
+.member-field select:focus {
+  border-color: #22c55e;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
 
 /* =========================================================
-   TEEN DASHBOARD
+   GENERAL BUTTONS INSIDE PORTAL
+========================================================= */
+
+.member-profile-card button,
+.member-location-summary button,
+.teen-growth-actions button,
+.teen-section-title button,
+.teen-input-form button {
+  font-family: inherit;
+}
+
+.member-profile-card > button,
+.member-profile-card form button,
+.member-location-summary button {
+  min-height: 44px;
+
+  padding: 0.7rem 1rem;
+
+  border: 1px solid var(--portal-green);
+
+  border-radius: 0.7rem;
+
+  background: var(--portal-green);
+
+  color: #ffffff;
+
+  font-size: 0.82rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.member-profile-card > button:hover,
+.member-profile-card form button:hover,
+.member-location-summary button:hover {
+  background: var(--portal-green-dark);
+
+  border-color: var(--portal-green-dark);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(22, 163, 74, 0.18);
+}
+
+.member-profile-card form button[type="button"] {
+  background: #ffffff;
+
+  border-color: #dbe3ec;
+
+  color: #475569;
+}
+
+.member-profile-card form button[type="button"]:hover {
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+  color: var(--portal-navy);
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   DASHBOARD SECTION
 ========================================================= */
 
 .teen-dashboard-section {
   padding: 0 0 5rem;
+
+  animation:
+    portalFadeUp 0.75s 0.3s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
 }
 
 .teen-dashboard-header {
@@ -381,22 +783,25 @@
 
   margin-bottom: 0.5rem;
 
-  color: #16a34a;
+  color: var(--portal-green);
 
-  font-size: 0.76rem;
+  font-size: 0.72rem;
+
   font-weight: 800;
 
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
+
   text-transform: uppercase;
 }
 
 .teen-dashboard-header h2 {
   margin: 0 0 0.6rem;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: clamp(1.7rem, 4vw, 2.2rem);
-  letter-spacing: -0.03em;
+
+  letter-spacing: -0.035em;
 }
 
 .teen-dashboard-header p {
@@ -404,20 +809,22 @@
 
   margin: 0;
 
-  color: #64748b;
+  color: var(--portal-muted);
 
   line-height: 1.7;
+
+  font-size: 0.9rem;
 }
 
 
 /* =========================================================
-   DASHBOARD NAVIGATION / TABS
+   DASHBOARD NAV
 ========================================================= */
 
-.teen-dashboard-tabs {
+.teen-dashboard-nav {
   display: flex;
 
-  gap: 0.5rem;
+  gap: 0.35rem;
 
   margin-bottom: 1.5rem;
 
@@ -427,207 +834,489 @@
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--portal-border);
+
   border-radius: 0.9rem;
 
   box-shadow:
     0 8px 25px rgba(7, 35, 75, 0.04);
 
   scrollbar-width: thin;
+
+  animation:
+    portalFadeUp 0.6s 0.4s ease both;
 }
 
-.teen-dashboard-tab {
+.teen-dashboard-nav::-webkit-scrollbar {
+  height: 4px;
+}
+
+.teen-dashboard-nav::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 999px;
+}
+
+.teen-dashboard-nav button {
+  position: relative;
+
   flex-shrink: 0;
 
-  padding: 0.7rem 1rem;
+  min-height: 42px;
+
+  padding: 0.65rem 1rem;
 
   border: none;
+
   border-radius: 0.65rem;
 
   background: transparent;
+
   color: #64748b;
 
-  font-size: 0.86rem;
+  font-size: 0.8rem;
+
   font-weight: 700;
 
   cursor: pointer;
 
   transition:
-    background 0.25s ease,
     color 0.25s ease,
+    background 0.25s ease,
     transform 0.25s ease;
 }
 
-.teen-dashboard-tab:hover {
+.teen-dashboard-nav button:hover {
+  color: var(--portal-navy);
+
   background: #f1f5f9;
-  color: #07234b;
+
+  transform: translateY(-1px);
 }
 
-.teen-dashboard-tab.active {
-  background: #07234b;
+.teen-dashboard-nav button.teen-nav-active {
+  background: var(--portal-navy);
+
   color: #ffffff;
 
   box-shadow:
     0 5px 14px rgba(7, 35, 75, 0.18);
 }
 
-
-/* =========================================================
-   OVERVIEW / STAT CARDS
-========================================================= */
-
-.teen-dashboard-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
-  gap: 1rem;
-
-  margin-bottom: 1.5rem;
+.teen-dashboard-nav button.teen-nav-active:hover {
+  background: var(--portal-navy);
+  color: #ffffff;
 }
 
-.teen-dashboard-card {
-  position: relative;
 
-  min-width: 0;
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
 
-  padding: 1.4rem;
+.teen-growth-actions {
+  display: flex;
 
-  background: #ffffff;
+  flex-wrap: wrap;
 
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
+  gap: 0.75rem;
+
+  margin-bottom: 1.5rem;
+
+  animation:
+    portalFadeUp 0.6s 0.48s ease both;
+}
+
+.teen-growth-actions button,
+.teen-section-title button {
+  min-height: 44px;
+
+  padding: 0.7rem 1rem;
+
+  border: 1px solid var(--portal-green);
+
+  border-radius: 0.7rem;
+
+  background: var(--portal-green);
+
+  color: #ffffff;
+
+  font-size: 0.8rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
 
   box-shadow:
-    0 8px 25px rgba(7, 35, 75, 0.04);
+    0 7px 18px rgba(22, 163, 74, 0.12);
 
   transition:
     transform 0.25s ease,
-    border-color 0.25s ease,
+    background 0.25s ease,
     box-shadow 0.25s ease;
 }
 
-.teen-dashboard-card:hover {
-  transform: translateY(-3px);
+.teen-growth-actions button:hover,
+.teen-section-title button:hover {
+  background: var(--portal-green-dark);
 
-  border-color: #bbf7d0;
+  transform: translateY(-2px);
 
   box-shadow:
-    0 14px 30px rgba(7, 35, 75, 0.08);
+    0 11px 24px rgba(22, 163, 74, 0.2);
 }
 
-.teen-dashboard-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 44px;
-  height: 44px;
-
-  margin-bottom: 1rem;
-
-  border-radius: 0.75rem;
-
-  background: #ecfdf5;
-  color: #16a34a;
-
-  font-size: 1.25rem;
-}
-
-.teen-dashboard-card h3 {
-  margin: 0 0 0.4rem;
-
-  color: #07234b;
-
-  font-size: 1rem;
-}
-
-.teen-dashboard-card p {
-  min-height: auto;
-
-  margin: 0;
-
-  color: #64748b;
-
-  line-height: 1.6;
-
-  font-size: 0.84rem;
-}
-
-.teen-dashboard-card strong {
-  display: block;
-
-  margin-top: 0.75rem;
-
-  color: #07234b;
-
-  font-size: 1.8rem;
+.teen-growth-actions button:active,
+.teen-section-title button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 
 /* =========================================================
-   FORM SECTION
+   PROGRESS PANEL
 ========================================================= */
 
-.teen-form-section {
-  margin-bottom: 2rem;
+.teen-achievement-panel {
+  display: grid;
+
+  grid-template-columns: 1.15fr 1fr;
+
+  gap: 2rem;
+
+  align-items: center;
+
+  margin-top: 1.5rem;
+
+  padding: 2rem;
+
+  border-radius: 1.15rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      #07234b 0%,
+      #0b3b72 100%
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 16px 38px rgba(7, 35, 75, 0.15);
+
+  overflow: hidden;
+
+  position: relative;
+
+  animation:
+    panelReveal 0.8s 0.15s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.teen-achievement-panel::before {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  right: -100px;
+  top: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(34, 197, 94, 0.09);
+
+  pointer-events: none;
+}
+
+.teen-achievement-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.teen-achievement-panel h2 {
+  margin: 0 0 0.6rem;
+
+  color: #ffffff;
+
+  font-size: 1.5rem;
+
+  letter-spacing: -0.025em;
+}
+
+.teen-achievement-panel p {
+  max-width: 620px;
+
+  margin: 0;
+
+  color: #dbe5f1;
+
+  line-height: 1.7;
+
+  font-size: 0.85rem;
+}
+
+.teen-achievement-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 0.65rem;
+}
+
+.teen-achievement-stats > div {
+  padding: 1rem 0.65rem;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 0.75rem;
+
+  background: rgba(255, 255, 255, 0.065);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.teen-achievement-stats > div:hover {
+  transform: translateY(-3px);
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.teen-achievement-stats strong {
+  display: block;
+
+  margin-bottom: 0.3rem;
+
+  color: #4ade80;
+
+  font-size: 1.6rem;
+
+  line-height: 1;
+}
+
+.teen-achievement-stats span {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 0.67rem;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   GROWTH INFO
+========================================================= */
+
+.teen-growth-info {
+  margin-top: 1.5rem;
 
   padding: 1.75rem;
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
-  border-radius: 1.1rem;
+  border: 1px solid var(--portal-border);
+
+  border-radius: 1.05rem;
 
   box-shadow:
-    0 10px 30px rgba(7, 35, 75, 0.04);
+    0 8px 25px rgba(7, 35, 75, 0.035);
+
+  animation:
+    portalFadeUp 0.7s 0.25s ease both;
 }
 
-.teen-form-header {
+.teen-growth-info h3 {
+  margin: 0 0 1.25rem;
+
+  color: var(--portal-navy);
+
+  font-size: 1.05rem;
+}
+
+.teen-growth-steps {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+.teen-growth-steps > div {
+  position: relative;
+
+  padding: 1.1rem;
+
+  border: 1px solid #edf1f5;
+
+  border-radius: 0.8rem;
+
+  background: #fbfcfd;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.teen-growth-steps > div:hover {
+  transform: translateY(-4px);
+
+  border-color: #bbf7d0;
+
+  box-shadow:
+    0 10px 25px rgba(7, 35, 75, 0.06);
+}
+
+.teen-growth-steps strong {
+  display: inline-flex;
+
+  margin-bottom: 0.7rem;
+
+  color: var(--portal-green);
+
+  font-size: 0.72rem;
+}
+
+.teen-growth-steps h4 {
+  margin: 0 0 0.45rem;
+
+  color: var(--portal-navy);
+
+  font-size: 0.88rem;
+}
+
+.teen-growth-steps p {
+  margin: 0;
+
+  color: var(--portal-muted);
+
+  font-size: 0.76rem;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   SECTION CONTENT
+========================================================= */
+
+.teen-section-content {
+  animation:
+    sectionSwitch 0.45s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.teen-section-title {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 1.5rem;
+
   margin-bottom: 1.5rem;
 }
 
-.teen-form-header h3 {
-  margin: 0 0 0.4rem;
+.teen-section-title h2 {
+  margin: 0 0 0.45rem;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
-  font-size: 1.2rem;
+  font-size: 1.45rem;
+
+  letter-spacing: -0.025em;
 }
 
-.teen-form-header p {
+.teen-section-title p {
+  max-width: 650px;
+
   margin: 0;
 
-  color: #64748b;
+  color: var(--portal-muted);
 
-  font-size: 0.88rem;
+  font-size: 0.84rem;
 
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   INPUT FORMS
+========================================================= */
+
+.teen-input-form {
+  margin-bottom: 1.5rem;
+
+  padding: 1.75rem;
+
+  background: #ffffff;
+
+  border: 1px solid var(--portal-border);
+
+  border-radius: 1.1rem;
+
+  box-shadow:
+    0 10px 30px rgba(7, 35, 75, 0.045);
+
+  animation:
+    formReveal 0.55s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.teen-input-form h3 {
+  margin: 0 0 0.4rem;
+
+  color: var(--portal-navy);
+
+  font-size: 1.15rem;
+}
+
+.teen-input-form > p {
+  margin: 0 0 1.5rem;
+
+  color: var(--portal-muted);
+
+  font-size: 0.82rem;
+
+  line-height: 1.65;
 }
 
 .teen-form-grid {
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 1rem;
 }
 
 .teen-form-field {
   display: flex;
+
   flex-direction: column;
 
   gap: 0.45rem;
-}
 
-.teen-form-field.full-width {
-  grid-column: 1 / -1;
+  margin-bottom: 1rem;
 }
 
 .teen-form-field label {
   color: #334155;
 
-  font-size: 0.8rem;
+  font-size: 0.77rem;
+
   font-weight: 800;
 }
 
@@ -635,38 +1324,46 @@
 .teen-form-field textarea,
 .teen-form-field select {
   width: 100%;
-  box-sizing: border-box;
 
   padding: 0.85rem 0.95rem;
 
   border: 1px solid #dbe3ec;
+
   border-radius: 0.7rem;
 
   background: #ffffff;
+
   color: #0f172a;
 
   font: inherit;
-  font-size: 0.9rem;
+
+  font-size: 0.87rem;
 
   outline: none;
 
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
 .teen-form-field textarea {
-  min-height: 125px;
-
   resize: vertical;
 
-  line-height: 1.6;
+  min-height: 120px;
+
+  line-height: 1.65;
 }
 
 .teen-form-field input::placeholder,
 .teen-form-field textarea::placeholder {
   color: #94a3b8;
+}
+
+.teen-form-field input:hover,
+.teen-form-field textarea:hover,
+.teen-form-field select:hover {
+  border-color: #cbd5e1;
 }
 
 .teen-form-field input:focus,
@@ -675,100 +1372,69 @@
   border-color: #22c55e;
 
   box-shadow:
-    0 0 0 3px rgba(34, 197, 94, 0.12);
+    0 0 0 3px rgba(34, 197, 94, 0.1);
 }
-
-.teen-form-help {
-  margin: 0;
-
-  color: #94a3b8;
-
-  font-size: 0.75rem;
-
-  line-height: 1.5;
-}
-
-
-/* =========================================================
-   FORM BUTTONS
-========================================================= */
 
 .teen-form-actions {
   display: flex;
+
   align-items: center;
 
   gap: 0.75rem;
 
-  margin-top: 1.25rem;
+  margin-top: 0.5rem;
 }
 
-.teen-primary-btn,
-.teen-secondary-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.teen-form-actions button {
+  min-height: 44px;
 
-  min-height: 46px;
-
-  padding: 0.75rem 1.1rem;
+  padding: 0.7rem 1rem;
 
   border-radius: 0.7rem;
 
-  font-size: 0.85rem;
+  border: 1px solid var(--portal-green);
+
+  background: var(--portal-green);
+
+  color: #ffffff;
+
+  font-size: 0.8rem;
+
   font-weight: 800;
 
   cursor: pointer;
 
   transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
     transform 0.25s ease,
+    background 0.25s ease,
     box-shadow 0.25s ease;
 }
 
-.teen-primary-btn {
-  border: 1px solid #22c55e;
-
-  background: #22c55e;
-  color: #ffffff;
-
-  box-shadow:
-    0 8px 18px rgba(34, 197, 94, 0.18);
-}
-
-.teen-primary-btn:hover {
-  background: #16a34a;
-  border-color: #16a34a;
+.teen-form-actions button:hover {
+  background: var(--portal-green-dark);
 
   transform: translateY(-2px);
 
   box-shadow:
-    0 12px 24px rgba(34, 197, 94, 0.24);
+    0 9px 20px rgba(22, 163, 74, 0.18);
 }
 
-.teen-secondary-btn {
-  border: 1px solid #dbe3ec;
+.teen-form-actions button:last-child {
+  border-color: #dbe3ec;
 
   background: #ffffff;
-  color: #334155;
+
+  color: #475569;
+
+  box-shadow: none;
 }
 
-.teen-secondary-btn:hover {
+.teen-form-actions button:last-child:hover {
   background: #f8fafc;
 
   border-color: #cbd5e1;
 
-  transform: translateY(-2px);
-}
-
-.teen-primary-btn:disabled,
-.teen-secondary-btn:disabled {
-  opacity: 0.6;
-
-  cursor: not-allowed;
-
-  transform: none;
+  color: var(--portal-navy);
 }
 
 
@@ -776,145 +1442,204 @@
    RECORD LIST
 ========================================================= */
 
-.teen-records-list {
+.teen-record-list {
   display: flex;
+
   flex-direction: column;
 
   gap: 1rem;
 }
 
 .teen-record-card {
-  padding: 1.35rem;
+  position: relative;
+
+  padding: 1.4rem;
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--portal-border);
+
   border-radius: 1rem;
 
   box-shadow:
     0 8px 25px rgba(7, 35, 75, 0.035);
 
+  animation:
+    recordReveal 0.6s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.teen-record-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.teen-record-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.teen-record-card:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.teen-record-card:nth-child(5) {
+  animation-delay: 0.32s;
 }
 
 .teen-record-card:hover {
-  border-color: #cbd5e1;
+  transform: translateY(-3px);
+
+  border-color: #d3dde8;
 
   box-shadow:
-    0 12px 28px rgba(7, 35, 75, 0.06);
+    0 15px 32px rgba(7, 35, 75, 0.065);
 }
 
 .teen-record-top {
   display: flex;
+
   align-items: flex-start;
+
   justify-content: space-between;
 
   gap: 1rem;
 
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.6rem;
 }
 
-.teen-record-title {
-  min-width: 0;
+.teen-record-type {
+  display: inline-flex;
+
+  margin-bottom: 0.45rem;
+
+  padding: 0.3rem 0.6rem;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+
+  color: var(--portal-green-dark);
+
+  font-size: 0.67rem;
+
+  font-weight: 800;
+
+  text-transform: capitalize;
 }
 
-.teen-record-title h3 {
-  margin: 0 0 0.3rem;
+.teen-record-card h3 {
+  margin: 0;
 
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: 1rem;
+
+  line-height: 1.4;
 
   overflow-wrap: anywhere;
 }
 
-.teen-record-title span {
-  color: #94a3b8;
-
-  font-size: 0.75rem;
-}
-
-.teen-record-status {
+.teen-status {
   flex-shrink: 0;
 
   padding: 0.35rem 0.65rem;
 
   border-radius: 999px;
 
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+
   font-weight: 800;
 
   text-transform: capitalize;
 }
 
-.teen-record-status.pending {
+.teen-status.pending {
   background: #fef3c7;
+
   color: #92400e;
 }
 
-.teen-record-status.approved {
+.teen-status.approved {
   background: #dcfce7;
+
   color: #166534;
 }
 
-.teen-record-status.rejected {
+.teen-status.rejected {
   background: #fee2e2;
+
   color: #991b1b;
 }
 
-.teen-record-content {
-  display: grid;
+.teen-record-date {
+  margin: 0 0 1rem;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  color: #94a3b8;
 
-  gap: 1rem;
-
-  margin-top: 1rem;
+  font-size: 0.73rem;
 }
 
-.teen-record-content-item {
-  padding: 0.9rem;
+.teen-record-writeup {
+  padding-top: 1rem;
 
-  border-radius: 0.7rem;
-
-  background: #f8fafc;
+  border-top: 1px solid #edf1f5;
 }
 
-.teen-record-content-item strong {
-  display: block;
-
-  margin-bottom: 0.35rem;
+.teen-record-writeup h4 {
+  margin: 0.9rem 0 0.3rem;
 
   color: #334155;
 
-  font-size: 0.76rem;
+  font-size: 0.75rem;
+
+  font-weight: 800;
 }
 
-.teen-record-content-item p {
+.teen-record-writeup h4:first-child {
+  margin-top: 0;
+}
+
+.teen-record-writeup p {
   margin: 0;
 
-  color: #64748b;
+  color: var(--portal-muted);
 
-  font-size: 0.82rem;
+  font-size: 0.83rem;
 
-  line-height: 1.65;
+  line-height: 1.7;
 
   overflow-wrap: anywhere;
 }
 
+.teen-record-points {
+  display: inline-flex;
 
-/* =========================================================
-   ADMIN FEEDBACK
-========================================================= */
+  margin-top: 1rem;
+
+  padding: 0.45rem 0.7rem;
+
+  border-radius: 0.6rem;
+
+  background: #ecfdf5;
+
+  color: #15803d;
+
+  font-size: 0.75rem;
+
+  font-weight: 800;
+}
 
 .teen-admin-feedback {
   margin-top: 1rem;
 
   padding: 1rem;
 
-  border-left: 4px solid #22c55e;
+  border-left: 3px solid #22c55e;
 
   border-radius: 0.65rem;
 
@@ -928,7 +1653,7 @@
 
   color: #166534;
 
-  font-size: 0.8rem;
+  font-size: 0.76rem;
 }
 
 .teen-admin-feedback p {
@@ -936,95 +1661,59 @@
 
   color: #365314;
 
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 
   line-height: 1.65;
 }
 
 
 /* =========================================================
-   ACHIEVEMENTS
+   EMPTY STATE
 ========================================================= */
 
-.teen-achievements-list {
-  display: grid;
+.teen-empty-state {
+  padding: 3rem 1.5rem;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: 1rem;
-}
-
-.teen-achievement-card {
-  padding: 1.35rem;
+  text-align: center;
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px dashed #cbd5e1;
+
   border-radius: 1rem;
 
-  box-shadow:
-    0 8px 25px rgba(7, 35, 75, 0.035);
+  animation:
+    portalFadeUp 0.55s ease both;
 }
 
-.teen-achievement-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+.teen-empty-state h3 {
+  margin: 0 0 0.45rem;
 
-  gap: 1rem;
-
-  margin-bottom: 0.8rem;
-}
-
-.teen-achievement-card h3 {
-  margin: 0 0 0.35rem;
-
-  color: #07234b;
+  color: var(--portal-navy);
 
   font-size: 1rem;
-
-  overflow-wrap: anywhere;
 }
 
-.teen-achievement-category {
-  color: #64748b;
+.teen-empty-state p {
+  max-width: 520px;
 
-  font-size: 0.76rem;
-}
+  margin: 0 auto;
 
-.teen-achievement-points {
-  flex-shrink: 0;
+  color: var(--portal-muted);
 
-  padding: 0.4rem 0.65rem;
-
-  border-radius: 0.6rem;
-
-  background: #ecfdf5;
-  color: #15803d;
-
-  font-size: 0.75rem;
-  font-weight: 800;
-}
-
-.teen-achievement-card p {
-  margin: 0;
-
-  color: #64748b;
-
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 
   line-height: 1.65;
-
-  overflow-wrap: anywhere;
 }
 
 
 /* =========================================================
-   QUARTERLY FEEDBACK
+   QUARTERLY REVIEWS
 ========================================================= */
 
-.teen-reviews-list {
+.teen-review-list {
   display: flex;
+
   flex-direction: column;
 
   gap: 1rem;
@@ -1035,16 +1724,35 @@
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--portal-border);
+
   border-radius: 1rem;
 
   box-shadow:
     0 8px 25px rgba(7, 35, 75, 0.035);
+
+  animation:
+    recordReveal 0.65s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.teen-review-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 14px 30px rgba(7, 35, 75, 0.065);
 }
 
 .teen-review-header {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 1rem;
@@ -1052,92 +1760,130 @@
   margin-bottom: 1.25rem;
 }
 
-.teen-review-header h3 {
-  margin: 0;
+.teen-review-header span {
+  color: var(--portal-green);
 
-  color: #07234b;
+  font-size: 0.72rem;
+
+  font-weight: 800;
+}
+
+.teen-review-header h3 {
+  margin: 0.25rem 0 0;
+
+  color: var(--portal-navy);
 
   font-size: 1.05rem;
 }
 
 .teen-review-score {
   display: flex;
+
+  flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
 
   min-width: 70px;
 
-  padding: 0.55rem 0.7rem;
+  min-height: 70px;
 
-  border-radius: 0.7rem;
+  padding: 0.6rem;
 
-  background: #07234b;
+  border-radius: 0.8rem;
+
+  background: var(--portal-navy);
+
   color: #ffffff;
 
-  font-size: 0.9rem;
-  font-weight: 800;
+  box-shadow:
+    0 7px 18px rgba(7, 35, 75, 0.14);
+}
+
+.teen-review-score strong {
+  font-size: 1.25rem;
+
+  line-height: 1;
+}
+
+.teen-review-score span {
+  margin-top: 0.3rem;
+
+  color: #dbe5f1;
+
+  font-size: 0.62rem;
 }
 
 .teen-review-scores {
   display: grid;
 
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
 
-  gap: 0.75rem;
+  gap: 0.65rem;
 
   margin-bottom: 1.25rem;
 }
 
-.teen-review-score-item {
-  padding: 0.85rem;
+.teen-review-scores > div {
+  padding: 0.8rem;
 
   text-align: center;
 
   border-radius: 0.7rem;
 
   background: #f8fafc;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
 }
 
-.teen-review-score-item span {
+.teen-review-scores > div:hover {
+  transform: translateY(-2px);
+
+  background: #f1f5f9;
+}
+
+.teen-review-scores > div span {
   display: block;
 
   margin-bottom: 0.35rem;
 
   color: #64748b;
 
-  font-size: 0.68rem;
+  font-size: 0.66rem;
 
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
-.teen-review-score-item strong {
-  color: #07234b;
+.teen-review-scores > div strong {
+  color: var(--portal-navy);
 
-  font-size: 1.15rem;
+  font-size: 1rem;
 }
 
 .teen-review-feedback {
   padding-top: 1rem;
 
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--portal-border);
 }
 
-.teen-review-feedback strong {
-  display: block;
-
-  margin-bottom: 0.4rem;
+.teen-review-feedback h4 {
+  margin: 0 0 0.4rem;
 
   color: #334155;
 
-  font-size: 0.78rem;
+  font-size: 0.76rem;
 }
 
 .teen-review-feedback p {
   margin: 0;
 
-  color: #64748b;
+  color: var(--portal-muted);
 
-  font-size: 0.86rem;
+  font-size: 0.84rem;
 
   line-height: 1.7;
 }
@@ -1147,10 +1893,11 @@
    AWARDS
 ========================================================= */
 
-.teen-awards-list {
+.teen-award-grid {
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 1rem;
 }
@@ -1162,18 +1909,43 @@
 
   padding: 1.5rem;
 
-  background: linear-gradient(
-    135deg,
-    #07234b,
-    #0b3b72
-  );
-
   border-radius: 1rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      #07234b,
+      #0b3b72
+    );
 
   color: #ffffff;
 
   box-shadow:
-    0 12px 30px rgba(7, 35, 75, 0.14);
+    0 12px 30px rgba(7, 35, 75, 0.13);
+
+  animation:
+    awardReveal 0.65s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.teen-award-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.teen-award-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.teen-award-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 18px 38px rgba(7, 35, 75, 0.18);
 }
 
 .teen-award-card::after {
@@ -1181,22 +1953,55 @@
 
   position: absolute;
 
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
 
-  right: -45px;
-  top: -45px;
+  right: -55px;
+  top: -55px;
 
   border-radius: 50%;
 
-  background: rgba(34, 197, 94, 0.14);
+  background: rgba(34, 197, 94, 0.12);
+
+  transition:
+    transform 0.5s ease;
+}
+
+.teen-award-card:hover::after {
+  transform: scale(1.15);
+}
+
+.teen-award-icon {
+  position: relative;
+
+  z-index: 1;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 1rem;
+
+  border-radius: 0.75rem;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #4ade80;
+
+  font-size: 1.2rem;
+
+  font-weight: 800;
 }
 
 .teen-award-card h3 {
   position: relative;
+
   z-index: 1;
 
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.5rem;
 
   color: #ffffff;
 
@@ -1205,295 +2010,28 @@
 
 .teen-award-card p {
   position: relative;
+
   z-index: 1;
 
   margin: 0 0 1rem;
 
   color: #dbe5f1;
 
-  font-size: 0.84rem;
+  font-size: 0.83rem;
 
   line-height: 1.65;
 }
 
-.teen-award-date {
+.teen-award-card > span {
   position: relative;
+
   z-index: 1;
 
   color: #86efac;
 
-  font-size: 0.74rem;
+  font-size: 0.73rem;
+
   font-weight: 800;
-}
-
-
-/* =========================================================
-   ACHIEVEMENT SUMMARY
-========================================================= */
-
-.teen-achievement-panel {
-  display: grid;
-
-  grid-template-columns: 1.2fr 1fr;
-
-  gap: 2rem;
-
-  align-items: center;
-
-  margin-top: 1.5rem;
-
-  padding: 2rem;
-
-  border-radius: 1.1rem;
-
-  background: #07234b;
-
-  color: #ffffff;
-
-  box-shadow:
-    0 15px 35px rgba(7, 35, 75, 0.15);
-}
-
-.teen-achievement-panel h2 {
-  margin: 0 0 0.6rem;
-
-  color: #ffffff;
-
-  font-size: 1.5rem;
-}
-
-.teen-achievement-panel p {
-  margin: 0;
-
-  color: #dbe5f1;
-
-  line-height: 1.7;
-
-  font-size: 0.88rem;
-}
-
-.teen-achievement-stats {
-  display: grid;
-
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
-  gap: 0.75rem;
-}
-
-.teen-achievement-stats div {
-  padding: 1rem;
-
-  text-align: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  border-radius: 0.75rem;
-
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.teen-achievement-stats strong {
-  display: block;
-
-  margin-bottom: 0.25rem;
-
-  color: #4ade80;
-
-  font-size: 1.6rem;
-}
-
-.teen-achievement-stats span {
-  display: block;
-
-  color: #ffffff;
-
-  font-size: 0.7rem;
-}
-
-
-/* =========================================================
-   EMPTY STATES
-========================================================= */
-
-.teen-empty-state {
-  padding: 2.5rem 1.5rem;
-
-  text-align: center;
-
-  background: #ffffff;
-
-  border: 1px dashed #cbd5e1;
-
-  border-radius: 1rem;
-}
-
-.teen-empty-state-icon {
-  width: 48px;
-  height: 48px;
-
-  margin: 0 auto 0.9rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #ecfdf5;
-  color: #16a34a;
-
-  font-size: 1.2rem;
-}
-
-.teen-empty-state h3 {
-  margin: 0 0 0.4rem;
-
-  color: #07234b;
-
-  font-size: 1rem;
-}
-
-.teen-empty-state p {
-  max-width: 500px;
-
-  margin: auto;
-
-  color: #64748b;
-
-  font-size: 0.84rem;
-
-  line-height: 1.6;
-}
-
-
-/* =========================================================
-   DASHBOARD CTA
-========================================================= */
-
-.teen-dashboard-cta {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 2rem;
-
-  margin-top: 1.5rem;
-
-  padding: 2rem;
-
-  border: 1px solid #dbe4ef;
-  border-radius: 1.1rem;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 8px 25px rgba(7, 35, 75, 0.04);
-}
-
-.teen-dashboard-cta span {
-  color: #16a34a;
-
-  font-size: 0.75rem;
-  font-weight: 800;
-
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.teen-dashboard-cta h2 {
-  margin: 0.45rem 0 0.5rem;
-
-  color: #07234b;
-
-  font-size: 1.35rem;
-}
-
-.teen-dashboard-cta p {
-  max-width: 650px;
-
-  margin: 0;
-
-  color: #64748b;
-
-  line-height: 1.7;
-
-  font-size: 0.86rem;
-}
-
-
-/* =========================================================
-   APPROVAL / PENDING
-========================================================= */
-
-.member-pending-card {
-  padding: 2rem;
-
-  border: 1px solid #fde68a;
-  border-radius: 1rem;
-
-  background: #fffbeb;
-
-  box-shadow:
-    0 8px 25px rgba(146, 64, 14, 0.04);
-}
-
-.member-pending-card h2 {
-  margin: 0 0 0.5rem;
-
-  color: #92400e;
-
-  font-size: 1.3rem;
-}
-
-.member-pending-card p {
-  margin: 0;
-
-  color: #78350f;
-
-  line-height: 1.7;
-}
-
-
-/* =========================================================
-   ERROR MESSAGE
-========================================================= */
-
-.member-error {
-  margin-bottom: 1rem;
-
-  padding: 0.9rem 1rem;
-
-  border: 1px solid #fecaca;
-  border-radius: 0.7rem;
-
-  background: #fef2f2;
-  color: #991b1b;
-
-  font-size: 0.85rem;
-
-  line-height: 1.5;
-}
-
-
-/* =========================================================
-   SUCCESS MESSAGE
-========================================================= */
-
-.member-success {
-  margin-bottom: 1rem;
-
-  padding: 0.9rem 1rem;
-
-  border: 1px solid #bbf7d0;
-  border-radius: 0.7rem;
-
-  background: #f0fdf4;
-  color: #166534;
-
-  font-size: 0.85rem;
-
-  line-height: 1.5;
 }
 
 
@@ -1501,61 +2039,190 @@
    LOADING
 ========================================================= */
 
-.member-loading {
-  min-height: 100vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 1rem;
-
-  background: #f8fafc;
+.member-portal > .member-container .member-location-summary:first-child {
+  margin-top: 4rem;
 }
 
-.member-loading-box {
-  text-align: center;
+.member-portal [style*="cursor: wait"] {
+  opacity: 0.75;
 
-  color: #64748b;
-}
-
-.member-spinner {
-  width: 38px;
-  height: 38px;
-
-  margin: 0 auto 1rem;
-
-  border: 4px solid #e2e8f0;
-  border-top-color: #22c55e;
-
-  border-radius: 50%;
-
-  animation: member-spin 0.8s linear infinite;
-}
-
-@keyframes member-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  pointer-events: none;
 }
 
 
 /* =========================================================
-   FOOTER
+   KEYFRAME ANIMATIONS
 ========================================================= */
 
-.member-footer {
-  padding: 1.5rem 1rem;
+@keyframes portalHeaderIn {
+  from {
+    opacity: 0;
 
-  text-align: center;
+    transform: translateY(-12px);
+  }
 
-  border-top: 1px solid #e2e8f0;
+  to {
+    opacity: 1;
 
-  background: #ffffff;
+    transform: translateY(0);
+  }
+}
 
-  color: #94a3b8;
+@keyframes portalFadeIn {
+  from {
+    opacity: 0;
+  }
 
-  font-size: 0.8rem;
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes portalFadeUp {
+  from {
+    opacity: 0;
+
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+@keyframes avatarIn {
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.75)
+      rotate(-6deg);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1)
+      rotate(0);
+  }
+}
+
+@keyframes detailFadeIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+@keyframes formReveal {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(18px)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes panelReveal {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes recordReveal {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes awardReveal {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(24px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes sectionSwitch {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0;
+
+    transform: scale(1.5);
+  }
 }
 
 
@@ -1565,24 +2232,26 @@
 
 @media (max-width: 900px) {
   .member-details {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 
-  .teen-dashboard-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .teen-achievements-list,
-  .teen-awards-list {
-    grid-template-columns: 1fr;
+  .member-detail-full {
+    grid-column: span 2;
   }
 
   .teen-achievement-panel {
     grid-template-columns: 1fr;
   }
 
+  .teen-growth-steps {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
   .teen-review-scores {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1612,7 +2281,7 @@
   .member-logout {
     padding: 0.6rem 0.9rem;
 
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
 
   .member-welcome {
@@ -1628,11 +2297,11 @@
   }
 
   .member-welcome p {
-    font-size: 0.9rem;
+    font-size: 0.87rem;
   }
 
   .active-badge {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
   }
 
   .member-profile-card {
@@ -1659,7 +2328,7 @@
   }
 
   .member-profile-name p {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .member-details {
@@ -1668,25 +2337,74 @@
     gap: 1rem;
   }
 
-  .teen-dashboard-section {
-    padding-bottom: 3rem;
+  .member-detail-full {
+    grid-column: auto;
   }
 
-  .teen-dashboard-grid {
+  .teen-dashboard-nav {
+    margin-right: -0.1rem;
+  }
+
+  .teen-dashboard-nav button {
+    min-height: 40px;
+
+    padding:
+      0.6rem 0.75rem;
+
+    font-size: 0.74rem;
+  }
+
+  .teen-growth-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .teen-growth-actions button {
+    width: 100%;
+  }
+
+  .teen-achievement-panel {
+    padding: 1.5rem;
+
+    gap: 1.5rem;
+  }
+
+  .teen-achievement-panel h2 {
+    font-size: 1.3rem;
+  }
+
+  .teen-achievement-stats {
+    grid-template-columns: 1fr;
+
+    gap: 0.6rem;
+  }
+
+  .teen-achievement-stats > div {
+    padding: 0.9rem;
+  }
+
+  .teen-growth-info {
+    padding: 1.25rem;
+  }
+
+  .teen-growth-steps {
     grid-template-columns: 1fr;
   }
 
-  .teen-dashboard-tabs {
-    margin-right: -0.2rem;
+  .teen-section-title {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 1rem;
   }
 
-  .teen-dashboard-tab {
-    padding: 0.65rem 0.8rem;
-
-    font-size: 0.78rem;
+  .teen-section-title button {
+    width: 100%;
   }
 
-  .teen-form-section {
+  .teen-input-form {
     padding: 1.25rem;
   }
 
@@ -1694,30 +2412,24 @@
     grid-template-columns: 1fr;
   }
 
-  .teen-form-field.full-width {
-    grid-column: auto;
-  }
-
   .teen-form-actions {
     flex-direction: column;
+
     align-items: stretch;
   }
 
-  .teen-primary-btn,
-  .teen-secondary-btn {
+  .teen-form-actions button {
     width: 100%;
   }
 
   .teen-record-top {
     flex-direction: column;
+
+    gap: 0.7rem;
   }
 
-  .teen-record-content {
-    grid-template-columns: 1fr;
-  }
-
-  .teen-achievement-card-top {
-    flex-direction: column;
+  .teen-status {
+    align-self: flex-start;
   }
 
   .teen-review-header {
@@ -1727,39 +2439,29 @@
   }
 
   .teen-review-scores {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 
-  .teen-achievement-panel {
-    padding: 1.5rem;
-  }
-
-  .teen-achievement-stats {
+  .teen-award-grid {
     grid-template-columns: 1fr;
   }
 
-  .teen-dashboard-cta {
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    padding: 1.5rem;
+  .teen-award-card {
+    padding: 1.35rem;
   }
 }
 
 
 /* =========================================================
-   VERY SMALL PHONES
+   SMALL PHONES
 ========================================================= */
 
 @media (max-width: 380px) {
   .member-main {
     padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
 
-  .member-profile-top {
-    flex-direction: column;
+    padding-right: 0.75rem;
   }
 
   .member-welcome h1 {
@@ -1770,7 +2472,11 @@
     padding: 1rem;
   }
 
-  .teen-form-section {
+  .member-profile-top {
+    flex-direction: column;
+  }
+
+  .teen-input-form {
     padding: 1rem;
   }
 
@@ -1778,7 +2484,53 @@
     grid-template-columns: 1fr;
   }
 
-  .teen-dashboard-card {
-    padding: 1.15rem;
+  .teen-dashboard-nav button {
+    font-size: 0.7rem;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .member-header,
+  .member-welcome,
+  .active-badge,
+  .member-location-summary,
+  .member-profile-card,
+  .member-avatar,
+  .member-details > div,
+  .teen-dashboard-section,
+  .teen-dashboard-nav,
+  .teen-growth-actions,
+  .teen-achievement-panel,
+  .teen-growth-info,
+  .teen-section-content,
+  .teen-input-form,
+  .teen-record-card,
+  .teen-empty-state,
+  .teen-review-card,
+  .teen-award-card {
+    animation: none !important;
+  }
+
+  .member-brand,
+  .member-brand img,
+  .member-logout,
+  .member-profile-card,
+  .member-avatar,
+  .teen-dashboard-nav button,
+  .teen-growth-actions button,
+  .teen-section-title button,
+  .teen-achievement-stats > div,
+  .teen-growth-steps > div,
+  .teen-record-card,
+  .teen-review-card,
+  .teen-review-scores > div,
+  .teen-award-card,
+  .teen-award-card::after {
+    transition: none !important;
   }
 }
