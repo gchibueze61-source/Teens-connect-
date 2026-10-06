@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import AdminGuard from "./components/auth/AdminGuard";
 import AdminLogin from "./pages/Login/AdminLogin";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import Programs from "./pages/Programs/Programs";
@@ -19,57 +20,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/admin/login" replace />} />
 
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/admin/login"
-              replace
-            />
-          }
-        />
+        <Route path="/admin/login" element={<AdminLogin />} />
 
-<Route
-  path="/admin/membership"
-  element={<Membership />}
-/>
-        <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
-<Route
-  path="/admin/teen-records"
-  element={<TeenRecords />}
-/>
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
-
-        <Route
-          path="/admin/programs"
-          element={<Programs />}
-        />
-
-        <Route
-          path="/admin/events"
-          element={<Events />}
-        />
-
-        <Route
-          path="/admin/blog"
-          element={<Blog />}
-        />
-
-        <Route
-          path="/admin/gallery"
-          element={<Gallery />}
-        />
-<Route
-  path="/admin/teen-records"
-  element={<AdminTeenRecords />}
-/>
+        <Route element={<AdminGuard />}>
+          <Route path="/admin/membership" element={<Membership />} />
+          <Route path="/admin/teen-records" element={<TeenRecords />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/programs" element={<Programs />} />
+          <Route path="/admin/events" element={<Events />} />
+          <Route path="/admin/blog" element={<Blog />} />
+          <Route path="/admin/gallery" element={<Gallery />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
