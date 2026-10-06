@@ -101,6 +101,15 @@ Deno.serve(async (req) => {
     const loginEmail = String(body.email || user.email || "Unknown");
     const occurredAt = String(body.occurred_at || new Date().toISOString());
 
+    await supabase.from("admin_security_events").insert({
+      event_type: "successful_admin_login",
+      actor_user_id: user.id,
+      actor_email: loginEmail,
+      metadata: {
+        occurred_at: occurredAt,
+      },
+    });
+
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
