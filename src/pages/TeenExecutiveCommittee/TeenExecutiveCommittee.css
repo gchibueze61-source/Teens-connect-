@@ -1,0 +1,406 @@
+
+.teen-committee-admin {
+  min-height: 100vh;
+  padding: 32px;
+  background: #F7F7F7;
+  color: #0D1B5E;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+}
+
+.teen-committee-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.teen-committee-eyebrow {
+  margin: 0 0 8px;
+  color: #B98200;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.teen-committee-header h1 {
+  margin: 0 0 10px;
+  color: #0D1B5E;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+
+.teen-committee-header p:last-child {
+  max-width: 680px;
+  margin: 0;
+  color: #64748B;
+  line-height: 1.7;
+}
+
+.teen-committee-panel {
+  margin-bottom: 28px;
+  padding: 26px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(13, 27, 94, 0.05);
+}
+
+.teen-committee-panel h2 {
+  margin: 0 0 22px;
+  color: #0D1B5E;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 1.2rem;
+}
+
+.teen-committee-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.teen-committee-form > label,
+.teen-committee-form > div > label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.teen-committee-form input:not([type="checkbox"]):not([type="file"]),
+.teen-committee-form textarea,
+.teen-committee-form select,
+.teen-committee-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 11px 12px;
+  color: #0F172A;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.teen-committee-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.teen-committee-form input:focus,
+.teen-committee-form textarea:focus,
+.teen-committee-form select:focus,
+.teen-committee-search:focus {
+  border-color: #0D1B5E;
+  box-shadow: 0 0 0 3px rgba(13, 27, 94, 0.1);
+}
+
+.teen-committee-form input[type="file"] {
+  display: block;
+  max-width: 100%;
+  margin-top: 10px;
+  color: #475569;
+}
+
+.teen-committee-full {
+  grid-column: 1 / -1;
+}
+
+.teen-committee-hint {
+  display: block;
+  margin: 8px 0 0;
+  color: #64748B;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.teen-committee-photo-preview {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.teen-committee-photo-preview img {
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+}
+
+.teen-committee-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.teen-committee-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: #0D1B5E;
+}
+
+.teen-committee-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.teen-committee-actions button,
+.teen-committee-secondary,
+.teen-committee-danger {
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.teen-committee-actions button:first-child {
+  color: #FFFFFF;
+  background: #0D1B5E;
+}
+
+.teen-committee-actions button:first-child:hover {
+  background: #172B7A;
+}
+
+.teen-committee-secondary {
+  color: #0D1B5E;
+  background: #E8ECF8;
+  border-color: #D5DDF4;
+}
+
+.teen-committee-secondary:hover {
+  background: #DCE4F8;
+}
+
+.teen-committee-danger {
+  color: #991B1B;
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+
+.teen-committee-danger:hover {
+  background: #FEE2E2;
+}
+
+.teen-committee-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.teen-committee-alert {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 9px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.teen-committee-alert.error {
+  color: #991B1B;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+.teen-committee-alert.success {
+  color: #166534;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+}
+
+.teen-committee-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.teen-committee-list-header h2 {
+  margin-bottom: 6px;
+}
+
+.teen-committee-list-header p {
+  margin: 0;
+  color: #64748B;
+  font-size: 0.9rem;
+}
+
+.teen-committee-search {
+  width: min(100%, 300px);
+  margin-top: 0;
+}
+
+.teen-committee-list {
+  display: grid;
+  gap: 14px;
+}
+
+.teen-committee-member {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  background: #FFFFFF;
+}
+
+.teen-committee-avatar {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #E8ECF8;
+}
+
+.teen-committee-avatar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0D1B5E;
+  background: #E8ECF8;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.teen-committee-member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.teen-committee-member-info h3 {
+  margin: 0 0 5px;
+  overflow-wrap: anywhere;
+  color: #0D1B5E;
+  font-size: 1rem;
+}
+
+.teen-committee-member-info > p {
+  margin: 0 0 10px;
+  color: #64748B;
+  line-height: 1.5;
+}
+
+.teen-committee-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.teen-committee-tags span {
+  padding: 5px 9px;
+  color: #334155;
+  background: #F1F5F9;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.teen-committee-member-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.teen-committee-admin button:focus-visible {
+  outline: 3px solid #E6A817;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .teen-committee-admin {
+    padding: 20px 14px;
+  }
+
+  .teen-committee-header {
+    flex-direction: column;
+  }
+
+  .teen-committee-panel {
+    padding: 18px;
+  }
+
+  .teen-committee-form {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .teen-committee-full {
+    grid-column: auto;
+  }
+
+  .teen-committee-list-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teen-committee-search {
+    width: 100%;
+  }
+
+  .teen-committee-member {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .teen-committee-member-info {
+    flex-basis: calc(100% - 90px);
+  }
+
+  .teen-committee-member-actions {
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .teen-committee-member {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .teen-committee-avatar {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+
+  .teen-committee-member-info {
+    flex-basis: calc(100% - 66px);
+  }
+
+  .teen-committee-member-actions button {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teen-committee-form input,
+  .teen-committee-form textarea,
+  .teen-committee-form select,
+  .teen-committee-search,
+  .teen-committee-actions button,
+  .teen-committee-secondary,
+  .teen-committee-danger {
+    transition: none;
+  }
+}

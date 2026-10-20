@@ -1,0 +1,268 @@
+
+.team-admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  color: #172033;
+}
+
+.team-admin-header,
+.team-admin-list-header,
+.team-admin-member,
+.team-admin-actions,
+.team-admin-member-actions,
+.team-admin-photo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.team-admin-header {
+  margin-bottom: 28px;
+}
+
+.team-admin-header h1 {
+  margin: 4px 0 8px;
+  color: #0d1b5e;
+}
+
+.team-admin-header p,
+.team-admin-list-header p,
+.team-admin-member-info p {
+  margin: 4px 0;
+  color: #647084;
+}
+
+.team-admin-eyebrow {
+  color: #b17d00;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.team-admin-panel {
+  margin-bottom: 28px;
+  padding: 24px;
+  border: 1px solid #e1e6f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgb(13 27 94 / 5%);
+}
+
+.team-admin-panel h2 {
+  margin-top: 0;
+  color: #0d1b5e;
+}
+
+.team-admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.team-admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.team-admin-form input:not([type="checkbox"]),
+.team-admin-form textarea,
+.team-admin-form select,
+.team-admin-search {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #ccd3e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+}
+
+.team-admin-form textarea {
+  resize: vertical;
+}
+
+.team-admin-full {
+  grid-column: 1 / -1;
+}
+
+.team-admin-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.team-admin-checkbox input {
+  width: 18px;
+  height: 18px;
+}
+
+.team-admin-hint {
+  display: block;
+  margin-top: 6px;
+  color: #647084;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.team-admin-photo-preview {
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+.team-admin-photo-preview img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.team-admin-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.team-admin-page button {
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #0d1b5e;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.team-admin-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.team-admin-page .team-admin-secondary {
+  border: 1px solid #ccd3e1;
+  background: #fff;
+  color: #0d1b5e;
+}
+
+.team-admin-page .team-admin-danger {
+  background: #a82323;
+}
+
+.team-admin-list-header {
+  margin-bottom: 20px;
+}
+
+.team-admin-search {
+  max-width: 300px;
+}
+
+.team-admin-list {
+  display: grid;
+  gap: 12px;
+}
+
+.team-admin-member {
+  justify-content: flex-start;
+  padding: 16px 0;
+  border-top: 1px solid #e8ebf2;
+}
+
+.team-admin-avatar {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.team-admin-avatar-empty {
+  display: grid;
+  place-items: center;
+  background: #e8ecf8;
+  color: #0d1b5e;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.team-admin-member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.team-admin-member-info h3 {
+  margin: 0;
+  color: #0d1b5e;
+}
+
+.team-admin-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.team-admin-tags span {
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #e8ecf8;
+  color: #0d1b5e;
+  font-size: 12px;
+}
+
+.team-admin-member-actions {
+  flex-wrap: wrap;
+}
+
+.team-admin-alert {
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.team-admin-alert.error {
+  background: #fff0f0;
+  color: #922222;
+}
+
+.team-admin-alert.success {
+  background: #eaf8ef;
+  color: #176535;
+}
+
+@media (max-width: 700px) {
+  .team-admin-page {
+    padding: 20px 14px;
+  }
+
+  .team-admin-header,
+  .team-admin-list-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .team-admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .team-admin-full {
+    grid-column: auto;
+  }
+
+  .team-admin-search {
+    max-width: none;
+  }
+
+  .team-admin-member {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .team-admin-member-actions {
+    width: 100%;
+    padding-left: 80px;
+  }
+}
