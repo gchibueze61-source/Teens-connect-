@@ -13,7 +13,7 @@ interface Profile {
   full_name: string;
   email: string;
 
-  age?: number | null;
+  date_of_birth?: string | null;
   phone?: string | null;
 
   location?: string | null;
@@ -39,7 +39,7 @@ interface Profile {
 
 interface ProfileForm {
   full_name: string;
-  age: string;
+  date_of_birth: string;
   phone: string;
   location: string;
   address: string;
@@ -179,7 +179,7 @@ const MemberPortal: React.FC = () => {
   const [form, setForm] =
     useState<ProfileForm>({
       full_name: "",
-      age: "",
+      date_of_birth: "",
       phone: "",
       location: "",
       address: "",
@@ -286,11 +286,8 @@ const MemberPortal: React.FC = () => {
         full_name:
           data.full_name || "",
 
-        age:
-          data.age !== null &&
-          data.age !== undefined
-            ? String(data.age)
-            : "",
+        date_of_birth:
+          data.date_of_birth || "",
 
         phone:
           data.phone || "",
@@ -324,7 +321,7 @@ const MemberPortal: React.FC = () => {
       });
 
       if (data.status === "active") {
-        await loadTeenRecords(data.id);
+        void loadTeenRecords(data.id);
       }
     } catch (loadError: any) {
       console.error(
@@ -500,11 +497,8 @@ const MemberPortal: React.FC = () => {
       full_name:
         profile.full_name || "",
 
-      age:
-        profile.age !== null &&
-        profile.age !== undefined
-          ? String(profile.age)
-          : "",
+      date_of_birth:
+        profile.date_of_birth || "",
 
       phone:
         profile.phone || "",
@@ -556,16 +550,9 @@ const MemberPortal: React.FC = () => {
     setSuccess("");
 
     try {
-      const age =
-        Number(form.age);
-
-      if (
-        !Number.isInteger(age) ||
-        age < 10 ||
-        age > 100
-      ) {
+      if (!form.date_of_birth.trim()) {
         throw new Error(
-          "Please enter a valid age."
+          "Please enter your date of birth."
         );
       }
 
@@ -596,7 +583,8 @@ const MemberPortal: React.FC = () => {
           full_name:
             form.full_name.trim(),
 
-          age,
+          date_of_birth:
+            form.date_of_birth,
 
           phone:
             form.phone.trim(),
@@ -928,6 +916,19 @@ const MemberPortal: React.FC = () => {
       }
     );
 
+  const today = new Date();
+  const birthdayToday = profile.date_of_birth
+    ? (() => {
+        const birthDate = new Date(
+          `${profile.date_of_birth}T00:00:00`
+        );
+        return (
+          birthDate.getMonth() === today.getMonth() &&
+          birthDate.getDate() === today.getDate()
+        );
+      })()
+    : false;
+
   const approvedAchievements =
     achievements.filter(
       (item) =>
@@ -1048,6 +1049,17 @@ const MemberPortal: React.FC = () => {
             </div>
 
           </div>
+
+          {birthdayToday && (
+            <div className="member-location-summary">
+              <strong>
+                🎉 Happy Birthday, {profile.full_name}!
+              </strong>
+              <p>
+                Wishing you a wonderful birthday from everyone at Teens Connect Africa.
+              </p>
+            </div>
+          )}
 
           {success && (
             <div
@@ -1220,16 +1232,14 @@ const MemberPortal: React.FC = () => {
 
                 <div className="member-field">
                   <label>
-                    Age
+                    Date of Birth
                   </label>
 
                   <input
-                    name="age"
-                    type="number"
-                    min="10"
-                    max="100"
+                    name="date_of_birth"
+                    type="date"
                     value={
-                      form.age
+                      form.date_of_birth
                     }
                     onChange={
                       handleChange
@@ -1441,12 +1451,22 @@ const MemberPortal: React.FC = () => {
 
                 <div>
                   <span>
-                    Age
+                    Date of Birth
                   </span>
 
                   <strong>
-                    {profile.age ||
-                      "Not provided"}
+                    {profile.date_of_birth
+                      ? new Date(
+                          `${profile.date_of_birth}T00:00:00`
+                        ).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      : "Not provided"}
                   </strong>
                 </div>
 

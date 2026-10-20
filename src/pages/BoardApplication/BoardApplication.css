@@ -1,0 +1,308 @@
+.board-application-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.board-application-hero {
+  position: relative;
+  padding: 180px 0 110px;
+  background:
+    linear-gradient(
+      135deg,
+      #f0fdfa 0%,
+      #ffffff 55%,
+      #f8fafc 100%
+    );
+  overflow: hidden;
+}
+
+.board-application-hero::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -220px;
+  top: -240px;
+  border-radius: 50%;
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.board-application-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.board-application-hero h1 {
+  max-width: 900px;
+  margin: 0 auto 25px;
+  color: #0f172a;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.board-application-hero h1 span {
+  display: block;
+  color: #0f766e;
+}
+
+.board-application-hero p {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.board-application-section {
+  padding: 110px 0;
+  background: #ffffff;
+}
+
+.board-application-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.board-application-intro {
+  position: sticky;
+  top: 120px;
+}
+
+.board-application-intro > span,
+.board-application-form-heading > span {
+  display: block;
+  margin-bottom: 16px;
+  color: #0f766e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.board-application-intro h2 {
+  margin-bottom: 22px;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.board-application-intro > p {
+  margin-bottom: 30px;
+  color: #64748b;
+  font-size: 0.94rem;
+  line-height: 1.85;
+}
+
+.board-application-note {
+  padding: 25px;
+  margin-bottom: 35px;
+  border: 1px solid #ccfbf1;
+  border-radius: 18px;
+  background: #f0fdfa;
+}
+
+.board-application-note strong {
+  display: block;
+  margin-bottom: 9px;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.board-application-note p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+.board-application-steps {
+  border-top: 1px solid #e2e8f0;
+}
+
+.board-application-steps > div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.board-application-steps span {
+  flex-shrink: 0;
+  color: #0f766e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.board-application-steps p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.84rem;
+}
+
+.board-application-form-card {
+  padding: 45px;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+}
+
+.board-application-form-heading {
+  margin-bottom: 35px;
+}
+
+.board-application-form-heading h2 {
+  margin-bottom: 10px;
+  color: #0f172a;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.board-application-form-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.board-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.board-form-field {
+  margin-bottom: 22px;
+}
+
+.board-form-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.board-form-field input,
+.board-form-field textarea {
+  width: 100%;
+  border: 1px solid #dbe4ea;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.board-form-field input {
+  min-height: 48px;
+  padding: 12px 14px;
+}
+
+.board-form-field textarea {
+  min-height: 110px;
+  padding: 13px 14px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.board-form-field input:focus,
+.board-form-field textarea:focus {
+  border-color: #5eead4;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.board-form-field input::placeholder,
+.board-form-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.board-submit-btn {
+  width: 100%;
+  border: 1px solid #0f766e;
+  cursor: pointer;
+}
+
+.board-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.board-form-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.board-form-message.error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.board-form-message.success {
+  border: 1px solid #a7f3d0;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+@media (max-width: 900px) {
+  .board-application-hero {
+    padding: 145px 0 90px;
+  }
+
+  .board-application-section {
+    padding: 90px 0;
+  }
+
+  .board-application-layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .board-application-intro {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .board-application-hero {
+    padding: 125px 0 75px;
+  }
+
+  .board-application-section {
+    padding: 75px 0;
+  }
+
+  .board-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .board-application-form-card {
+    padding: 30px 22px;
+    border-radius: 20px;
+  }
+
+  .board-application-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .board-application-intro h2 {
+    font-size: 2.2rem;
+  }
+}

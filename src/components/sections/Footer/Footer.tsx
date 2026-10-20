@@ -94,16 +94,13 @@ const Footer: React.FC = () => {
               About
             </a>
 
-            <a href="#programs">
-              Programs
-            </a>
 
             <a href="#events">
               Events
             </a>
 
-            <a href="#testimonials">
-              Testimonials
+            <a href="#blog">
+              Blog
             </a>
 
             <a href="#contact">

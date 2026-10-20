@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Hero.css";
@@ -8,13 +9,7 @@ import hero3 from "./bobdaddy 2 1363.JPG";
 import hero4 from "./bobdaddy 2 1315.JPG";
 import hero5 from "./2-4 (1).jpg";
 
-const heroImages = [
-  hero1,
-  hero2,
-  hero3,
-  hero4,
-  hero5,
-];
+const heroImages = [hero1, hero2, hero3, hero4, hero5];
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -22,33 +17,26 @@ const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
 
   const [stats, setStats] = useState({
-    members: 0,
-    countries: 0,
-    projects: 0,
-    events: 0,
+    teensReached: 0,
+    reachedOnline: 0,
+    yearsOfImpact: 0,
+    citiesActive: 0,
   });
-
-  /* =========================================
-     AUTOMATIC IMAGE ROTATION
-  ========================================= */
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setCurrentImage((previous) =>
-        (previous + 1) % heroImages.length
+      setCurrentImage(
+        (previous) => (previous + 1) % heroImages.length
       );
     }, 5000);
 
     return () => window.clearInterval(timer);
   }, []);
 
-  /* =========================================
-     STAT COUNTER ANIMATION
-  ========================================= */
-
   useEffect(() => {
     const duration = 1800;
     const startTime = performance.now();
+    let animationFrame = 0;
 
     const animateStats = (currentTime: number) => {
       const progress = Math.min(
@@ -56,133 +44,98 @@ const Hero = () => {
         1
       );
 
-      const easeOut =
-        1 - Math.pow(1 - progress, 3);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
 
       setStats({
-        members: Math.floor(500 * easeOut),
-        countries: Math.floor(1 * easeOut),
-        projects: Math.floor(10 * easeOut),
-        events: Math.floor(50 * easeOut),
+        teensReached: Math.floor(2750 * easeOut),
+        reachedOnline: Math.floor(3500 * easeOut),
+        yearsOfImpact: Math.floor(5 * easeOut),
+        citiesActive: Math.floor(2 * easeOut),
       });
 
       if (progress < 1) {
-        requestAnimationFrame(animateStats);
+        animationFrame = requestAnimationFrame(animateStats);
       }
     };
 
-    const animationFrame =
-      requestAnimationFrame(animateStats);
+    animationFrame = requestAnimationFrame(animateStats);
 
-    return () =>
-      cancelAnimationFrame(animationFrame);
+    return () => cancelAnimationFrame(animationFrame);
   }, []);
 
   return (
     <section className="hero" id="home">
-
-      {/* =====================================
-          BACKGROUND SLIDES
-      ===================================== */}
-
-      <div
-        className="hero-background"
-        aria-hidden="true"
-      >
+      <div className="hero-background" aria-hidden="true">
         {heroImages.map((image, index) => (
           <div
             key={image}
             className={`hero-slide ${
-              index === currentImage
-                ? "active"
-                : ""
+              index === currentImage ? "active" : ""
             }`}
-            style={{
-              backgroundImage: `url("${image}")`,
-            }}
+            style={{ backgroundImage: `url("${image}")` }}
           />
         ))}
       </div>
 
-      {/* =====================================
-          CONTENT
-      ===================================== */}
-
       <div className="hero-overlay">
         <div className="hero-content">
-
           <div className="hero-eyebrow">
             <span className="hero-eyebrow-dot" />
             TEENS CONNECT AFRICA
           </div>
 
-          <h1>
-            Empowering teenagers to{" "}
-            <span>shape Africa's future.</span>
-          </h1>
+          <h1>Unleashing the Genius in Teens</h1>
 
           <p className="hero-description">
-            Connecting teenagers with mentorship,
-            skills, resources and opportunities to
-            grow, discover their potential and make
-            meaningful impact.
+            Teens Connect Africa connects young people in underserved
+            communities across Africa to mentorship, life skills, and
+            life changing opportunities, because every teenager deserves
+            a chance to discover their purpose and reach their full
+            potential.
           </p>
 
           <div className="hero-buttons">
-
             <button
               type="button"
               className="hero-primary-btn"
               onClick={() => navigate("/register")}
             >
-              Join Our Community
-              <span>→</span>
+              Join us
+              <span aria-hidden="true">→</span>
             </button>
 
             <button
               type="button"
               className="hero-secondary-btn"
-              onClick={() => navigate("/programs")}
+              onClick={() => navigate("/volunteer")}
             >
-              Explore Programs
+              Get Involved
             </button>
-
           </div>
-
-          {/* ===================================
-              STATS
-          =================================== */}
 
           <div className="hero-stats">
-
             <div className="hero-stat">
-              <strong>{stats.members}+</strong>
-              <span>Teen Members</span>
+              <strong>{stats.teensReached.toLocaleString()}+</strong>
+              <span>Teens Reached Directly</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.countries}</strong>
-              <span>African Country</span>
+              <strong>{stats.reachedOnline.toLocaleString()}+</strong>
+              <span>Reached Online</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.projects}+</strong>
-              <span>Projects</span>
+              <strong>{stats.yearsOfImpact}+</strong>
+              <span>Years of Impact</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.events}+</strong>
-              <span>Events Hosted</span>
+              <strong>{stats.citiesActive}</strong>
+              <span>Cities Active</span>
             </div>
-
           </div>
-
         </div>
       </div>
-
-      {/* =====================================
-          SLIDE INDICATORS
-      ===================================== */}
 
       <div
         className="hero-indicators"
@@ -193,18 +146,12 @@ const Hero = () => {
             key={index}
             type="button"
             className={`hero-indicator ${
-              index === currentImage
-                ? "active"
-                : ""
+              index === currentImage ? "active" : ""
             }`}
-            onClick={() =>
-              setCurrentImage(index)
-            }
+            onClick={() => setCurrentImage(index)}
             aria-label={`Show image ${index + 1}`}
             aria-current={
-              index === currentImage
-                ? "true"
-                : undefined
+              index === currentImage ? "true" : undefined
             }
           />
         ))}
@@ -212,9 +159,10 @@ const Hero = () => {
 
       <div className="hero-scroll-hint">
         <span>Scroll to explore</span>
-        <span className="hero-scroll-arrow">↓</span>
+        <span className="hero-scroll-arrow" aria-hidden="true">
+          ↓
+        </span>
       </div>
-
     </section>
   );
 };

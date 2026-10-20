@@ -1,160 +1,115 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import App from "./App";
 
-import Register from "./pages/Register/Register";
-import Login from "./pages/Login/Login";
-import MemberPortal from "./pages/MemberPortal/MemberPortal";
+// Lazy-loaded pages
+const Register = lazy(() => import("./pages/Register/Register"));
+const Login = lazy(() => import("./pages/Login/Login"));
+const MemberPortal = lazy(() => import("./pages/MemberPortal/MemberPortal"));
+const Team = lazy(() => import("./pages/Team/Team"));
 
-import ProgramsPage from "./pages/Programs/ProgramsPage";
-import ProgramDetails from "./pages/Programs/ProgramDetails";
+const Mentor = lazy(() => import("./pages/Mentor/Mentor"));
+const EventsPage = lazy(() => import("./pages/Events/EventsPage"));
+const EventDetails = lazy(() => import("./pages/Events/EventDetails"));
 
-import EventsPage from "./pages/Events/EventsPage";
-import EventDetails from "./pages/Events/EventDetails";
 
-import GalleryPage from "./pages/Gallery/GalleryPage";
-import GalleryDetails from "./pages/Gallery/GalleryDetails";
+const BlogPage = lazy(() => import("./pages/Blog/BlogPage"));
+const BlogDetails = lazy(() => import("./pages/Blog/BlogDetails"));
 
-import BlogPage from "./pages/Blog/BlogPage";
-import BlogDetails from "./pages/Blog/BlogDetails";
+const Founders = lazy(() => import("./pages/Founders/Founders"));
+const Founder = lazy(() => import("./pages/Founder/Founder"));
+const CoFounder = lazy(() => import("./pages/CoFounder/CoFounder"));
 
-import Founders from "./pages/Founders/Founders";
-import Founder from "./pages/Founder/Founder";
-import CoFounder from "./pages/CoFounder/CoFounder";
+const BoardMembers = lazy(
+  () => import("./pages/BoardMembers/BoardMembers")
+);
 
-import Volunteer from "./pages/Volunteer/Volunteer";
-import Donation from "./pages/Donation/Donation";
+const BoardApplication = lazy(
+  () => import("./pages/BoardApplication/BoardApplication")
+);
 
-import AboutPage from "./pages/About/AboutPage";
-
-import ContactPage from "./pages/Contact/ContactPage";
-
+const Volunteer = lazy(() => import("./pages/Volunteer/Volunteer"));
+const Donation = lazy(() => import("./pages/Donation/Donation"));
+const ImpactPage = lazy(() => import("./pages/Impact/ImpactPage"));
+const AboutPage = lazy(() => import("./pages/About/AboutPage"));
+const ContactPage = lazy(() => import("./pages/Contact/ContactPage"));
+const TeenExecutiveCommittee = lazy(
+  () =>
+    import(
+      "./pages/TeenExecutiveCommittee/TeenExecutiveCommittee"
+    )
+);
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Poppins, sans-serif",
+          }}
+        >
+          Loading...
+        </div>
+      }
+    >
+      <Routes>
 
-      {/* HOME */}
-      <Route
-        path="/"
-        element={<App />}
-      />
+        {/* HOME */}
+        <Route path="/" element={<App />} />
 
+        {/* ABOUT */}
+        <Route path="/about" element={<AboutPage />} />
 
-      {/* ABOUT */}
-      <Route
-        path="/about"
-        element={<AboutPage />}
-      />
+       
+        {/* EVENTS */}
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/events/:id" element={<EventDetails />} />
 
+      
 
-      {/* PROGRAMS */}
-      <Route
-        path="/programs"
-        element={<ProgramsPage />}
-      />
+        {/* BLOG */}
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogDetails />} />
 
-      <Route
-        path="/programs/:id"
-        element={<ProgramDetails />}
-      />
+        {/* CONTACT */}
+        <Route path="/contact" element={<ContactPage />} />
 
+        {/* GET INVOLVED */}
+        <Route path="/volunteer" element={<Volunteer />} />
+        <Route
+          path="/board-application"
+          element={<BoardApplication />}
+        />
+<Route path="/mentor" element={<Mentor />} />
+        {/* FOUNDERS */}
+        <Route path="/founders" element={<Founders />} />
+        <Route path="/founder" element={<Founder />} />
+        <Route path="/co-founder" element={<CoFounder />} />
+        <Route path="/board-members" element={<BoardMembers />} />
 
-      {/* EVENTS */}
-      <Route
-        path="/events"
-        element={<EventsPage />}
-      />
+        {/* AUTHENTICATION */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/events/:id"
-        element={<EventDetails />}
-      />
-
-
-      {/* GALLERY */}
-      <Route
-        path="/gallery"
-        element={<GalleryPage />}
-      />
-
-      <Route
-        path="/gallery/:id"
-        element={<GalleryDetails />}
-      />
-
-
-      {/* BLOG */}
-      <Route
-        path="/blog"
-        element={<BlogPage />}
-      />
-
-      <Route
-        path="/blog/:slug"
-        element={<BlogDetails />}
-      />
-
-
-      {/* CONTACT */}
-      <Route
-        path="/contact"
-        element={<ContactPage />}
-      />
-
-
-      {/* GET INVOLVED */}
-      <Route
-        path="/volunteer"
-        element={<Volunteer />}
-      />
-
-
-      {/* FOUNDERS */}
-      <Route
-        path="/founders"
-        element={<Founders />}
-      />
-
-      <Route
-        path="/founder"
-        element={<Founder />}
-      />
-
-      <Route
-        path="/co-founder"
-        element={<CoFounder />}
-      />
-
-
-      {/* AUTHENTICATION */}
-      <Route
-        path="/register"
-        element={<Register />}
-      />
-
-      <Route
-        path="/login"
-        element={<Login />}
-      />
-
-
-      {/* MEMBER PORTAL */}
-      <Route
-        path="/member-portal"
-        element={<MemberPortal />}
-      />
-
-
-      {/* DONATION */}
-      <Route
-        path="/donate"
-        element={<Donation />}
-      />
-
-    </Routes>
+        {/* MEMBER PORTAL */}
+        <Route path="/member-portal" element={<MemberPortal />} />
+<Route
+  path="/teen-executive-committee"
+  element={<TeenExecutiveCommittee />}
+/>
+        {/* DONATION */}
+        <Route path="/donate" element={<Donation />} />
+<Route path="/team" element={<Team />} />
+{/* IMPACT */}
+<Route path="/impact" element={<ImpactPage />} />
+      </Routes>
+    </Suspense>
   );
 };
-
 
 export default AppRoutes;
