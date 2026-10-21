@@ -719,7 +719,7 @@ const Membership: React.FC = () => {
 
           email,
 
-          date_of_birth,
+          date_of_birth: dateOfBirth,
 
           phone:
 
@@ -1080,7 +1080,7 @@ const Membership: React.FC = () => {
 
           email,
 
-          date_of_birth,
+          date_of_birth: dateOfBirth,
 
           phone:
 
