@@ -1164,7 +1164,6 @@ export default function ImpactPage() {
                 make more opportunities possible.
               </p>
             </div>
-o
             <div className="impact-cta-actions">
   <Link
     to="/donate"
