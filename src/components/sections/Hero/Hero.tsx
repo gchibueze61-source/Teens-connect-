@@ -43,12 +43,6 @@ const Hero = () => {
         .eq("show_on_homepage", true);
       if (error || !data || !active) return;
       const values = Object.fromEntries(data.map((item) => [item.statistic_key, item]));
-      const keyMap = {
-        teensReached: "teens_reached",
-        reachedOnline: "online_reach",
-        yearsOfImpact: "years_of_impact",
-        citiesActive: "cities_active",
-      } as const;
       setTargets((current) => ({
         teensReached: values.teens_reached ? Number(values.teens_reached.value) : current.teensReached,
         reachedOnline: values.online_reach ? Number(values.online_reach.value) : current.reachedOnline,
