@@ -36,15 +36,11 @@ function Blog() {
           title,
           slug,
           excerpt,
-          content,
           category,
           author,
           image_url,
-          status,
           featured,
-          homepage,
-          created_at,
-          updated_at
+          created_at
         `)
         .eq("status", "published")
         .eq("homepage", true)
