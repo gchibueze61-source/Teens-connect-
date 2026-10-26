@@ -20,6 +20,15 @@ const Hero = () => {
   const [targets, setTargets] = useState({
     teensReached: 2750, reachedOnline: 3500, yearsOfImpact: 5, citiesActive: 2,
   });
+  const [statLabels, setStatLabels] = useState({
+    teensReached: "Teens Reached Directly",
+    reachedOnline: "Reached Online",
+    yearsOfImpact: "Years of Impact",
+    citiesActive: "Cities Active",
+  });
+  const [statSuffixes, setStatSuffixes] = useState({
+    teensReached: "+", reachedOnline: "+", yearsOfImpact: "+", citiesActive: "",
+  });
   const [stats, setStats] = useState({
     teensReached: 0, reachedOnline: 0, yearsOfImpact: 0, citiesActive: 0,
   });
@@ -29,16 +38,34 @@ const Hero = () => {
     async function loadImpactStats() {
       const { data, error } = await supabase
         .from("impact_statistics")
-        .select("statistic_key, value")
+        .select("statistic_key, value, label, suffix")
         .eq("is_published", true)
         .eq("show_on_homepage", true);
       if (error || !data || !active) return;
-      const values = Object.fromEntries(data.map((item) => [item.statistic_key, Number(item.value)]));
+      const values = Object.fromEntries(data.map((item) => [item.statistic_key, item]));
+      const keyMap = {
+        teensReached: "teens_reached",
+        reachedOnline: "online_reach",
+        yearsOfImpact: "years_of_impact",
+        citiesActive: "cities_active",
+      } as const;
       setTargets((current) => ({
-        teensReached: values.teens_reached ?? current.teensReached,
-        reachedOnline: values.online_reach ?? current.reachedOnline,
-        yearsOfImpact: values.years_of_impact ?? current.yearsOfImpact,
-        citiesActive: values.cities_active ?? current.citiesActive,
+        teensReached: values.teens_reached ? Number(values.teens_reached.value) : current.teensReached,
+        reachedOnline: values.online_reach ? Number(values.online_reach.value) : current.reachedOnline,
+        yearsOfImpact: values.years_of_impact ? Number(values.years_of_impact.value) : current.yearsOfImpact,
+        citiesActive: values.cities_active ? Number(values.cities_active.value) : current.citiesActive,
+      }));
+      setStatLabels((current) => ({
+        teensReached: values.teens_reached?.label ?? current.teensReached,
+        reachedOnline: values.online_reach?.label ?? current.reachedOnline,
+        yearsOfImpact: values.years_of_impact?.label ?? current.yearsOfImpact,
+        citiesActive: values.cities_active?.label ?? current.citiesActive,
+      }));
+      setStatSuffixes((current) => ({
+        teensReached: values.teens_reached?.suffix ?? current.teensReached,
+        reachedOnline: values.online_reach?.suffix ?? current.reachedOnline,
+        yearsOfImpact: values.years_of_impact?.suffix ?? current.yearsOfImpact,
+        citiesActive: values.cities_active?.suffix ?? current.citiesActive,
       }));
     }
     void loadImpactStats();
@@ -137,23 +164,23 @@ const Hero = () => {
 
           <div className="hero-stats">
             <div className="hero-stat">
-              <strong>{stats.teensReached.toLocaleString()}+</strong>
-              <span>Teens Reached Directly</span>
+              <strong>{stats.teensReached.toLocaleString()}{statSuffixes.teensReached}</strong>
+              <span>{statLabels.teensReached}</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.reachedOnline.toLocaleString()}+</strong>
-              <span>Reached Online</span>
+              <strong>{stats.reachedOnline.toLocaleString()}{statSuffixes.reachedOnline}</strong>
+              <span>{statLabels.reachedOnline}</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.yearsOfImpact}+</strong>
-              <span>Years of Impact</span>
+              <strong>{stats.yearsOfImpact}{statSuffixes.yearsOfImpact}</strong>
+              <span>{statLabels.yearsOfImpact}</span>
             </div>
 
             <div className="hero-stat">
-              <strong>{stats.citiesActive}</strong>
-              <span>Cities Active</span>
+              <strong>{stats.citiesActive}{statSuffixes.citiesActive}</strong>
+              <span>{statLabels.citiesActive}</span>
             </div>
           </div>
         </div>
