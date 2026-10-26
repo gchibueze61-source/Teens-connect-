@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
 import "./Hero.css";
 
 import hero1 from "./bobdaddy 2 1626.jpg";
@@ -16,12 +17,33 @@ const Hero = () => {
 
   const [currentImage, setCurrentImage] = useState(0);
 
-  const [stats, setStats] = useState({
-    teensReached: 0,
-    reachedOnline: 0,
-    yearsOfImpact: 0,
-    citiesActive: 0,
+  const [targets, setTargets] = useState({
+    teensReached: 2750, reachedOnline: 3500, yearsOfImpact: 5, citiesActive: 2,
   });
+  const [stats, setStats] = useState({
+    teensReached: 0, reachedOnline: 0, yearsOfImpact: 0, citiesActive: 0,
+  });
+
+  useEffect(() => {
+    let active = true;
+    async function loadImpactStats() {
+      const { data, error } = await supabase
+        .from("impact_statistics")
+        .select("statistic_key, value")
+        .eq("is_published", true)
+        .eq("show_on_homepage", true);
+      if (error || !data || !active) return;
+      const values = Object.fromEntries(data.map((item) => [item.statistic_key, Number(item.value)]));
+      setTargets((current) => ({
+        teensReached: values.teens_reached ?? current.teensReached,
+        reachedOnline: values.online_reach ?? current.reachedOnline,
+        yearsOfImpact: values.years_of_impact ?? current.yearsOfImpact,
+        citiesActive: values.cities_active ?? current.citiesActive,
+      }));
+    }
+    void loadImpactStats();
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -47,10 +69,10 @@ const Hero = () => {
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
       setStats({
-        teensReached: Math.floor(2750 * easeOut),
-        reachedOnline: Math.floor(3500 * easeOut),
-        yearsOfImpact: Math.floor(5 * easeOut),
-        citiesActive: Math.floor(2 * easeOut),
+        teensReached: Math.floor(targets.teensReached * easeOut),
+        reachedOnline: Math.floor(targets.reachedOnline * easeOut),
+        yearsOfImpact: Math.floor(targets.yearsOfImpact * easeOut),
+        citiesActive: Math.floor(targets.citiesActive * easeOut),
       });
 
       if (progress < 1) {
@@ -61,7 +83,7 @@ const Hero = () => {
     animationFrame = requestAnimationFrame(animateStats);
 
     return () => cancelAnimationFrame(animationFrame);
-  }, []);
+  }, [targets]);
 
   return (
     <section className="hero" id="home">
