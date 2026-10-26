@@ -70,10 +70,6 @@ const Register: React.FC = () => {
 
   });
 
-  const [profileImage, setProfileImage] =
-
-    useState<File | null>(null);
-
   const [loading, setLoading] = useState(false);
 
   const [message, setMessage] = useState("");
@@ -550,26 +546,6 @@ const Register: React.FC = () => {
 
       }
 
-      if (profileImage) {
-
-        if (
-
-          profileImage.size >
-
-          5 * 1024 * 1024
-
-        ) {
-
-          throw new Error(
-
-            "Profile image must be 5MB or smaller."
-
-          );
-
-        }
-
-      }
-
       /*
 
        * CHECK FOR ADMIN-PRECREATED PROFILE
@@ -640,101 +616,11 @@ const Register: React.FC = () => {
 
         authData.user.id;
 
-      /*
-
-       * PROFILE IMAGE
-
-       */
-
-      let profileImageUrl =
+      const profileImageUrl =
 
         existingProfile?.profile_image_url ||
 
         null;
-
-      if (profileImage) {
-
-        const fileExt =
-
-          profileImage.name
-
-            .split(".")
-
-            .pop()
-
-            ?.toLowerCase() || "jpg";
-
-        const fileName =
-
-          `${authUserId}-${Date.now()}.${fileExt}`;
-
-        const {
-
-          error: uploadError,
-
-        } =
-
-          await supabase.storage
-
-            .from("profile-images")
-
-            .upload(
-
-              fileName,
-
-              profileImage,
-
-              {
-
-                upsert: true,
-
-                contentType:
-
-                  profileImage.type,
-
-              }
-
-            );
-
-        if (uploadError) {
-
-          console.error(
-
-            "IMAGE UPLOAD ERROR:",
-
-            uploadError
-
-          );
-
-          throw new Error(
-
-            "Your account was created, but your profile image could not be uploaded."
-
-          );
-
-        }
-
-        const {
-
-          data: imageData,
-
-        } =
-
-          supabase.storage
-
-            .from("profile-images")
-
-            .getPublicUrl(
-
-              fileName
-
-            );
-
-        profileImageUrl =
-
-          imageData.publicUrl;
-
-      }
 
       /*
 
@@ -1655,46 +1541,6 @@ const Register: React.FC = () => {
                 rows={4}
 
               />
-
-            </div>
-
-            <div className="register-field">
-
-              <label htmlFor="profileImage">
-
-                Profile Image
-
-                <span> (Optional)</span>
-
-              </label>
-
-              <input
-
-                id="profileImage"
-
-                type="file"
-
-                accept="image/*"
-
-                onChange={(e) =>
-
-                  setProfileImage(
-
-                    e.target.files?.[0] ||
-
-                      null
-
-                  )
-
-                }
-
-              />
-
-              <small>
-
-                Maximum file size: 5MB
-
-              </small>
 
             </div>
 
