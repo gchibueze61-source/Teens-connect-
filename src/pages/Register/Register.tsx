@@ -547,271 +547,41 @@ const Register: React.FC = () => {
       }
 
       /*
-
-       * CHECK FOR ADMIN-PRECREATED PROFILE
-
+       * CREATE AUTH ACCOUNT.
+       * The database trigger handle_new_user() creates the profile.
+       * Do not query or insert into profiles from this unauthenticated
+       * page: RLS correctly prevents that.
        */
-
       const {
-
-        data: existingProfile,
-
-        error: existingProfileError,
-
-      } = await supabase
-
-        .from("profiles")
-
-        .select("*")
-
-        .ilike("email", email)
-
-        .maybeSingle();
-
-      if (existingProfileError) {
-
-        throw existingProfileError;
-
-      }
-
-      /*
-
-       * CREATE AUTH ACCOUNT
-
-       */
-
-      const {
-
         data: authData,
-
         error: authError,
-
-      } =
-
-        await supabase.auth.signUp({
-
-          email,
-
-          password,
-
-        });
+      } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            date_of_birth: dateOfBirth,
+            phone,
+            country,
+            state,
+            lga,
+            city,
+            location,
+            address,
+            school,
+            interests,
+            bio,
+          },
+        },
+      });
 
       if (authError) {
-
         throw authError;
-
       }
 
       if (!authData.user) {
-
-        throw new Error(
-
-          "Your account could not be created."
-
-        );
-
-      }
-
-      const authUserId =
-
-        authData.user.id;
-
-      const profileImageUrl =
-
-        existingProfile?.profile_image_url ||
-
-        null;
-
-      /*
-
-       * PROFILE DATA
-
-       */
-
-      const profileData = {
-
-        auth_user_id:
-
-          authUserId,
-
-        full_name:
-
-          fullName,
-
-        email,
-
-        date_of_birth: dateOfBirth,
-
-        phone,
-
-        country,
-
-        state,
-
-        lga,
-
-        city,
-
-        location,
-
-        address,
-
-        school,
-
-        interests,
-
-        bio,
-
-        profile_image_url:
-
-          profileImageUrl,
-
-        role: "member",
-
-        // Self-service registration cannot grant membership approval.
-        // An administrator must explicitly approve the application.
-        status: "pending",
-
-        updated_at:
-
-          new Date().toISOString(),
-
-      };
-
-      /*
-
-       * ADMIN PRE-CREATED MEMBER
-
-       */
-
-      if (existingProfile) {
-
-        const {
-
-          error: updateError,
-
-        } = await supabase
-
-          .from("profiles")
-
-          .update(profileData)
-
-          .eq(
-
-            "id",
-
-            existingProfile.id
-
-          );
-
-        if (updateError) {
-
-          throw updateError;
-
-        }
-
-      }
-
-      /*
-
-       * NEW MEMBER
-
-       */
-
-      else {
-
-        const {
-
-          error: insertError,
-
-        } = await supabase
-
-          .from("profiles")
-
-          .insert({
-
-            ...profileData,
-
-          });
-
-        if (insertError) {
-
-          /*
-
-           * Recover if another process already
-
-           * created the profile.
-
-           */
-
-          const {
-
-            data:
-
-              profileCreatedElsewhere,
-
-          } = await supabase
-
-            .from("profiles")
-
-            .select("id")
-
-            .eq(
-
-              "auth_user_id",
-
-              authUserId
-
-            )
-
-            .maybeSingle();
-
-          if (
-
-            profileCreatedElsewhere
-
-          ) {
-
-            const {
-
-              error:
-
-                recoveryError,
-
-            } =
-
-              await supabase
-
-                .from("profiles")
-
-                .update(
-
-                  profileData
-
-                )
-
-                .eq(
-
-                  "id",
-
-                  profileCreatedElsewhere.id
-
-                );
-
-            if (recoveryError) {
-
-              throw recoveryError;
-
-            }
-
-          } else {
-
-            throw insertError;
-
-          }
-
-        }
-
+        throw new Error("Your account could not be created.");
       }
 
       /*
