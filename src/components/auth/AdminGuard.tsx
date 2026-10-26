@@ -39,6 +39,19 @@ export default function AdminGuard() {
 
     checkAdmin();
 
+    // End the admin session after 15 minutes without activity.
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const resetIdleTimer = () => {
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(async () => {
+        await supabase.auth.signOut();
+        if (active) setState("denied");
+      }, 15 * 60 * 1000);
+    };
+    const activityEvents: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "scroll", "touchstart"];
+    activityEvents.forEach((eventName) => window.addEventListener(eventName, resetIdleTimer, { passive: true }));
+    resetIdleTimer();
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -49,6 +62,8 @@ export default function AdminGuard() {
 
     return () => {
       active = false;
+      if (idleTimer) clearTimeout(idleTimer);
+      activityEvents.forEach((eventName) => window.removeEventListener(eventName, resetIdleTimer));
       subscription.unsubscribe();
     };
   }, []);
