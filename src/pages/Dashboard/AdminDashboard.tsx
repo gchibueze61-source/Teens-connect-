@@ -82,10 +82,13 @@ const AdminDashboard: React.FC = () => {
       <section className="dashboard-grid">
         <div className="dashboard-card">
           <span>01</span>
-          <h2>Programs</h2>
-          <p>Add, edit and manage TCA programs.</p>
-          <button type="button" onClick={() => navigate("/admin/programs")}>
-            Manage Programs
+          <h2>Impact & Programs</h2>
+          <p>
+            Manage impact stories, program information, and the gallery images
+            used across the public website.
+          </p>
+          <button type="button" onClick={() => navigate("/admin/impact")}>
+            Manage Impact
           </button>
         </div>
 
@@ -104,15 +107,6 @@ const AdminDashboard: React.FC = () => {
           <p>Publish and manage blog posts.</p>
           <button type="button" onClick={() => navigate("/admin/blog")}>
             Manage Blog
-          </button>
-        </div>
-
-        <div className="dashboard-card">
-          <span>04</span>
-          <h2>Gallery</h2>
-          <p>Manage images and gallery content.</p>
-          <button type="button" onClick={() => navigate("/admin/gallery")}>
-            Manage Gallery
           </button>
         </div>
 
