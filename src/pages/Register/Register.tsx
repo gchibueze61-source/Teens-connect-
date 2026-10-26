@@ -601,9 +601,7 @@ const Register: React.FC = () => {
       if (!sessionData.session) {
 
         setMessage(
-
-          "Your account was created. Please check your email confirmation settings before trying again."
-
+          "If registration is available for this email, you’ll receive the next steps by email. If you already have an account, please sign in or use Forgot password."
         );
 
         setMessageType("error");
@@ -642,12 +640,14 @@ const Register: React.FC = () => {
 
       );
 
+      const rawMessage = String(error?.message || "");
+      const isBackendError =
+        /supabase|row-level security|violates row level|duplicate key|already registered|database|postgres|auth\/v1/i.test(rawMessage);
+
       setMessage(
-
-        error?.message ||
-
-          "Something went wrong during registration."
-
+        isBackendError
+          ? "We couldn’t complete registration with those details. If you already have an account, please sign in or use Forgot password. Otherwise, try again later."
+          : (rawMessage || "We couldn’t complete registration. Please try again.")
       );
 
       setMessageType("error");
