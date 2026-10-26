@@ -81,6 +81,15 @@ const AdminDashboard: React.FC = () => {
 
       <section className="dashboard-grid">
         <div className="dashboard-card">
+          <span>11</span>
+          <h2>Account Security</h2>
+          <p>Change the administrator login email with password verification and email confirmation.</p>
+          <button type="button" onClick={() => navigate("/admin/settings/email")}>
+            Change Login Email
+          </button>
+        </div>
+
+        <div className="dashboard-card">
           <span>01</span>
           <h2>Impact & Programs</h2>
           <p>
