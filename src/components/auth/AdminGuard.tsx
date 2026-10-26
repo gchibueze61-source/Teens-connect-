@@ -31,20 +31,22 @@ export default function AdminGuard() {
       const isAdmin =
         !profileError &&
         profile?.auth_user_id === user.id &&
-        profile?.role === "admin" &&
-        profile?.status === "active";
+        profile.role === "admin" &&
+        profile.status === "active";
 
       if (active) setState(isAdmin ? "authorized" : "denied");
     };
 
-    checkAdmin();
+    void checkAdmin();
 
-    // Require a fresh admin login after the admin page is hidden or
-    // the user switches to another app/tab. This is a client-side privacy
-    // control; server-side Supabase role checks remain authoritative.
+    // Sign out when this admin page is no longer visible, so returning
+    // to the tab requires a fresh login.
     const lockAdminSession = async () => {
-      await supabase.auth.signOut();
-      if (active) setState("denied");
+      try {
+        await supabase.auth.signOut();
+      } finally {
+        if (active) setState("denied");
+      }
     };
 
     const handleVisibilityChange = () => {
@@ -64,7 +66,7 @@ export default function AdminGuard() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session?.user) {
-        setState("denied");
+        if (active) setState("denied");
       }
     });
 
