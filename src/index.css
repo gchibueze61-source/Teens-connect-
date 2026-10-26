@@ -187,3 +187,14 @@ section {
 [class*="eyebrow"] {
   display: none !important;
 }
+
+/* Remove short decorative accent strokes beside public section labels.
+   Keep the label text and headings visible. */
+.about-label::before,
+[class*="contact"][class*="label"]::before,
+[class*="location"][class*="label"]::before,
+[class*="label"][class*="location"]::before,
+[class*="label"][class*="contact"]::before {
+  display: none !important;
+  content: none !important;
+}
