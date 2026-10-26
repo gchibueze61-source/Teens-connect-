@@ -601,10 +601,10 @@ const Register: React.FC = () => {
       if (!sessionData.session) {
 
         setMessage(
-          "If registration is available for this email, you’ll receive the next steps by email. If you already have an account, please sign in or use Forgot password."
+          "Your registration request has been received. Check your email for a confirmation link if one was sent. After confirming your email, sign in to check your membership status. Member portal access is available after your account is approved."
         );
 
-        setMessageType("error");
+        setMessageType("success");
 
         return;
 
