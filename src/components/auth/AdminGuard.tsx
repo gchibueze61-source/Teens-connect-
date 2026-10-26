@@ -70,8 +70,8 @@ export default function AdminGuard() {
 
     return () => {
       active = false;
-      if (idleTimer) clearTimeout(idleTimer);
-      activityEvents.forEach((eventName) => window.removeEventListener(eventName, resetIdleTimer));
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
       subscription.unsubscribe();
     };
   }, []);
