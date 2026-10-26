@@ -184,3 +184,8 @@ section {
     width: min(88%, 1500px);
   }
 }
+
+/* Hide decorative eyebrow labels above page and section titles */
+[class*="eyebrow"] {
+  display: none !important;
+}
