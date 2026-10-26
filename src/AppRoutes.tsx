@@ -6,6 +6,7 @@ import App from "./App";
 // Lazy-loaded pages
 const Register = lazy(() => import("./pages/Register/Register"));
 const Login = lazy(() => import("./pages/Login/Login"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword/ResetPassword"));
 const MemberPortal = lazy(() => import("./pages/MemberPortal/MemberPortal"));
 const Team = lazy(() => import("./pages/Team/Team"));
 
@@ -95,6 +96,7 @@ const AppRoutes: React.FC = () => {
         {/* AUTHENTICATION */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* MEMBER PORTAL */}
         <Route path="/member-portal" element={<MemberPortal />} />
