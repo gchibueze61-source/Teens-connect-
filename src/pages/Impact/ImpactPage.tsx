@@ -25,7 +25,7 @@ type GalleryAlbum = {
   gallery_images: GalleryImage[] | null;
 };
 
-const impactStats = [
+const initialImpactStats = [
   {
     value: 2750,
     suffix: "+",
@@ -775,6 +775,30 @@ function GallerySection() {
 
 export default function ImpactPage() {
   const [activeStat, setActiveStat] = useState(0);
+  const [impactStats, setImpactStats] = useState(initialImpactStats);
+
+  useEffect(() => {
+    let active = true;
+    async function loadImpactStats() {
+      const { data, error } = await supabase
+        .from("impact_statistics")
+        .select("statistic_key, label, value, suffix, description, sort_order")
+        .eq("is_published", true)
+        .eq("show_on_impact_page", true)
+        .order("sort_order", { ascending: true });
+      if (error || !data || !active || data.length === 0) return;
+      setImpactStats(data.map((stat, index) => ({
+        value: Number(stat.value),
+        suffix: stat.suffix ?? "",
+        label: stat.label,
+        detail: stat.description ?? "",
+        visual: index % 2 === 0 ? "ring" : "bars",
+      })));
+      setActiveStat(0);
+    }
+    void loadImpactStats();
+    return () => { active = false; };
+  }, []);
 
   return (
     <>
