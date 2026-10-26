@@ -163,14 +163,15 @@ function useReducedMotionPreference() {
 function AnimatedCounter({
   value,
   suffix = "",
+  reduceMotion,
 }: {
   value: number;
   suffix?: string;
+  reduceMotion: boolean;
 }) {
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
   const elementRef = useRef<HTMLSpanElement>(null);
-  const reduceMotion = useReducedMotionPreference();
 
   useEffect(() => {
     const element = elementRef.current;
@@ -500,6 +501,7 @@ function TeenTestimonialsSection() {
               src={active.image}
               alt={`Portrait of ${active.name}`}
               loading="eager"
+              decoding="async"
             />
 
             <span className="impact-testimonial-image-label">
@@ -701,6 +703,7 @@ function GallerySection() {
                 src={currentPhoto.image_url}
                 alt="Teens Connect Africa community activity"
                 loading="lazy"
+                decoding="async"
               />
 
               <div className="impact-gallery-image-shade" />
@@ -753,7 +756,7 @@ function GallerySection() {
                   aria-label={`Show community photo ${index + 1}`}
                   aria-pressed={activeImage === index}
                 >
-                  <img src={photo.image_url} alt="" loading="lazy" />
+                  <img src={photo.image_url} alt="" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>
@@ -776,6 +779,7 @@ function GallerySection() {
 export default function ImpactPage() {
   const [activeStat, setActiveStat] = useState(0);
   const [impactStats, setImpactStats] = useState(initialImpactStats);
+  const reduceMotion = useReducedMotionPreference();
 
   useEffect(() => {
     let active = true;
@@ -961,6 +965,7 @@ export default function ImpactPage() {
                       <AnimatedCounter
                         value={stat.value}
                         suffix={stat.suffix}
+                        reduceMotion={reduceMotion}
                       />
                     </div>
 
