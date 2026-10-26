@@ -668,15 +668,9 @@ const Register: React.FC = () => {
 
         role: "member",
 
-        status:
-
-          existingProfile?.status ===
-
-          "active"
-
-            ? "active"
-
-            : "pending",
+        // Self-service registration cannot grant membership approval.
+        // An administrator must explicitly approve the application.
+        status: "pending",
 
         updated_at:
 
