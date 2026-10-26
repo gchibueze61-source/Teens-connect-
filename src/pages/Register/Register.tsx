@@ -612,10 +612,20 @@ const Register: React.FC = () => {
 
       }
 
+      // Link an admin-precreated profile only after a verified session
+      // exists. For newly created profiles this safely returns no claim.
+      const { error: claimError } = await supabase.rpc(
+        "claim_my_pending_profile"
+      );
+
+      if (claimError) {
+        console.error("Profile claim check failed after registration:", claimError);
+      }
+
       setMessage(
-
+ 
         "Registration successful! Your membership is awaiting admin approval."
-
+ 
       );
 
       setMessageType("success");
