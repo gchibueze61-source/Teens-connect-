@@ -9,6 +9,7 @@ import {
 import AdminGuard from "./components/auth/AdminGuard";
 
 const AdminLogin = lazy(() => import("./pages/Login/AdminLogin"));
+const AdminResetPassword = lazy(() => import("./pages/Login/AdminResetPassword"));
 const AdminDashboard = lazy(() => import("./pages/Dashboard/AdminDashboard"));
 const Events = lazy(() => import("./pages/Events/Events"));
 const Blog = lazy(() => import("./pages/Blog/Blog"));
@@ -46,6 +47,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/admin/login" replace />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/reset-password" element={<AdminResetPassword />} />
 
           <Route element={<AdminGuard />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
