@@ -288,7 +288,6 @@ const AboutPage = () => {
               alt="Students learning and collaborating in an educational setting"
               loading="lazy"
             />
-            <span className="about-image-note">Illustrative image</span>
           </div>
 
           <div className="about-belief-content about-animate about-delay-1">
