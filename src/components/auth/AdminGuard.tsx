@@ -39,18 +39,26 @@ export default function AdminGuard() {
 
     checkAdmin();
 
-    // End the admin session after 15 minutes without activity.
-    let idleTimer: ReturnType<typeof setTimeout> | undefined;
-    const resetIdleTimer = () => {
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(async () => {
-        await supabase.auth.signOut();
-        if (active) setState("denied");
-      }, 15 * 60 * 1000);
+    // Require a fresh admin login after the admin page is hidden or
+    // the user switches to another app/tab. This is a client-side privacy
+    // control; server-side Supabase role checks remain authoritative.
+    const lockAdminSession = async () => {
+      await supabase.auth.signOut();
+      if (active) setState("denied");
     };
-    const activityEvents: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "scroll", "touchstart"];
-    activityEvents.forEach((eventName) => window.addEventListener(eventName, resetIdleTimer, { passive: true }));
-    resetIdleTimer();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        void lockAdminSession();
+      }
+    };
+
+    const handlePageHide = () => {
+      void lockAdminSession();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
 
     const {
       data: { subscription },
