@@ -398,26 +398,14 @@ export default function Events() {
             "EVENTS ERROR:",
             error
           );
-
-          console.log(
-            "EVENTS DATA:",
-            data
-          );
-
-          setError(
+setError(
             error.message
           );
 
           setEvents([]);
 
         } else {
-
-          console.log(
-            "EVENTS FROM SUPABASE:",
-            data
-          );
-
-          setEvents(
+setEvents(
             data || []
           );
         }
