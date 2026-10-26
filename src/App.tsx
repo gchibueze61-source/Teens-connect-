@@ -10,6 +10,7 @@ import AdminGuard from "./components/auth/AdminGuard";
 
 const AdminLogin = lazy(() => import("./pages/Login/AdminLogin"));
 const AdminResetPassword = lazy(() => import("./pages/Login/AdminResetPassword"));
+const AdminEmailSettings = lazy(() => import("./pages/Settings/AdminEmailSettings"));
 const AdminDashboard = lazy(() => import("./pages/Dashboard/AdminDashboard"));
 const Events = lazy(() => import("./pages/Events/Events"));
 const Blog = lazy(() => import("./pages/Blog/Blog"));
@@ -51,6 +52,7 @@ function App() {
 
           <Route element={<AdminGuard />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/settings/email" element={<AdminEmailSettings />} />
             <Route path="/admin/impact" element={<Impact />} />
             <Route path="/admin/programs" element={<Programs />} />
             <Route path="/admin/gallery" element={<Gallery />} />
