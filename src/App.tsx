@@ -18,6 +18,7 @@ const Programs = lazy(() => import("./pages/Impact/Programs/Programs"));
 const Gallery = lazy(() => import("./pages/Impact/Gallery/Gallery"));
 const Membership = lazy(() => import("./pages/Membership/Membership"));
 const TeenRecords = lazy(() => import("./pages/Admin/TeenRecords/TeenRecords"));
+const AdminTeenRecords = lazy(() => import("./pages/AdminTeenRecords/AdminTeenRecords"));
 const TeamMembers = lazy(() => import("./pages/TeamMembers/TeamMembers"));
 const BoardMembers = lazy(() => import("./pages/BoardMembers/BoardMembers"));
 const TeenExecutiveCommittee = lazy(
@@ -60,6 +61,7 @@ function App() {
             <Route path="/admin/blog" element={<Blog />} />
             <Route path="/admin/membership" element={<Membership />} />
             <Route path="/admin/teen-records" element={<TeenRecords />} />
+            <Route path="/admin/teen-profiles" element={<AdminTeenRecords />} />
             <Route path="/admin/team-members" element={<TeamMembers />} />
             <Route path="/admin/board-members" element={<BoardMembers />} />
             <Route
