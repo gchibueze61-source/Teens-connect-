@@ -209,14 +209,13 @@ function Events() {
     /*
      * Basic file validation
      */
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/jpg",
-    ];
+    const allowedTypes: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+    };
 
-    if (!allowedTypes.includes(file.type)) {
+    if (!Object.prototype.hasOwnProperty.call(allowedTypes, file.type)) {
       setError(
         "Please select a JPG, PNG or WebP image."
       );
@@ -258,11 +257,12 @@ function Events() {
     setUploadingImage(true);
     setError("");
 
-    const fileExtension =
-      file.name
-        .split(".")
-        .pop()
-        ?.toLowerCase() || "jpg";
+    const fileExtension = allowedTypes[file.type];
+
+    if (!fileExtension || file.size > 5 * 1024 * 1024) {
+      setUploadingImage(false);
+      throw new Error("Invalid image. Use JPG, PNG or WebP files smaller than 5MB.");
+    }
 
     const fileName =
       `${Date.now()}-${Math.random()
