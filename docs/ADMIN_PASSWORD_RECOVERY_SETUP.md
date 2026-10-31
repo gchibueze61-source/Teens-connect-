@@ -1,52 +1,47 @@
 # Administrator password-recovery configuration
 
-The admin application now builds its password-reset redirect from
-`VITE_ADMIN_APP_URL` when that variable is configured. The value must be
-the origin of the deployed **admin application**, not the public TCA website.
+The confirmed admin portal URL is:
+
+```text
+https://teens-connect-admin1-git-admin-obizechinelo39-1243s-projects.vercel.app
+```
+
+The password-reset route is:
+
+```text
+https://teens-connect-admin1-git-admin-obizechinelo39-1243s-projects.vercel.app/reset-password
+```
 
 ## Vercel
 
-In the Vercel project that deploys the admin application, add:
+In the Vercel project `teens-connect-admin1`, add this environment variable:
 
 - Variable: `VITE_ADMIN_APP_URL`
-- Value: the exact HTTPS origin assigned to the admin application
-- Environments: Production, and Preview only if password recovery is tested on previews
+- Value: `https://teens-connect-admin1-git-admin-obizechinelo39-1243s-projects.vercel.app`
+- Environments: enable the environment that serves this admin deployment (Preview for a branch deployment; Production too only if this same origin is used for Production).
 
-Example shape (replace with the actual admin origin):
+Do not include `/admin/dashboard`, `/reset-password`, or a trailing slash in the variable value. The application appends `/reset-password`.
 
-```text
-VITE_ADMIN_APP_URL=https://<actual-admin-origin>
-```
-
-Do not include a trailing path. The application appends `/reset-password`.
+After saving the variable, redeploy the admin project so the Vite build receives it.
 
 ## Supabase Auth URL Configuration
 
-In Supabase Dashboard, open Authentication → URL Configuration.
-
-Add this exact redirect URL:
+In Supabase Dashboard, open Authentication → URL Configuration and add this exact entry to the Redirect URLs allowlist:
 
 ```text
-https://<actual-admin-origin>/reset-password
+https://teens-connect-admin1-git-admin-obizechinelo39-1243s-projects.vercel.app/reset-password
 ```
 
-Keep the canonical Site URL set to the actual canonical site already in use.
-Do not add a wildcard for all domains. Add a preview redirect only when a
-specific preview deployment needs password-recovery testing, and remove it
-when no longer needed.
+Keep the existing canonical Site URL unchanged. Do not add a wildcard for all Vercel domains.
 
 ## Verification
 
-1. Redeploy the admin Vercel project after setting the environment variable.
+1. Confirm the admin deployment is available at the confirmed origin above.
 2. Request a password reset from the admin login page.
-3. Confirm the email link returns to the admin application's
-   `/reset-password` route.
+3. Confirm the email link returns to the exact `/reset-password` route above.
 4. Confirm an expired or malformed link is rejected.
-5. Confirm visiting `/reset-password` while signed in normally does not
-   reveal the password-change form.
-6. Complete a reset using a dedicated test administrator account and confirm
-   the new password works.
+5. Confirm visiting `/reset-password` while signed in normally does not reveal the password-change form.
+6. Complete a reset using a dedicated test administrator account and confirm the new password works.
 7. Confirm the admin login and AdminGuard behavior remain unchanged.
 
-The actual admin origin must be copied from the admin Vercel project's Domains
-settings. It is intentionally not guessed in this document.
+The code changes have been merged, and both Vercel checks for the merge commit passed. Vercel environment variables and Supabase Auth URL allowlists still have to be configured in their respective dashboards; merging this document does not change those dashboard settings.
