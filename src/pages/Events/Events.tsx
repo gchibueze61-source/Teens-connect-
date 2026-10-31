@@ -18,6 +18,12 @@ type EventItem = {
   created_at: string;
 };
 
+const ALLOWED_EVENT_IMAGE_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+
 function Events() {
   const [events, setEvents] = useState<EventItem[]>([]);
 
@@ -209,13 +215,7 @@ function Events() {
     /*
      * Basic file validation
      */
-    const allowedTypes: Record<string, string> = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/webp": "webp",
-    };
-
-    if (!Object.prototype.hasOwnProperty.call(allowedTypes, file.type)) {
+    if (!Object.prototype.hasOwnProperty.call(ALLOWED_EVENT_IMAGE_TYPES, file.type)) {
       setError(
         "Please select a JPG, PNG or WebP image."
       );
@@ -257,7 +257,7 @@ function Events() {
     setUploadingImage(true);
     setError("");
 
-    const fileExtension = allowedTypes[file.type];
+    const fileExtension = ALLOWED_EVENT_IMAGE_TYPES[file.type];
 
     if (!fileExtension || file.size > 5 * 1024 * 1024) {
       setUploadingImage(false);
