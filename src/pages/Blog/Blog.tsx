@@ -20,6 +20,11 @@ type BlogPost = {
 };
 
 const STORAGE_BUCKET = "blog-images";
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 function Blog() {
   const navigate = useNavigate();
@@ -192,9 +197,9 @@ function Blog() {
 
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
+    if (!Object.prototype.hasOwnProperty.call(ALLOWED_IMAGE_TYPES, file.type)) {
       setError(
-        "Please select an image file."
+        "Please select a JPG, PNG or WebP image."
       );
 
       event.target.value = "";
@@ -227,11 +232,11 @@ function Blog() {
     file: File,
     postId: string
   ) => {
-    const fileExtension =
-      file.name
-        .split(".")
-        .pop()
-        ?.toLowerCase() || "jpg";
+    const fileExtension = ALLOWED_IMAGE_TYPES[file.type];
+
+    if (!fileExtension || file.size > 5 * 1024 * 1024) {
+      throw new Error("Invalid image. Use JPG, PNG or WebP files smaller than 5MB.");
+    }
 
     const filePath =
       `${postId}-${Date.now()}.${fileExtension}`;
@@ -245,6 +250,7 @@ function Blog() {
         file,
         {
           cacheControl: "3600",
+          contentType: file.type,
           upsert: false,
         }
       );
