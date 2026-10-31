@@ -15,6 +15,11 @@ type Program = {
 };
 
 const STORAGE_BUCKET = "program-images";
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 function Programs() {
   const navigate = useNavigate();
@@ -84,8 +89,8 @@ function Programs() {
       return;
     }
 
-    if (!file.type.startsWith("image/")) {
-      setError("Please select an image file.");
+    if (!Object.prototype.hasOwnProperty.call(ALLOWED_IMAGE_TYPES, file.type)) {
+      setError("Please select a JPG, PNG or WebP image.");
       event.target.value = "";
       return;
     }
@@ -109,8 +114,11 @@ function Programs() {
     file: File,
     programId: string
   ) => {
-    const fileExtension =
-      file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const fileExtension = ALLOWED_IMAGE_TYPES[file.type];
+
+    if (!fileExtension || file.size > 5 * 1024 * 1024) {
+      throw new Error("Invalid image. Use JPG, PNG or WebP files smaller than 5MB.");
+    }
 
     const filePath =
       `${programId}-${Date.now()}.${fileExtension}`;
@@ -120,6 +128,7 @@ function Programs() {
         .from(STORAGE_BUCKET)
         .upload(filePath, file, {
           cacheControl: "3600",
+          contentType: file.type,
           upsert: false,
         });
 
