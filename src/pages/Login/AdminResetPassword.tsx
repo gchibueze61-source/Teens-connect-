@@ -15,59 +15,85 @@ function AdminResetPassword() {
 
   useEffect(() => {
     let mounted = true;
+    let recoveryTimeout: ReturnType<typeof setTimeout> | undefined;
 
-    const prepareRecovery = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
+    const markRecoveryReady = () => {
       if (!mounted) return;
+      if (recoveryTimeout) clearTimeout(recoveryTimeout);
+      setRecoveryReady(true);
+      setChecking(false);
+      setError("");
+    };
 
-      if (session) {
-        setRecoveryReady(true);
-        setChecking(false);
-        return;
+    // Subscribe before checking the URL/session so a recovery event
+    // emitted during the PKCE exchange cannot be missed.
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY" && session) {
+        markRecoveryReady();
       }
+    });
 
-      const { data: listener } = supabase.auth.onAuthStateChange(
-        (event, sessionFromEvent) => {
-          if (!mounted) return;
-
-          if (event === "PASSWORD_RECOVERY" && sessionFromEvent) {
-            setRecoveryReady(true);
-          }
-          setChecking(false);
-        }
+    const verifyRecoveryLink = async () => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const hashParams = new URLSearchParams(
+        window.location.hash.replace(/^#/, "")
       );
 
-      setTimeout(async () => {
-        if (!mounted) return;
+      // Supabase recovery links use either a PKCE code in the query
+      // string or a recovery token in the URL hash.
+      const hasRecoveryCallback =
+        queryParams.has("code") ||
+        (hashParams.get("type") === "recovery" &&
+          hashParams.has("access_token"));
 
+      if (hasRecoveryCallback) {
         const {
-          data: { session: refreshedSession },
+          data: { session },
+          error: sessionError,
         } = await supabase.auth.getSession();
 
         if (!mounted) return;
 
-        if (refreshedSession) {
-          setRecoveryReady(true);
-        } else {
+        if (session && !sessionError) {
+          markRecoveryReady();
+          return;
+        }
+
+        // Allow the Supabase client time to finish exchanging a PKCE
+        // recovery code and emit PASSWORD_RECOVERY.
+        recoveryTimeout = setTimeout(() => {
+          if (!mounted) return;
           setError(
             "This password reset link is invalid or has expired. Please request a new one."
           );
-        }
+          setChecking(false);
+        }, 10000);
 
-        setChecking(false);
-      }, 500);
+        return;
+      }
 
-      return () => listener.subscription.unsubscribe();
+      // A normal signed-in session is not proof of a password-reset
+      // request. Do not allow it to open the password-change form.
+      if (!mounted) return;
+      setError(
+        "Open this page using the password-reset link sent to your email. If the link has expired, request a new one."
+      );
+      setChecking(false);
     };
 
-    const cleanupPromise = prepareRecovery();
+    void verifyRecoveryLink().catch((caught: unknown) => {
+      if (!mounted) return;
+      console.error("Password recovery verification failed:", caught);
+      setError("Unable to verify this password reset link. Please request a new one.");
+      setChecking(false);
+    });
 
     return () => {
       mounted = false;
-      void cleanupPromise;
+      if (recoveryTimeout) clearTimeout(recoveryTimeout);
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -75,6 +101,11 @@ function AdminResetPassword() {
     event.preventDefault();
     setError("");
     setMessage("");
+
+    if (!recoveryReady) {
+      setError("Your password reset session could not be verified. Request a new reset link.");
+      return;
+    }
 
     if (password.length < 10) {
       setError("Your new password must be at least 10 characters long.");
@@ -93,24 +124,25 @@ function AdminResetPassword() {
         password,
       });
 
-      if (updateError) {
-        throw updateError;
-      }
+      if (updateError) throw updateError;
 
       await supabase.auth.signOut();
 
       setMessage(
-        "Your password has been changed. Please sign in again using your new password and your administrator authenticator code."
+        "Your password has been changed. Please sign in again using your new password."
       );
-
       setRecoveryReady(false);
 
       setTimeout(() => {
         navigate("/admin/login", { replace: true });
       }, 1500);
-    } catch (err: any) {
-      console.error("Admin password update error:", err);
-      setError(err?.message || "Unable to update your password.");
+    } catch (caught: unknown) {
+      console.error("Admin password update error:", caught);
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Unable to update your password."
+      );
     } finally {
       setLoading(false);
     }
@@ -139,8 +171,8 @@ function AdminResetPassword() {
           <p>Choose a private password for your administrator account.</p>
         </div>
 
-        {error && <div className="admin-login-error">{error}</div>}
-        {message && <div className="admin-login-success">{message}</div>}
+        {error && <div className="admin-login-error" role="alert">{error}</div>}
+        {message && <div className="admin-login-success" role="status">{message}</div>}
 
         {recoveryReady && (
           <form onSubmit={handleSubmit} className="admin-login-form">
@@ -182,6 +214,16 @@ function AdminResetPassword() {
               {loading ? "Updating..." : "Set New Password"}
             </button>
           </form>
+        )}
+
+        {!recoveryReady && !message && (
+          <button
+            type="button"
+            className="admin-login-button"
+            onClick={() => navigate("/admin/login", { replace: true })}
+          >
+            Return to admin login
+          </button>
         )}
 
         <p className="admin-login-note">
