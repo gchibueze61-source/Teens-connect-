@@ -1,7 +1,7 @@
--- Restore intended member ownership reads and active-admin review access.
--- This migration is intentionally limited to the three review tables.
--- Existing member SELECT policies are preserved.
--- Apply through the normal Supabase migration process after reviewing the live schema.
+-- Remove only the three approved AAL2 SELECT restrictions and grant
+-- active-admin SELECT access on the same three review tables.
+-- Existing member ownership policies and all other RLS policies are preserved.
+-- Idempotent: safe if the corresponding SQL was already run manually.
 
 BEGIN;
 
@@ -15,6 +15,18 @@ DROP POLICY IF EXISTS
 
 DROP POLICY IF EXISTS
   "Require MFA for quarterly reviews"
+  ON public.quarterly_reviews;
+
+DROP POLICY IF EXISTS
+  "Active admins can view all achievement reviews"
+  ON public.achievement_reviews;
+
+DROP POLICY IF EXISTS
+  "Active admins can view all awards"
+  ON public.awards;
+
+DROP POLICY IF EXISTS
+  "Active admins can view all quarterly reviews"
   ON public.quarterly_reviews;
 
 CREATE POLICY "Active admins can view all achievement reviews"
