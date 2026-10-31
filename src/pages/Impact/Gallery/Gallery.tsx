@@ -36,6 +36,11 @@ type SelectedImage = {
 const STORAGE_BUCKET = "gallery-images";
 const MAX_IMAGES = 6;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 function Gallery() {
   const navigate = useNavigate();
@@ -185,7 +190,7 @@ function Gallery() {
 
     const invalidFile = files.find(
       (file) =>
-        !file.type.startsWith("image/") ||
+        !Object.prototype.hasOwnProperty.call(ALLOWED_IMAGE_TYPES, file.type) ||
         file.size > MAX_FILE_SIZE
     );
 
@@ -229,8 +234,11 @@ function Gallery() {
     galleryId: string,
     index: number
   ) => {
-    const extension =
-      file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const extension = ALLOWED_IMAGE_TYPES[file.type];
+
+    if (!extension || file.size > MAX_FILE_SIZE) {
+      throw new Error("Invalid image. Use JPG, PNG or WebP files smaller than 5MB.");
+    }
 
     const filePath =
       `${galleryId}/${Date.now()}-${index}.${extension}`;
@@ -239,6 +247,7 @@ function Gallery() {
       .from(STORAGE_BUCKET)
       .upload(filePath, file, {
         cacheControl: "3600",
+        contentType: file.type,
         upsert: false,
       });
 
