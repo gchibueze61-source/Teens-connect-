@@ -123,9 +123,20 @@ function AdminLogin() {
     setLoading(true);
 
     try {
+      const configuredAdminUrl = import.meta.env.VITE_ADMIN_APP_URL?.trim();
+      const adminOrigin = configuredAdminUrl || window.location.origin;
+      const resetRedirectUrl = new URL("/reset-password", adminOrigin);
+
+      if (
+        resetRedirectUrl.protocol !== "https:" &&
+        resetRedirectUrl.hostname !== "localhost"
+      ) {
+        throw new Error("The administrator reset URL must use HTTPS.");
+      }
+
       const { error: resetError } =
         await supabase.auth.resetPasswordForEmail(cleanEmail, {
-          redirectTo: `${window.location.origin}/reset-password`,
+          redirectTo: resetRedirectUrl.toString(),
         });
 
       if (resetError) {
