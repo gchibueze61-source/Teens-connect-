@@ -48,7 +48,10 @@ function AdminResetPassword() {
         (hashParams.get("type") === "recovery" &&
           hashParams.has("access_token"));
 
-      if (hasRecoveryCallback) {
+      const hasVerifiedRecoveryEvent =
+        window.sessionStorage.getItem("tca_admin_password_recovery") === "true";
+
+      if (hasVerifiedRecoveryEvent) {
         const {
           data: { session },
           error: sessionError,
@@ -61,8 +64,13 @@ function AdminResetPassword() {
           return;
         }
 
-        // Allow the Supabase client time to finish exchanging a PKCE
-        // recovery code and emit PASSWORD_RECOVERY.
+        window.sessionStorage.removeItem("tca_admin_password_recovery");
+      }
+
+      if (hasRecoveryCallback) {
+        // The Supabase client-level listener records PASSWORD_RECOVERY
+        // before this lazy-loaded route mounts. Wait briefly for the
+        // recovery event if the PKCE exchange is still completing.
         recoveryTimeout = setTimeout(() => {
           if (!mounted) return;
           setError(
